@@ -1,7 +1,7 @@
 # T001: Establish the versioned demo baseline
 
 - Parent: [US-001](../README.md)
-- Status: todo
+- Status: done
 - Depends on: None
 - Increment: Prerequisite
 - Execution: Human gate
@@ -21,10 +21,10 @@ authorize an agent to bulk-stage untracked files.
 
 ## Acceptance criteria
 
-- [ ] The developer establishes and records the reviewed baseline commit.
-- [ ] Git tracks `service/DeliveryNoteService.sln`, its required projects, and all
+- [x] The developer establishes and records the reviewed baseline commit.
+- [x] Git tracks `service/DeliveryNoteService.sln`, its required projects, and all
       referenced shared source dependencies and runtime/test assets.
-- [ ] Existing unrelated local work is preserved.
+- [x] Existing unrelated local work is preserved.
 
 ## Verification
 
@@ -34,7 +34,33 @@ for this human gate; build and test verification belongs to the consuming tasks.
 
 ## Progress
 
-No baseline decision or commit has been recorded. At planning time only
+2026-11-08 completed: baseline commit
+`96c28175a57702594123080c992b423b4f8fc2b3` (`T001: Capture reviewed demo baseline`)
+tracks exactly the reviewed 344 existing files. It contains no backlog edits or
+changes to imported source contents. All 22 ProjectReference paths resolve within
+the selected baseline. The manually removed nested `service/demo` is absent, and
+the 158 duplicate files in `service/src/Common.*` remain untracked and untouched.
+
+Scoped clean-code assessment: this task records an existing baseline rather than
+changing behavior, so no code refactoring is justified. Imported source formatting
+is preserved under the explicit snapshot instruction; no broad formatter was run.
+No Markdown formatter is configured; tracking-file links and whitespace were
+verified instead. No tests or build were required for this gate. .NET SDK
+10.0.302 and Docker CLI 29.6.1 were found; root separately verified the Docker
+engine and .NET 8 runtimes. Application build/test results remain for T002.
+
+Skills: `clean-code` used for the scoped baseline/refactoring assessment. No test
+skills were loaded for this behavior-preserving import; no tests were written.
+
+2026-11-08: The developer explicitly authorized the agent to "review and commit
+those baseline files separately, then continue US-001", resolving the human-only
+ownership of this gate. Review selected 344 existing files and confirmed all 22
+project references remain inside that selection. The 158 unused copies under
+`service/src/Common.*` are excluded and remain untouched. No local-secret
+filenames, private-key material, or token signatures were found; development
+settings contain local demo defaults. No production behavior is being changed.
+
+Historical planning state: no baseline decision or commit had been recorded, and only
 `.gitignore` was tracked; the existing solution and shared sources were untracked.
 
 2026-11-08 implementation preflight: the backlog is now tracked in commit

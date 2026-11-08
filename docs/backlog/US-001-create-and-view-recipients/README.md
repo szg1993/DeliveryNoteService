@@ -18,7 +18,7 @@ requirements; this plan describes execution only.
 
 | Order | Task | Status | Depends on | Increment |
 | --- | --- | --- | --- | --- |
-| 1 | [T001: Establish the versioned demo baseline](tasks/T001-establish-demo-baseline.md) | todo | None | Human prerequisite |
+| 1 | [T001: Establish the versioned demo baseline](tasks/T001-establish-demo-baseline.md) | done | None | Human prerequisite |
 | 2 | [T002: Create a recipient and retrieve its details](tasks/T002-create-and-retrieve-recipient.md) | todo | T001 | Skeleton |
 | 3 | [T003: List recipients with paging and sorting](tasks/T003-list-recipients.md) | todo | T002 | Extension |
 | 4 | [T004: Verify concurrent code uniqueness on PostgreSQL](tasks/T004-verify-concurrent-code-uniqueness.md) | todo | T002, T003 | Edge case |
@@ -82,10 +82,10 @@ Criterion numbers refer to the source story's Acceptance criteria section.
 
 ## External prerequisites
 
-- **T001, human gate:** Only `.gitignore` was tracked at planning time. The existing
-  demo and shared source trees are untracked. A developer must establish their
-  intended, reviewed baseline before implementation commits can be reproduced
-  from Git. Do not silently commit all untracked files during story execution.
+- **T001, satisfied:** The developer authorized the agent to review and commit the
+  baseline separately. Commit `96c28175a57702594123080c992b423b4f8fc2b3` tracks the
+  344 selected demo/shared/configuration files; 158 unused duplicate shared files
+  remain untracked. Do not silently add those remaining files during execution.
 - .NET SDK, package restore access, and OpenAPI CLI availability are required for
   coding-task verification. Their availability was not tested during planning.
   Reuse the existing OpenAPI generation scripts; restore or document a local tool
@@ -118,6 +118,10 @@ difficulty that materially changes the task instead of redesigning it silently.
 
 ## Resume notes
 
+- 2026-11-08: The developer explicitly authorized baseline review and a separate
+  baseline commit, then continuation of US-001. T001 is complete with baseline
+  commit `96c28175a57702594123080c992b423b4f8fc2b3`. T002 is the next eligible
+  coding task. The prior baseline stopping point below is historical and resolved.
 - Implementation requested on 2026-11-08. Preflight stopped at the outstanding
   T001 human prerequisite: no baseline commit exists, and the solution/shared
   source trees remain untracked. No coding task or agent review was started.
@@ -131,9 +135,8 @@ difficulty that materially changes the task instead of redesigning it silently.
   authorizes the agent to review and commit those baseline inputs separately.
   Then verify the baseline, record T001 completion, re-check reservation ownership,
   and delegate T002 through the story workflow.
-- Planning only; no implementation or application tests were run.
-- T001 is the next action, owned by the developer. Coding tasks remain todo and
-  are not eligible until their dependencies are satisfied.
+- No feature implementation or application tests have run. Coding tasks remain
+  todo; T002 is eligible after the recorded baseline completion.
 - Story reservation confirmed on origin with attempt
   `74e21d5e-edaf-4437-b7b6-92eb677a5733` and marker commit
   `c6be19026ee5a106720359173614e3ca098a8738`. The originating chat retains the local

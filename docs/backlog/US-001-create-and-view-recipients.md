@@ -1,6 +1,6 @@
 # US-001: Create and view recipients
 
-- Status: Ready
+- Status: In progress
 - Epic: [Recipient management](epics/recipient-management.md)
 - Implementation repository: DeliveryNoteService
 - Implementation solution: `service/DeliveryNoteService.sln`
