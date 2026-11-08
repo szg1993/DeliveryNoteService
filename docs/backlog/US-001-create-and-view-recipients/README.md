@@ -19,7 +19,7 @@ requirements; this plan describes execution only.
 | Order | Task | Status | Depends on | Increment |
 | --- | --- | --- | --- | --- |
 | 1 | [T001: Establish the versioned demo baseline](tasks/T001-establish-demo-baseline.md) | done | None | Human prerequisite |
-| 2 | [T002: Create a recipient and retrieve its details](tasks/T002-create-and-retrieve-recipient.md) | todo | T001 | Skeleton |
+| 2 | [T002: Create a recipient and retrieve its details](tasks/T002-create-and-retrieve-recipient.md) | in-progress | T001 | Skeleton |
 | 3 | [T003: List recipients with paging and sorting](tasks/T003-list-recipients.md) | todo | T002 | Extension |
 | 4 | [T004: Verify concurrent code uniqueness on PostgreSQL](tasks/T004-verify-concurrent-code-uniqueness.md) | todo | T002, T003 | Edge case |
 
@@ -118,6 +118,11 @@ difficulty that materially changes the task instead of redesigning it silently.
 
 ## Resume notes
 
+- T002 is in progress. The initial POST scenario reached green (1 HTTP test
+  passed) after adding the Recipients table migration. The next create-then-read
+  scenario is written and awaits its red execution; GET is not implemented yet.
+  The parent agent owns privileged test runs to avoid overlapping SQLite fixture
+  initialization and hidden child approvals. See T002 Progress for exact state.
 - 2026-11-08: The developer explicitly authorized baseline review and a separate
   baseline commit, then continuation of US-001. T001 is complete with baseline
   commit `96c28175a57702594123080c992b423b4f8fc2b3`. T002 is the next eligible

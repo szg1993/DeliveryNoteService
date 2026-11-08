@@ -1,7 +1,7 @@
 # T002: Create a recipient and retrieve its details
 
 - Parent: [US-001](../README.md)
-- Status: todo
+- Status: in-progress
 - Depends on: T001
 - Increment: Skeleton
 
@@ -71,4 +71,23 @@ commands, red/green evidence, and any environmental blockers.
 
 ## Progress
 
-No implementation started.
+2026-11-08: Started the create/detail HTTP slice using the agreed public boundary.
+
+Initial red: `dotnet test service/test/ApiTests/ApiTests.csproj --filter
+'FullyQualifiedName~RecipientCreationTests' --no-restore -v minimal` compiled and
+failed the first POST scenario with actual HTTP 404 instead of expected HTTP 201.
+The first creation slice has been written. Its first verification attempts
+overlapped and failed in the existing SQLite `seeded.db` initialization (file lock
+and migration-history collision), so they do not establish a product result.
+After adding the required Recipients table migration, the first scenario passed:
+1 passed, 0 failed, 0 skipped (213 ms). The SQLite fixture applies migrations; a
+model-only change had produced HTTP 500 because the table did not exist.
+
+The next scenario, `RecipientDetailsTests.CreatedRecipient_CanBeRetrievedThroughLocation`,
+has been written but not executed: its child escalation waited 328 seconds and
+was aborted before a session was returned. The parent agent took sole ownership
+of privileged test execution. No child command or test process remains active.
+The expected next red is GET of Location returning 404 because no production GET
+endpoint has been added. GET, normalization/validation, code uniqueness, complete
+migration snapshot/metadata, OpenAPI refresh, formatting, and final verification
+remain unfinished. Existing task checkboxes remain unchecked.
