@@ -36,3 +36,11 @@ for this human gate; build and test verification belongs to the consuming tasks.
 
 No baseline decision or commit has been recorded. At planning time only
 `.gitignore` was tracked; the existing solution and shared sources were untracked.
+
+2026-11-08 implementation preflight: the backlog is now tracked in commit
+8140af9, but the solution and required shared sources remain untracked. The
+developer removed `service/demo` manually. Implementation is waiting for this
+human gate; no baseline files were staged or committed by the agent. There are
+344 candidate baseline files outside the 158 duplicate shared-source files under
+`service/src/Common.*`. Review and commit the intended baseline, or explicitly
+authorize the agent to perform that separate baseline work before resuming T002.

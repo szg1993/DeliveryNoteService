@@ -118,6 +118,19 @@ difficulty that materially changes the task instead of redesigning it silently.
 
 ## Resume notes
 
+- Implementation requested on 2026-11-08. Preflight stopped at the outstanding
+  T001 human prerequisite: no baseline commit exists, and the solution/shared
+  source trees remain untracked. No coding task or agent review was started.
+  The developer manually removed `service/demo`; its absence was verified.
+- Baseline inventory: 93 service application/test/configuration files, 249 root
+  shared-source files, and 2 root configuration/script files (344 candidates).
+  Another 158 files under `service/src/Common.*` are duplicate shared-source
+  copies outside the target project's references; leave them untouched pending
+  the baseline decision. Counts exclude files ignored by Git.
+- Next action: the developer commits the intended baseline or explicitly
+  authorizes the agent to review and commit those baseline inputs separately.
+  Then verify the baseline, record T001 completion, re-check reservation ownership,
+  and delegate T002 through the story workflow.
 - Planning only; no implementation or application tests were run.
 - T001 is the next action, owned by the developer. Coding tasks remain todo and
   are not eligible until their dependencies are satisfied.
