@@ -21,7 +21,7 @@ requirements; this plan describes execution only.
 | 1 | [T001: Establish the versioned demo baseline](tasks/T001-establish-demo-baseline.md) | done | None | Human prerequisite |
 | 2 | [T002: Create a recipient and retrieve its details](tasks/T002-create-and-retrieve-recipient.md) | done | T001 | Skeleton |
 | 3 | [T003: List recipients with paging and sorting](tasks/T003-list-recipients.md) | done | T002 | Extension |
-| 4 | [T004: Verify concurrent code uniqueness on PostgreSQL](tasks/T004-verify-concurrent-code-uniqueness.md) | todo | T002, T003 | Edge case |
+| 4 | [T004: Verify concurrent code uniqueness on PostgreSQL](tasks/T004-verify-concurrent-code-uniqueness.md) | done | T002, T003 | Edge case |
 
 There are three coding tasks and one separate human prerequisite. The task file
 owns its status and progress. Keep the table synchronized with task files. Execute
@@ -90,10 +90,10 @@ Criterion numbers refer to the source story's Acceptance criteria section.
   coding-task verification. Their availability was not tested during planning.
   Reuse the existing OpenAPI generation scripts; restore or document a local tool
   manifest if the baseline does not supply the CLI. Do not silently upgrade it.
-- T004 requires a working container runtime and permission to pull the PostgreSQL
-  image already specified by the fixture. Availability is unverified. If absent,
-  record the verification blocker rather than passing or skipping required
-  concurrency coverage without disclosure.
+- **T004, satisfied:** Docker engine 29.6.1 and the cached `postgres:17-alpine`
+  image were verified. The dedicated PostgreSQL HTTP concurrency scenario passed
+  with actual migrations and disposable-container cleanup. Re-running that
+  scenario still requires Docker; it does not silently skip without the runtime.
 
 ## Task-size audit
 
@@ -118,6 +118,17 @@ difficulty that materially changes the task instead of redesigning it silently.
 
 ## Resume notes
 
+- 2026-11-08: T004 is complete. The dedicated PostgreSQL concurrency check passed,
+  the existing SQLite duplicate-code regression passed 3/3, and the complete API
+  suite passed 115/115 sequentially, with no failures or skips. Scoped formatting
+  and verification passed. All four tasks are done. The story is In review and
+  the plan remains active; independent agent review is next. No human acceptance
+  has occurred. The earlier task-selection checkpoints below are historical.
+- PostgreSQL verification uses an instance-scoped fixture selection hook in the
+  existing host; ordinary tests retain SQLite. Select the dedicated scenario with
+  Database=PostgreSQL or RecipientConcurrencyTests. The initial exact timestamp
+  comparison exposed PostgreSQL microsecond precision; using the existing fixed
+  test clock restored deterministic exact assertions without production changes.
 - 2026-11-08: T003 is complete: paged/sorted recipient listing and OpenAPI are
   implemented. All 75 Recipient/OpenAPI checks passed with default parallelism;
   the complete API suite passed 114/114 with explicit sequential xUnit execution.
@@ -137,7 +148,7 @@ difficulty that materially changes the task instead of redesigning it silently.
   makes the Recipient migration additive. See its task record for verification.
 - Current environment: .NET SDK 10.0.302 with .NET 8 runtimes, pinned Swagger CLI
   6.9.0 and EF tooling 8.0.10 used successfully. Docker engine availability was
-  checked by the parent; the PostgreSQL test itself remains unverified until T004.
+  checked by the parent and the PostgreSQL scenario was verified in T004.
 - Historical T002 checkpoint, resolved by completion: the initial POST scenario
   reached green after its table migration. GET was not yet implemented and its
   test awaited execution. Test ownership moved between parent and task agent to

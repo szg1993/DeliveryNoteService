@@ -57,7 +57,8 @@ public abstract class ApiTestBase<TWebAppEntryPoint, TApi>(string? testId = null
     Api IScenario.Api => Api;
 
     public IServiceProvider Services => WebAppFactory.Services;
-    protected NullSortingStyle NullSortingStyle => DatabaseFixture.NullSortingStyle;
+    protected virtual IDatabaseFixture TestDatabase => DatabaseFixture;
+    protected NullSortingStyle NullSortingStyle => TestDatabase.NullSortingStyle;
     protected TestLogStore LogStore => Services.GetRequiredService<TestLogStore>();
 
     #region IAsyncLifetime members
@@ -65,7 +66,7 @@ public abstract class ApiTestBase<TWebAppEntryPoint, TApi>(string? testId = null
     public virtual async Task InitializeAsync()
     {
         WriteLog("Initializing test. TestID: " + TestId);
-        var testDbConnectionString = await DatabaseFixture.CreateTestDbAsync(TestId);
+        var testDbConnectionString = await TestDatabase.CreateTestDbAsync(TestId);
 
         WebAppFactory = new MedusaWebAppFactory<TWebAppEntryPoint>()
             .ConfigureHostConfiguration(configBuilder =>
@@ -84,7 +85,7 @@ public abstract class ApiTestBase<TWebAppEntryPoint, TApi>(string? testId = null
                     .ConfigureTestServices(serviceCollection =>
                     {
                         ConfigureServices(serviceCollection);
-                        DatabaseFixture.ConfigureTestServices(TestId, serviceCollection);
+                        TestDatabase.ConfigureTestServices(TestId, serviceCollection);
                     });
             });
 
@@ -103,7 +104,7 @@ public abstract class ApiTestBase<TWebAppEntryPoint, TApi>(string? testId = null
             Api.Client?.Dispose();
         }
 
-        await DatabaseFixture.ClearTestDbAsync(TestId);
+        await TestDatabase.ClearTestDbAsync(TestId);
         WriteLog("ApiTestBase DisposeAsync finished.");
     }
 

@@ -23,7 +23,7 @@ public abstract class DemoServiceApiTestBase : ApiTestBase<Program, DemoServiceA
     protected override void ConfigureServices(IServiceCollection services)
     {
         base.ConfigureServices(services);
-        services.AddTestScheduling(DatabaseFixture);
+        services.AddTestScheduling(TestDatabase);
         MessagingFixture.ConfigureTestServices(TestId, services);
     }
 

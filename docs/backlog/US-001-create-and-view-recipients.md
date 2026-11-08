@@ -1,6 +1,6 @@
 # US-001: Create and view recipients
 
-- Status: In progress
+- Status: In review
 - Epic: [Recipient management](epics/recipient-management.md)
 - Implementation repository: DeliveryNoteService
 - Implementation solution: `service/DeliveryNoteService.sln`
@@ -140,8 +140,9 @@ Refinement is complete and the developer confirmed the specification on
 2026-11-08: "Yes, we have the common understanding."
 
 The [implementation plan and tasks](US-001-create-and-view-recipients/README.md)
-record the task breakdown. T001 and T002 are complete: the baseline is versioned,
-and recipient creation/detail endpoints have been implemented and verified.
-Listing (T003) and PostgreSQL concurrency verification (T004) remain. No story
-review or human acceptance has occurred. Specification approval does not record
+record the task breakdown. T001 through T004 are complete: the baseline is
+versioned, recipient creation/detail/listing endpoints are implemented, and the
+PostgreSQL concurrency scenario is verified. The complete API suite passed
+115/115 with explicit sequential execution. The story is In review; independent
+agent review and human acceptance remain. Specification approval does not record
 acceptance of the implementation.
