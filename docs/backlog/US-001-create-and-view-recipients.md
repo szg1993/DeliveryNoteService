@@ -143,6 +143,8 @@ The [implementation plan and tasks](US-001-create-and-view-recipients/README.md)
 record the task breakdown. T001 through T004 are complete: the baseline is
 versioned, recipient creation/detail/listing endpoints are implemented, and the
 PostgreSQL concurrency scenario is verified. The complete API suite passed
-115/115 with explicit sequential execution. The story is In review; independent
-agent review and human acceptance remain. Specification approval does not record
-acceptance of the implementation.
+115/115 with explicit sequential execution. The
+[independent agent review](US-001-create-and-view-recipients/review-01.md) returned
+PASS with complete coverage and no findings. The story remains In review pending
+human review and acceptance. Specification approval does not record acceptance of
+the implementation.
