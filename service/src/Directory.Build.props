@@ -1,0 +1,6 @@
+<Project>
+	<PropertyGroup>
+		<AssemblyName>Medusa.Enap.DemoService.$(MSBuildProjectName)</AssemblyName>
+		<RootNamespace>Medusa.Enap.DemoService.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+	</PropertyGroup>
+</Project>
