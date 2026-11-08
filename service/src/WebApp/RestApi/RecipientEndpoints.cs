@@ -1,0 +1,63 @@
+using Medusa.Enap.Common.AspNetCore.ErrorHandling;
+using Medusa.Enap.Common.Core.Messaging;
+using Medusa.Enap.DemoService.Application.Recipients;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Models;
+
+namespace Medusa.Enap.DemoService.WebApp.RestApi;
+
+public static class RecipientEndpoints
+{
+    public static IEndpointRouteBuilder MapRecipientRoutes(this IEndpointRouteBuilder app)
+    {
+        app.MapGet(
+            "/api/recipients/{id}",
+            async (
+                [FromRoute] int id,
+                [FromServices] GetRecipient getRecipient,
+                CancellationToken ct
+            ) => await getRecipient.RunAsync(id, ct)
+        )
+            .WithTags("Recipients")
+            .WithName("GetRecipient")
+            .WithSummary("Retrieve a recipient")
+            .WithDescription("Retrieves normalized recipient details, including the server-generated ID, UTC creation time, and derived foreign status. ID must be a positive integer. Invalid input returns 400; an unknown positive ID returns 404. Authentication is not required.")
+            .AllowAnonymous()
+            .Produces<Envelope<RecipientDetails>>(StatusCodes.Status200OK)
+            .Produces<MedusaErrorResponse>(StatusCodes.Status400BadRequest)
+            .Produces<MedusaErrorResponse>(StatusCodes.Status404NotFound);
+
+        app.MapPost(
+            "/api/recipients",
+            async (
+                [FromBody] CreateRecipientRequest request,
+                [FromServices] CreateRecipient createRecipient,
+                CancellationToken ct
+            ) =>
+            {
+                var result = await createRecipient.RunAsync(request, ct);
+                return Results.Created($"/api/recipients/{result.Content.Id}", result);
+            }
+        )
+            .WithTags("Recipients")
+            .WithName("CreateRecipient")
+            .WithSummary("Create a recipient")
+            .WithDescription("Creates a delivery destination from six required fields. Surrounding whitespace is removed; code and country are uppercased. Duplicate names are allowed; duplicate normalized codes return 409. Invalid input returns 400. The 201 response contains the created recipient and a Location header pointing to its detail endpoint. Authentication is not required.")
+            .AllowAnonymous()
+            .Accepts<CreateRecipientRequest>("application/json")
+            .Produces<Envelope<RecipientDetails>>(StatusCodes.Status201Created)
+            .Produces<MedusaErrorResponse>(StatusCodes.Status400BadRequest)
+            .Produces<MedusaErrorResponse>(StatusCodes.Status409Conflict)
+            .WithOpenApi(operation =>
+            {
+                operation.Responses["201"].Headers["Location"] = new OpenApiHeader
+                {
+                    Description = "Relative URI of the created recipient's detail endpoint.",
+                    Schema = new OpenApiSchema { Type = "string", Format = "uri-reference" }
+                };
+                return operation;
+            });
+
+        return app;
+    }
+}

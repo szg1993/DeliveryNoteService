@@ -19,7 +19,7 @@ requirements; this plan describes execution only.
 | Order | Task | Status | Depends on | Increment |
 | --- | --- | --- | --- | --- |
 | 1 | [T001: Establish the versioned demo baseline](tasks/T001-establish-demo-baseline.md) | done | None | Human prerequisite |
-| 2 | [T002: Create a recipient and retrieve its details](tasks/T002-create-and-retrieve-recipient.md) | in-progress | T001 | Skeleton |
+| 2 | [T002: Create a recipient and retrieve its details](tasks/T002-create-and-retrieve-recipient.md) | done | T001 | Skeleton |
 | 3 | [T003: List recipients with paging and sorting](tasks/T003-list-recipients.md) | todo | T002 | Extension |
 | 4 | [T004: Verify concurrent code uniqueness on PostgreSQL](tasks/T004-verify-concurrent-code-uniqueness.md) | todo | T002, T003 | Edge case |
 
@@ -118,12 +118,23 @@ difficulty that materially changes the task instead of redesigning it silently.
 
 ## Resume notes
 
-- T002 is in progress. The initial POST scenario reached green (1 HTTP test
-  passed) after adding the Recipients table migration. The next create-then-read
-  scenario is written and awaits its red execution; GET is not implemented yet.
-  The parent agent owns privileged test runs to avoid overlapping SQLite fixture
-  initialization and hidden child approvals. See T002 Progress for exact state.
-- 2026-11-08: The developer explicitly authorized baseline review and a separate
+- 2026-11-08: T002 is complete. Creation/detail HTTP behavior and OpenAPI metadata
+  are implemented; 59 final focused tests passed, including 48 Recipient cases,
+  OpenAPI freshness, and related existing Demo/Paging cases. Scoped formatting and
+  formatter verification passed. T003 is the next eligible task, followed by T004.
+  Story remains In progress and plan active; no story review or human acceptance
+  has occurred. The checkpoints below are historical and superseded where noted.
+- Migration scaffolding initially exposed an imported model/snapshot mismatch for
+  the existing DemoModel UniqueId index. T002 preserves that existing index and
+  makes the Recipient migration additive. See its task record for verification.
+- Current environment: .NET SDK 10.0.302 with .NET 8 runtimes, pinned Swagger CLI
+  6.9.0 and EF tooling 8.0.10 used successfully. Docker engine availability was
+  checked by the parent; the PostgreSQL test itself remains unverified until T004.
+- Historical T002 checkpoint, resolved by completion: the initial POST scenario
+  reached green after its table migration. GET was not yet implemented and its
+  test awaited execution. Test ownership moved between parent and task agent to
+  avoid overlapping SQLite initialization while command approvals were resolved.
+- Historical baseline handoff: the developer explicitly authorized baseline review and a separate
   baseline commit, then continuation of US-001. T001 is complete with baseline
   commit `96c28175a57702594123080c992b423b4f8fc2b3`. T002 is the next eligible
   coding task. The prior baseline stopping point below is historical and resolved.
@@ -136,11 +147,11 @@ difficulty that materially changes the task instead of redesigning it silently.
   Another 158 files under `service/src/Common.*` are duplicate shared-source
   copies outside the target project's references; leave them untouched pending
   the baseline decision. Counts exclude files ignored by Git.
-- Next action: the developer commits the intended baseline or explicitly
+- Historical next action (resolved by T001): the developer commits the intended baseline or explicitly
   authorizes the agent to review and commit those baseline inputs separately.
   Then verify the baseline, record T001 completion, re-check reservation ownership,
   and delegate T002 through the story workflow.
-- No feature implementation or application tests have run. Coding tasks remain
+- Historical planning state: no feature implementation or application tests had run. Coding tasks remained
   todo; T002 is eligible after the recorded baseline completion.
 - Story reservation confirmed on origin with attempt
   `74e21d5e-edaf-4437-b7b6-92eb677a5733` and marker commit

@@ -140,6 +140,8 @@ Refinement is complete and the developer confirmed the specification on
 2026-11-08: "Yes, we have the common understanding."
 
 The [implementation plan and tasks](US-001-create-and-view-recipients/README.md)
-record the task breakdown. No implementation, tests, or review has started. This
-confirmation approves the specification; it does not record acceptance of an
-implementation.
+record the task breakdown. T001 and T002 are complete: the baseline is versioned,
+and recipient creation/detail endpoints have been implemented and verified.
+Listing (T003) and PostgreSQL concurrency verification (T004) remain. No story
+review or human acceptance has occurred. Specification approval does not record
+acceptance of the implementation.

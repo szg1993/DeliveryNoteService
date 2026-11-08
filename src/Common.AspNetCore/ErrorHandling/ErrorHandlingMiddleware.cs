@@ -60,6 +60,7 @@ public class ErrorHandlingMiddleware(RequestDelegate next)
             BadHttpRequestException => StatusCodes.Status400BadRequest,
             BatchProcessingFailedException => StatusCodes.Status422UnprocessableEntity,
             DataValidationException => StatusCodes.Status400BadRequest,
+            UniqueKeyConflictException => StatusCodes.Status409Conflict,
             NotFoundException => StatusCodes.Status404NotFound,
             AuthenticationException => StatusCodes.Status401Unauthorized,
             AuthorizationException => StatusCodes.Status403Forbidden,

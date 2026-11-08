@@ -167,6 +167,124 @@
         }
       }
     },
+    "/api/recipients": {
+      "post": {
+        "tags": [
+          "Recipients"
+        ],
+        "summary": "Create a recipient",
+        "description": "Creates a delivery destination from six required fields. Surrounding whitespace is removed; code and country are uppercased. Duplicate names are allowed; duplicate normalized codes return 409. Invalid input returns 400. The 201 response contains the created recipient and a Location header pointing to its detail endpoint. Authentication is not required.",
+        "operationId": "CreateRecipient",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateRecipientRequest"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "headers": {
+              "Location": {
+                "description": "Relative URI of the created recipient's detail endpoint.",
+                "schema": {
+                  "type": "string",
+                  "format": "uri-reference"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Envelope<RecipientDetails<>>"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MedusaErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MedusaErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/recipients/{id}": {
+      "get": {
+        "tags": [
+          "Recipients"
+        ],
+        "summary": "Retrieve a recipient",
+        "description": "Retrieves normalized recipient details, including the server-generated ID, UTC creation time, and derived foreign status. ID must be a positive integer. Invalid input returns 400; an unknown positive ID returns 404. Authentication is not required.",
+        "operationId": "GetRecipient",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Envelope<RecipientDetails<>>"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MedusaErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MedusaErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/Versions/{connectedServices}": {
       "get": {
         "tags": [
@@ -210,6 +328,50 @@
   },
   "components": {
     "schemas": {
+      "CreateRecipientRequest": {
+        "required": [
+          "address",
+          "city",
+          "code",
+          "country",
+          "name",
+          "zip"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Manually entered unique code. Trimmed and uppercased; 1-10 ASCII letters, digits, hyphens, or underscores after normalization."
+          },
+          "name": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Recipient name, up to 200 characters after trimming. Duplicate names are allowed."
+          },
+          "country": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Recognized two-letter country code, trimmed and uppercased. HU is domestic; other countries are foreign."
+          },
+          "zip": {
+            "minLength": 1,
+            "type": "string",
+            "description": "ZIP or postal code as text, up to 20 characters after trimming. Leading zeros are preserved; no postal-format verification is performed."
+          },
+          "city": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Destination city, up to 50 characters after trimming."
+          },
+          "address": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Destination address, up to 200 characters after trimming. Address existence is not verified."
+          }
+        },
+        "additionalProperties": false
+      },
       "DemoModel": {
         "type": "object",
         "properties": {
@@ -258,6 +420,20 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/DemoModel"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Envelope<RecipientDetails<>>": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RecipientDetails"
               }
             ],
             "nullable": true
@@ -319,6 +495,41 @@
                 "$ref": "#/components/schemas/PageDetails"
               }
             ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "RecipientDetails": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "zip": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isForeign": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false

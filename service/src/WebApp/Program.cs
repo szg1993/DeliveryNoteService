@@ -63,7 +63,8 @@ app
 
 app
     .MapVersionsEndpoint(moduleName)
-    .MapDemoRoutes();
+    .MapDemoRoutes()
+    .MapRecipientRoutes();
 
 await app.RunAsync(
     initServices: async app =>

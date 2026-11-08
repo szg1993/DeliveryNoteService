@@ -1,7 +1,7 @@
 # T002: Create a recipient and retrieve its details
 
 - Parent: [US-001](../README.md)
-- Status: in-progress
+- Status: done
 - Depends on: T001
 - Increment: Skeleton
 
@@ -37,21 +37,21 @@ the persisted, normalized details without login.
 
 ## Acceptance criteria
 
-- [ ] POST followed by GET of Location returns normalized recipient details, a
+- [x] POST followed by GET of Location returns normalized recipient details, a
       server-generated ID, UTC creation time, and correct domestic/foreign status.
-- [ ] Blank, missing, overlength, invalid-country, and invalid-code inputs return
+- [x] Blank, missing, overlength, invalid-country, and invalid-code inputs return
       400. Boundary-length inputs and textual ZIPs with leading zeros work.
-- [ ] Names and addresses retain internal text while surrounding whitespace is
+- [x] Names and addresses retain internal text while surrounding whitespace is
       removed; a nonempty ZIP is not rejected for country-specific format.
-- [ ] Sequential code variants such as `ACME`, `acme`, and ` ACME ` conflict after
+- [x] Sequential code variants such as `ACME`, `acme`, and ` ACME ` conflict after
       normalization; two recipients with the same name and different codes work.
-- [ ] A database unique constraint protects normalized codes from the first
+- [x] A database unique constraint protects normalized codes from the first
       implementation; a pre-check alone is insufficient.
-- [ ] Invalid creation followed by valid creation of the same candidate code
+- [x] Invalid creation followed by valid creation of the same candidate code
       succeeds, showing rejection did not reserve that code or persist a recipient.
-- [ ] Malformed/nonpositive IDs return 400, and unknown positive IDs return 404 in
+- [x] Malformed/nonpositive IDs return 400, and unknown positive IDs return 404 in
       the agreed error format.
-- [ ] Both endpoints are anonymous and documented accurately in generated OpenAPI.
+- [x] Both endpoints are anonymous and documented accurately in generated OpenAPI.
 
 ## Verification
 
@@ -70,6 +70,81 @@ formatters on changed files and verify formatting before committing. Record exac
 commands, red/green evidence, and any environmental blockers.
 
 ## Progress
+
+### Completed 2026-11-08
+
+Implemented anonymous POST /api/recipients and GET /api/recipients/{id} using
+injected use cases, the existing repository/unit of work, response envelopes,
+clock, and error pipeline. Creation validates and normalizes before tracking the
+entity, assigns server fields, and relies on a database unique index rather than
+a race-prone pre-check. The country set is a fixed 249-code ISO alpha-2 set.
+
+HTTP TDD evidence, one behavior at a time:
+
+| Behavior | Observed red | Green combined count |
+| --- | --- | --- |
+| Create | POST returned 404 instead of 201 | 1 |
+| Retrieve Location | GET returned 404 instead of 200 | 2 |
+| Normalize input and derive foreign status | 2 country examples retained raw code whitespace | 4 |
+| Required fields | 6 blank-field examples returned 201 | 10 |
+| Maximum lengths | 5 overlength examples returned 201 | 15 |
+| Code characters | 4 unsupported-code examples returned 201 | 19 |
+| Country codes | 4 unrecognized-country examples returned 201 | 23 |
+| Normalized code uniqueness | 3 duplicate-code examples returned 201 | 26 |
+| Nonpositive ID | 2 invalid-ID examples returned 404 instead of 400 | 28 |
+
+Coverage then confirmed existing behavior for malformed/unknown IDs, null/missing
+fields, trimmed length boundaries, duplicate names, leading-zero ZIPs, internal
+whitespace, ignored client-assigned server fields, and unverified postal/address
+details. All 48 Recipient scenarios passed. The final post-format run also covered
+the existing OpenAPI freshness test and related Demo/Paging regression cases:
+
+```powershell
+dotnet test service/test/ApiTests/ApiTests.csproj --filter 'FullyQualifiedName~RecipientCreationTests|FullyQualifiedName~RecipientDetailsTests|FullyQualifiedName~OpenApiSpecTest|FullyQualifiedName~DemoApiTests|FullyQualifiedName~PagingTests' --no-restore -v minimal
+```
+
+Result: 59 passed, 0 failed, 0 skipped. The generated OpenAPI document includes
+both Recipient operations, six required request fields, all response fields,
+400/404/409 responses, and the creation Location header. The pinned Swagger CLI
+6.9.0 generated `service/openapi.json`; the freshness test verifies it against the
+real host.
+
+Migration `20261108202717_AddRecipients` and its designer/snapshot were scaffolded
+with EF 8.0.10. Review discovered that the imported runtime model omitted the
+already-persisted DemoModel UniqueId index, causing scaffolding to propose dropping
+it. Restored that existing mapping and retained it in the target model/snapshot.
+The new migration only creates Recipients and its unique Code index; rollback only
+drops Recipients. SQLite HTTP tests apply the actual migrations. PostgreSQL
+provider/concurrency verification remains T004 and is not claimed here.
+
+Model/snapshot consistency also passed: from `service/src/Persistence`,
+`../../../artifacts/tools/dotnet-ef.exe migrations has-pending-model-changes
+--project Persistence.csproj` built successfully and reported that no model changes
+had been made since the last migration (exit 0).
+
+Scoped clean-code assessment covered production and test changes plus the related
+Demo API/Paging consumers. Shared `RecipientLimits` avoids validation/mapping
+drift; stable error codes are named; typed DbSet accessors avoid nullable
+initialization state. The existing application host owns startup, per-test SQLite
+databases, clock, messaging substitute, and disposal. Recipient request builders
+and endpoint wrappers in TestSuite are shared by creation/detail and are available
+for listing; they do not own lifecycle or shared mutable state. No new test runner
+or internal mock was introduced. Configuration remains before host startup through
+the existing fixture hooks. No wider baseline refactoring was warranted.
+
+Ran `dotnet format service/DeliveryNoteService.sln --no-restore --include-generated
+--include` with the 19 task C# paths, then the same scoped command with
+`--verify-no-changes`; both final commands exited 0 without diagnostics. Naming
+verification initially identified the required private-field underscore prefix,
+which was fixed before the successful run. No Markdown formatter is configured;
+tracking links/whitespace and `git diff --check` were verified separately.
+
+Skills used: `tdd` (HTTP red/green cycles), `component-testing` (real application
+boundary with existing deterministic infrastructure substitutes), and `clean-code`
+(post-green production/test refactoring and shared-test responsibility review).
+No loaded skill was unused. No task-specific blocker remains.
+
+### Historical checkpoints
 
 2026-11-08: Started the create/detail HTTP slice using the agreed public boundary.
 
