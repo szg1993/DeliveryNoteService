@@ -1,4 +1,5 @@
 using Medusa.Enap.Common.AspNetCore.ErrorHandling;
+using Medusa.Enap.Common.AspNetCore.WebApi;
 using Medusa.Enap.Common.Core.Messaging;
 using Medusa.Enap.DemoService.Application.Recipients;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,23 @@ public static class RecipientEndpoints
 {
     public static IEndpointRouteBuilder MapRecipientRoutes(this IEndpointRouteBuilder app)
     {
+        app.MapGet(
+            "/api/recipients",
+            async (
+                [AsParameters] PageRequestQueryParam pageRequest,
+                [AsParameters] Sorting<RecipientsSortBy> sorting,
+                [FromServices] GetRecipients getRecipients,
+                CancellationToken ct
+            ) => await getRecipients.RunAsync(pageRequest.ToUseCaseObject(), sorting, ct)
+        )
+            .WithTags("Recipients")
+            .WithName("GetRecipients")
+            .WithSummary("List recipients")
+            .WithDescription("Lists normalized recipient details immediately after creation. Defaults to page 1, limit 10, and ID ascending. SortBy accepts Id or Name; SortDir accepts Asc or Desc. Equal names are ordered by ID ascending in either direction. Limit 0 returns all recipients with page 1 metadata. Page must be positive and limit cannot be negative, including empty and unpaged requests. Invalid paging or sorting returns 400 in the standard error format. Authentication is not required.")
+            .AllowAnonymous()
+            .Produces<PagedEnvelope<RecipientDetails>>(StatusCodes.Status200OK)
+            .Produces<MedusaErrorResponse>(StatusCodes.Status400BadRequest);
+
         app.MapGet(
             "/api/recipients/{id}",
             async (

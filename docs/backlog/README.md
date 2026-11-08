@@ -18,7 +18,7 @@ redesign. Stories and their progress are maintained in repository Markdown files
 
 | Epic | Story | Status | Next step |
 | --- | --- | --- | --- |
-| [Recipient management](epics/recipient-management.md) | [US-001: Create and view recipients](US-001-create-and-view-recipients.md) | In progress | Implement T003 in the [plan](US-001-create-and-view-recipients/README.md). |
+| [Recipient management](epics/recipient-management.md) | [US-001: Create and view recipients](US-001-create-and-view-recipients.md) | In progress | Implement T004 in the [plan](US-001-create-and-view-recipients/README.md). |
 
 Recipient management is the proposed first migration area. The remaining backend
 capabilities still need an inventory; this index is not a complete migration plan.

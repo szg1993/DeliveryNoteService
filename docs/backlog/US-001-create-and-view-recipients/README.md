@@ -20,7 +20,7 @@ requirements; this plan describes execution only.
 | --- | --- | --- | --- | --- |
 | 1 | [T001: Establish the versioned demo baseline](tasks/T001-establish-demo-baseline.md) | done | None | Human prerequisite |
 | 2 | [T002: Create a recipient and retrieve its details](tasks/T002-create-and-retrieve-recipient.md) | done | T001 | Skeleton |
-| 3 | [T003: List recipients with paging and sorting](tasks/T003-list-recipients.md) | todo | T002 | Extension |
+| 3 | [T003: List recipients with paging and sorting](tasks/T003-list-recipients.md) | done | T002 | Extension |
 | 4 | [T004: Verify concurrent code uniqueness on PostgreSQL](tasks/T004-verify-concurrent-code-uniqueness.md) | todo | T002, T003 | Edge case |
 
 There are three coding tasks and one separate human prerequisite. The task file
@@ -118,6 +118,14 @@ difficulty that materially changes the task instead of redesigning it silently.
 
 ## Resume notes
 
+- 2026-11-08: T003 is complete: paged/sorted recipient listing and OpenAPI are
+  implemented. All 75 Recipient/OpenAPI checks passed with default parallelism;
+  the complete API suite passed 114/114 with explicit sequential xUnit execution.
+  The first default-parallel full-suite attempt stalled and was cancelled; its
+  root cause remains unestablished. Scoped formatting and verification passed.
+  T004 is the next eligible task. Use page=1/limit=0 or limit=0 alone in Recipient
+  requests; the demo's Unpaged() test helper sends page=0 and is not suitable.
+  The earlier T002 next-task checkpoint below is historical and superseded.
 - 2026-11-08: T002 is complete. Creation/detail HTTP behavior and OpenAPI metadata
   are implemented; 59 final focused tests passed, including 48 Recipient cases,
   OpenAPI freshness, and related existing Demo/Paging cases. Scoped formatting and
