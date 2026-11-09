@@ -1,7 +1,7 @@
-using Medusa.Enap.Common.Core.Utils;
+using Common.Core.Utils;
 using System.Runtime.CompilerServices;
 
-namespace Medusa.Enap.Common.Core.Logging;
+namespace Common.Core.Logging;
 
 public class LogParams
 {

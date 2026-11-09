@@ -1,4 +1,4 @@
-namespace Medusa.Enap.Common.MessageQueue.Routing;
+namespace Common.MessageQueue.Routing;
 
 public class QueueMessageMap
 {

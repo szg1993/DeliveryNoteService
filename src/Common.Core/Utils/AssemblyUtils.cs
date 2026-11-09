@@ -1,10 +1,14 @@
 using System.Reflection;
 
-namespace Medusa.Enap.Common.Core.Utils;
+namespace Common.Core.Utils;
 
 public static class AssemblyUtils
 {
     public static IEnumerable<Assembly> GetMedusaAssemblies() =>
         AppDomain.CurrentDomain.GetAssemblies()
-            .Where(a => a.FullName!.StartsWith("Medusa", StringComparison.InvariantCultureIgnoreCase));
+            //.Where(a =>
+            //    a.FullName!.StartsWith("DeliveryNoteService", StringComparison.InvariantCultureIgnoreCase)
+            //    || a.FullName!.StartsWith("Common", StringComparison.InvariantCultureIgnoreCase)
+            //)
+            ;
 }

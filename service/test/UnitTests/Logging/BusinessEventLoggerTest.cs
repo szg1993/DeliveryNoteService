@@ -1,8 +1,8 @@
 using FluentAssertions;
-using Medusa.Enap.Common.AspNetCore.Logging;
-using Medusa.Enap.Common.Core.Exceptions;
-using Medusa.Enap.Common.Core.Logging;
-using Medusa.Enap.Common.Testing.Logging;
+using Common.AspNetCore.Logging;
+using Common.Core.Exceptions;
+using Common.Core.Logging;
+using Common.Testing.Logging;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Serilog;

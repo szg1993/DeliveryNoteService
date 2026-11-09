@@ -1,4 +1,4 @@
-namespace Medusa.Enap.Common.Core.HealthProbes;
+namespace Common.Core.HealthProbes;
 
 public interface IReadinessService
 {

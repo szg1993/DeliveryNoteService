@@ -1,5 +1,5 @@
-namespace Medusa.Enap.Common.Core.Exceptions;
+namespace Common.Core.Exceptions;
 
-public class UniqueKeyConflictException(Exception? innerException) 
+public class UniqueKeyConflictException(Exception? innerException)
     : MedusaException(CommonErrorCodes.UniqueKeyConflict, CommonErrorCodes.UniqueKeyConflict, innerException)
 { }

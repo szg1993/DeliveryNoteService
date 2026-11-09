@@ -1,11 +1,10 @@
-using Medusa.Enap.Common.Testing.Database.DevTestEnvPostgres;
-using Medusa.Enap.Common.Testing.Database.SQLite;
-using Medusa.Enap.Common.Testing.Database.TestContainerPostgres;
-using Medusa.Enap.Common.Testing.MessageQueue.Fixtures;
-using Medusa.Enap.Common.Testing.TestSuite;
+using Common.Testing.Database.DevTestEnvPostgres;
+using Common.Testing.Database.SQLite;
+using Common.Testing.Database.TestContainerPostgres;
+using Common.Testing.TestSuite;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Medusa.Enap.Common.Testing.Database;
+namespace Common.Testing.Database;
 
 public sealed class DatabaseFixture : IDatabaseFixture
 {
@@ -35,7 +34,7 @@ public sealed class DatabaseFixture : IDatabaseFixture
     public Task DisposeAsync() => _databaseFixture.DisposeAsync();
 
     #endregion
-    
+
     #region Per Test Setup/TearDown
 
     public Task<string> CreateTestDbAsync(string testId)

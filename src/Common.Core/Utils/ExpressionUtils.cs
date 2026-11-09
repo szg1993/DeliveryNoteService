@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 
-namespace Medusa.Enap.Common.Core.Utils;
+namespace Common.Core.Utils;
 
 /// <summary>
 /// Can be used as "using static ExpressionUtils" making the utils more readable

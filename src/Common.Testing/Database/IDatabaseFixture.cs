@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
-namespace Medusa.Enap.Common.Testing.Database;
+namespace Common.Testing.Database;
 
 public interface IDatabaseFixture : IAsyncLifetime
 {

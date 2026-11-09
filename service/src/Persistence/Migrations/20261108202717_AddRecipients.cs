@@ -4,7 +4,7 @@ using System;
 
 #nullable disable
 
-namespace Medusa.Enap.DemoService.Persistence.Migrations
+namespace DeliveryNoteService.Persistence.Migrations
 {
     /// <inheritdoc />
     public partial class AddRecipients : Migration

@@ -1,10 +1,9 @@
-using Medusa.Enap.Common.Core.Configuration;
-using Medusa.Enap.Common.Core.Exceptions;
+using Common.Core.Exceptions;
 using System.Globalization;
 using System.Text;
 using System.Text.Json;
 
-namespace Medusa.Enap.Common.Core.Utils;
+namespace Common.Core.Utils;
 
 public static class StringExtensions
 {

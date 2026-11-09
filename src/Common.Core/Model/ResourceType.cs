@@ -1,4 +1,4 @@
-namespace Medusa.Enap.Common.Core.Model;
+namespace Common.Core.Model;
 
 public enum ResourceType
 {
@@ -10,5 +10,5 @@ public enum ResourceType
     District = 6,
     City = 7,
     EnergyCommunity = 9,
-    Aggregator = 10    
+    Aggregator = 10
 }

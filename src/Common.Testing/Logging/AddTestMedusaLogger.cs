@@ -1,4 +1,4 @@
-using Medusa.Enap.Common.AspNetCore.Logging;
+using Common.AspNetCore.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -9,7 +9,7 @@ using Serilog.Formatting.Compact;
 using System.Text.RegularExpressions;
 using Xunit.Abstractions;
 
-namespace Medusa.Enap.Common.Testing.Logging;
+namespace Common.Testing.Logging;
 
 public static class TestMedusaLoggerHelper
 {

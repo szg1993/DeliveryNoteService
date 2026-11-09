@@ -1,9 +1,9 @@
-using Medusa.Enap.Common.Core.DependencyInjection;
-using Medusa.Enap.Common.Core.Logging;
+using Common.Core.DependencyInjection;
+using Common.Core.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 
-namespace Medusa.Enap.Common.AspNetCore.Logging;
+namespace Common.AspNetCore.Logging;
 
 [AutoRegister(serviceKey: typeof(IRequestContext))]
 public class HttpRequestContext(IHttpContextAccessor httpContextAccessor) : IRequestContext

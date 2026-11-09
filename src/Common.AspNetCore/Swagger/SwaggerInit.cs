@@ -1,5 +1,5 @@
-using Medusa.Enap.Common.AspNetCore.Swagger.Annotations;
-using Medusa.Enap.Common.Core.Versioning;
+using Common.AspNetCore.Swagger.Annotations;
+using Common.Core.Versioning;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http.Metadata;
 using Microsoft.Extensions.Configuration;
@@ -9,7 +9,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.ComponentModel;
 
-namespace Medusa.Enap.Common.AspNetCore.Swagger;
+namespace Common.AspNetCore.Swagger;
 
 public static class SwaggerInit
 {
@@ -26,10 +26,10 @@ public static class SwaggerInit
         return app;
     }
 
-    public static IServiceCollection AddMedusaSwaggerGen(this IServiceCollection services, string moduleName)
-        => AddMedusaSwaggerGen(services, moduleName, _ => { });
+    public static IServiceCollection AddSwaggerGen(this IServiceCollection services, string moduleName)
+        => AddSwaggerGen(services, moduleName, _ => { });
 
-    public static IServiceCollection AddMedusaSwaggerGen(this IServiceCollection services, string moduleName, Action<SwaggerGenOptions> setupAction)
+    public static IServiceCollection AddSwaggerGen(this IServiceCollection services, string moduleName, Action<SwaggerGenOptions> setupAction)
     {
         return services
             .AddSwaggerGen(opt =>

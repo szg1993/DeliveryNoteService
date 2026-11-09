@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 
-namespace Medusa.Enap.Common.AspNetCore.ErrorHandling;
+namespace Common.AspNetCore.ErrorHandling;
 
 public static class UseErrorHandling
 {

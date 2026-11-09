@@ -1,5 +1,5 @@
 using FluentAssertions;
-using Medusa.Enap.Common.Core.Utils;
+using Common.Core.Utils;
 using System.Linq.Expressions;
 
 namespace UnitTests.Core.Utils;

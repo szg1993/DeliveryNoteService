@@ -1,6 +1,6 @@
 using FluentAssertions;
-using Medusa.Enap.Common.AspNetCore.ErrorHandling;
-using Medusa.Enap.Common.Core.Configuration;
+using Common.AspNetCore.ErrorHandling;
+using Common.Core;
 using Microsoft.Extensions.DependencyInjection;
 using RichardSzalay.MockHttp;
 using System.Net;
@@ -9,7 +9,7 @@ using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
 
-namespace Medusa.Enap.Common.Testing;
+namespace Common.Testing;
 
 public static class TestHttpClientHelpers
 {

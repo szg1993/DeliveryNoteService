@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace Medusa.Enap.Common.Core.UseCases.BatchOperations;
+namespace Common.Core.UseCases.BatchOperations;
 
 public class BatchResultItem<T>
 {

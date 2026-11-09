@@ -1,4 +1,4 @@
-namespace Medusa.Enap.Common.Core.Exceptions;
+namespace Common.Core.Exceptions;
 
 public class FieldTooLongException : DataValidationException
 {

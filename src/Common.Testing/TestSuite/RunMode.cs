@@ -1,4 +1,4 @@
-namespace Medusa.Enap.Common.Testing.TestSuite;
+namespace Common.Testing.TestSuite;
 
 public enum RunMode
 {

@@ -1,9 +1,9 @@
-using Medusa.Enap.Common.AspNetCore.Swagger.Annotations;
-using Medusa.Enap.Common.Core.Exceptions;
-using Medusa.Enap.Common.Core.Utils;
+using Common.AspNetCore.Swagger.Annotations;
+using Common.Core.Exceptions;
+using Common.Core.Utils;
 using Microsoft.AspNetCore.Http;
 
-namespace Medusa.Enap.Common.AspNetCore;
+namespace Common.AspNetCore;
 
 public class RequiredHeaderValidationMiddleware(RequestDelegate next)
 {

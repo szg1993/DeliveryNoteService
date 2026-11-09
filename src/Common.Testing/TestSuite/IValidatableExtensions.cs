@@ -1,10 +1,10 @@
 using FluentAssertions;
-using Medusa.Enap.Common.Core.Exceptions;
-using Medusa.Enap.Common.Core.UseCases;
-using Medusa.Enap.Common.Testing.Errors;
+using Common.Core.Exceptions;
+using Common.Core.UseCases;
+using Common.Testing.Errors;
 using Xunit;
 
-namespace Medusa.Enap.Common.Testing.TestSuite;
+namespace Common.Testing.TestSuite;
 
 public static class IValidatableExtensions
 {

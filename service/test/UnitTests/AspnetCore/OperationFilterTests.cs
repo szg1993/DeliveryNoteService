@@ -1,5 +1,5 @@
 using FluentAssertions;
-using Medusa.Enap.Common.AspNetCore.Swagger.Annotations;
+using Common.AspNetCore.Swagger.Annotations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

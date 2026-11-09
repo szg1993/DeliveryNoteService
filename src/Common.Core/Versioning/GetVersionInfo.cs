@@ -1,8 +1,8 @@
-using Medusa.Enap.Common.Core.Integration;
+using Common.Core.Integration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Medusa.Enap.Common.Core.Versioning;
+namespace Common.Core.Versioning;
 
 public class GetVersionInfo(
     ILocalVersionService versionService,

@@ -1,4 +1,4 @@
-using Medusa.Enap.DemoService.Application.Recipients;
+using DeliveryNoteService.Core.UseCases.Recipients;
 using System.Net.Http.Json;
 
 namespace ApiTests.TestSuite;
@@ -6,9 +6,9 @@ namespace ApiTests.TestSuite;
 public static class RecipientConcurrency
 {
     public static async Task<HttpResponseMessage[]> CreateRecipientsConcurrently(
-        this DemoServiceApi api,
-        CreateRecipientRequest first,
-        CreateRecipientRequest second
+        this DeliveryNoteServiceApi api,
+        CreateRecipientDto first,
+        CreateRecipientDto second
     )
     {
         using var deadline = new CancellationTokenSource(TimeSpan.FromSeconds(30));
@@ -17,7 +17,7 @@ public static class RecipientConcurrency
         start.SetResult();
         return await Task.WhenAll(requests).WaitAsync(deadline.Token);
 
-        async Task<HttpResponseMessage> SendAfterStart(CreateRecipientRequest request)
+        async Task<HttpResponseMessage> SendAfterStart(CreateRecipientDto request)
         {
             await start.Task.WaitAsync(deadline.Token);
             return await api.Client.PostAsJsonAsync("api/recipients", request, deadline.Token);

@@ -1,8 +1,8 @@
 using FluentAssertions;
-using Medusa.Enap.Common.Core.Exceptions;
-using Medusa.Enap.Common.Core.Utils;
+using Common.Core.Exceptions;
+using Common.Core.Utils;
 
-namespace Medusa.Enap.Common.Testing.Errors;
+namespace Common.Testing.Errors;
 
 public static class MedusaErrorExtensions
 {

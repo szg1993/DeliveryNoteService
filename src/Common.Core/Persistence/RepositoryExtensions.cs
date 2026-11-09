@@ -1,7 +1,7 @@
-using Medusa.Enap.Common.Core.Model;
+using Common.Core.Model;
 using System.Linq.Expressions;
 
-namespace Medusa.Enap.Common.Core.Persistence;
+namespace Common.Core.Persistence;
 
 public static class RepositoryExtensions
 {

@@ -1,7 +1,8 @@
 using FluentAssertions;
-using Medusa.Enap.Common.Core.Utils;
+using Common.Core.Utils;
 
 namespace UnitTests.Core.Utils;
+
 public class StringExtensionTests
 {
     [Theory]

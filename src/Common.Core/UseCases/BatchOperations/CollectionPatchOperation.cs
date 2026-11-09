@@ -1,10 +1,10 @@
-using Medusa.Enap.Common.Core.Exceptions;
-using Medusa.Enap.Common.Core.Logging;
+using Common.Core.Exceptions;
+using Common.Core.Logging;
 using Microsoft.Extensions.Logging;
 
-namespace Medusa.Enap.Common.Core.UseCases.BatchOperations;
+namespace Common.Core.UseCases.BatchOperations;
 
-public class CollectionPatchOperation<TResourceDto>(IMedusaLogger logger)
+public class CollectionPatchOperation<TResourceDto>(IDeliveryNoteServiceLogger logger)
 {
     public BatchResult<TResourceDto> Result { get; } = new();
 

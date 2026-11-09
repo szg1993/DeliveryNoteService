@@ -1,4 +1,4 @@
-namespace Medusa.Enap.Common.Core.UseCases;
+namespace Common.Core.UseCases;
 
 public interface IValidatable
 {

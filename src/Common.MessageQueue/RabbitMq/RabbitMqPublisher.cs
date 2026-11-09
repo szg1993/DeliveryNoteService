@@ -1,8 +1,8 @@
-using Medusa.Enap.Common.Core.Utils;
+using Common.Core.Utils;
 using RabbitMQ.Client;
 using System.Text;
 
-namespace Medusa.Enap.Common.MessageQueue.RabbitMq;
+namespace Common.MessageQueue.RabbitMq;
 
 public class RabbitMqPublisher(
     IChannel channel,

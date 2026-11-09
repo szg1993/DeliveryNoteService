@@ -1,8 +1,8 @@
-using Medusa.Enap.Common.Core.Configuration;
-using Medusa.Enap.Common.Core.Messaging;
-using Medusa.Enap.Common.Core.Utils;
+using Common.Core;
+using Common.Core.Messaging;
+using Common.Core.Utils;
 
-namespace Medusa.Enap.Common.Testing.ApiWrappers;
+namespace Common.Testing.ApiWrappers;
 
 public static class HttpResponseExtensions
 {

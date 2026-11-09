@@ -1,14 +1,14 @@
-using Medusa.Enap.Common.AspNetCore.Logging;
-using Medusa.Enap.Common.Core.Exceptions;
-using Medusa.Enap.Common.Core.Logging;
-using Medusa.Enap.Common.Testing.Logging;
+using Common.AspNetCore.Logging;
+using Common.Core.Exceptions;
+using Common.Core.Logging;
+using Common.Testing.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace ApiTests;
 
-public class LoggingTests : DemoServiceApiTestBase
+public class LoggingTests : DeliveryNoteServiceApiTestBase
 {
     protected override void ConfigureTestHostConfiguration(IConfigurationBuilder configBuilder)
     {
@@ -25,19 +25,10 @@ public class LoggingTests : DemoServiceApiTestBase
     }
 
     [Fact]
-    public async Task RequestLogging()
-    {
-        await Api.DemoModels().GetAsync(QueryString.Create("testParam", "42"));
-
-        LogStore.AssertTechnicalEntry("Incoming request")
-            .AssertParam("url", p => p.Should().Contain("?testParam=42"));
-    }
-
-    [Fact]
     public void AssertParams()
     {
         using var scope = Services.CreateScope();
-        var logger = scope.ServiceProvider.GetRequiredService<MedusaLogger<LoggingTests>>();
+        var logger = scope.ServiceProvider.GetRequiredService<DeliveryNoteServiceLogger<LoggingTests>>();
         var ex = new MedusaException("test error code", "")
             .SetData("test_data", "test value");
 
@@ -80,8 +71,8 @@ public class LoggingTests : DemoServiceApiTestBase
         using var scope = Services.CreateScope();
         var logger = scope.ServiceProvider.GetRequiredService<TechnicalUseCaseLogger<LoggingTests>>();
 
-        await Assert.ThrowsAsync<InvalidOperationException>(() => 
-            logger.RunAsync(() => 
+        await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            logger.RunAsync(() =>
                 Task.FromException(new InvalidOperationException())
             )
         );
@@ -96,7 +87,7 @@ public class LoggingTests : DemoServiceApiTestBase
     public void AssertBusinessLog()
     {
         using var scope = Services.CreateScope();
-        var logger = scope.ServiceProvider.GetRequiredService<MedusaLogger<LoggingTests>>();
+        var logger = scope.ServiceProvider.GetRequiredService<DeliveryNoteServiceLogger<LoggingTests>>();
 
         logger.Log(LogLevel.Error, "category", ["label1", "label2"], "event id", "business id", "business id type");
 

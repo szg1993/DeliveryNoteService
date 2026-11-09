@@ -1,6 +1,6 @@
-using Medusa.Enap.Common.Core.Integration;
+using Common.Core.Integration;
 
-namespace Medusa.Enap.DemoService.WebApp.Configuration;
+namespace DeliveryNoteService.WebApp.Configuration;
 
 public static class AddIntegration
 {

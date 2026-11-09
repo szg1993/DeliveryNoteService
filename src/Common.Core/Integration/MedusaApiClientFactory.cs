@@ -1,9 +1,9 @@
-using Medusa.Enap.Common.Core.Identity;
+using Common.Core.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Headers;
 
-namespace Medusa.Enap.Common.Core.Integration;
+namespace Common.Core.Integration;
 
 public class MedusaApiClientFactory(
     IServiceProvider sp,
@@ -17,13 +17,13 @@ public class MedusaApiClientFactory(
             where TApiClient : class
     {
         var client = factory.CreateClient();
-        var settings = sp.GetRequiredService<IOptions<TApiSettings>>();       
-       
+        var settings = sp.GetRequiredService<IOptions<TApiSettings>>();
+
         client.BaseAddress = new Uri(getBaseAddress(settings.Value));
         client.DefaultRequestHeaders.Add("X-Correlation-ID", correlationIdAccessor.CorrelationId);
 
         SetBearerTokenIfAvailable(sp, client);
-        
+
         return createApiClient(client);
     }
 

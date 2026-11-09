@@ -1,7 +1,8 @@
 using FluentAssertions;
-using Medusa.Enap.Common.Core.Integration;
+using Common.Core.Integration;
 
 namespace UnitTests;
+
 public class CorrelationIdAccessorTests
 {
     [Fact]

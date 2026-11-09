@@ -15,8 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Common.AspNetCore\Common.AspNetCore.csproj" />
-    <ProjectReference Include="..\..\..\src\Common.MessageQueue\Common.MessageQueue.csproj" />
-    <ProjectReference Include="..\Application\Application.csproj" />
+    <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Persistence\Persistence.csproj" />
   </ItemGroup>
 

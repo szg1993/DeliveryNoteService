@@ -1,7 +1,7 @@
 using ApiTests;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Medusa.Enap.Common.Testing.Database;
+namespace Common.Testing.Database;
 
 public static class SqlDatabaseInitializer
 {

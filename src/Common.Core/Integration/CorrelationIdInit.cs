@@ -1,9 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Medusa.Enap.Common.Core.Integration;
+namespace Common.Core.Integration;
 
 public static class CorrelationIdInit
 {
-    public static IServiceCollection AddMedusaCorrelationId(this IServiceCollection services)
+    public static IServiceCollection AddCorrelationId(this IServiceCollection services)
         => services.AddScoped<CorrelationIdAccessor>();
 }

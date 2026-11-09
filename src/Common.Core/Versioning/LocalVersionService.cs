@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace Medusa.Enap.Common.Core.Versioning;
+namespace Common.Core.Versioning;
 
 public interface ILocalVersionService
 {

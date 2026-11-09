@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
-namespace Medusa.Enap.Common.AspNetCore;
+namespace Common.AspNetCore;
 
 public static class UseLocalAppsettingsHelper
 {

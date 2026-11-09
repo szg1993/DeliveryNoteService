@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Medusa.Enap.Common.Testing.Database.DevTestEnvPostgres;
+namespace Common.Testing.Database.DevTestEnvPostgres;
 
 internal class DevTestEnvPostgresFixture : IDatabaseFixture
 {

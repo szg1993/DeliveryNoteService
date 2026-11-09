@@ -1,9 +1,9 @@
-using Medusa.Enap.Common.Core.Exceptions;
-using Medusa.Enap.Common.Core.Messaging;
-using Medusa.Enap.Common.Core.Persistence;
-using Medusa.Enap.Common.Core.Utils;
+using Common.Core.Exceptions;
+using Common.Core.Messaging;
+using Common.Core.Persistence;
+using Common.Core.Utils;
 
-namespace Medusa.Enap.Common.Core.UseCases;
+namespace Common.Core.UseCases;
 
 public static class PagedResultHelpers
 {

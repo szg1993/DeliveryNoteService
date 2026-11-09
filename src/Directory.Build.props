@@ -2,6 +2,6 @@
 	<PropertyGroup>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 		<AssemblyName>Medusa.Enap.$(MSBuildProjectName)</AssemblyName>
-		<RootNamespace>Medusa.Enap.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+		<RootNamespace>$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
 	</PropertyGroup>
 </Project>

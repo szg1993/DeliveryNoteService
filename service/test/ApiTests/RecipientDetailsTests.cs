@@ -1,11 +1,11 @@
-using Medusa.Enap.Common.AspNetCore;
-using Medusa.Enap.Common.Core.Messaging;
-using Medusa.Enap.DemoService.Application.Recipients;
+using Common.AspNetCore;
+using Common.Core.Messaging;
+using DeliveryNoteService.Application.UseCases.Recipients;
 using System.Net;
 
 namespace ApiTests;
 
-public class RecipientDetailsTests : DemoServiceApiTestBase
+public class RecipientDetailsTests : DeliveryNoteServiceApiTestBase
 {
     [Fact]
     public async Task CreatedRecipient_CanBeRetrievedThroughLocation()
@@ -13,13 +13,13 @@ public class RecipientDetailsTests : DemoServiceApiTestBase
         var createdAt = new DateTimeOffset(2026, 11, 8, 12, 30, 0, TimeSpan.Zero);
         this.Time().SetDateTime(createdAt);
         var createdResponse = await Api.Recipients().PostRawAsync(RecipientRequests.Valid());
-        var created = await createdResponse.ReadAsync<Envelope<RecipientDetails>>();
+        var created = await createdResponse.ReadAsync<Envelope<RecipientDetailsDto>>();
 
         var response = await Api.Client.GetAsync(createdResponse.Headers.Location);
 
         await response.AssertStatusCode(HttpStatusCode.OK);
-        var result = (await response.ReadAsync<Envelope<RecipientDetails>>()).Content;
-        result.Should().BeEquivalentTo(new RecipientDetails(
+        var result = (await response.ReadAsync<Envelope<RecipientDetailsDto>>()).Content;
+        result.Should().BeEquivalentTo(new RecipientDetailsDto(
             created.Content.Id,
             "ACME",
             "Acme Ltd",

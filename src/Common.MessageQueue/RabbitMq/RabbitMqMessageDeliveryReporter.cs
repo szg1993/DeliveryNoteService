@@ -1,6 +1,6 @@
 using RabbitMQ.Client;
 
-namespace Medusa.Enap.Common.MessageQueue.RabbitMq;
+namespace Common.MessageQueue.RabbitMq;
 
 // The purpose of this class is to provide testability. See derived type.
 public class RabbitMqMessageDeliveryReporter

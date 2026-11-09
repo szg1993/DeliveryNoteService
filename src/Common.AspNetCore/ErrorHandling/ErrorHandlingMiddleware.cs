@@ -1,19 +1,19 @@
-using Medusa.Enap.Common.Core.Exceptions;
-using Medusa.Enap.Common.Core.Integration;
-using Medusa.Enap.Common.Core.Logging;
+using Common.Core.Exceptions;
+using Common.Core.Integration;
+using Common.Core.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.Logging;
 using System.Net.Mime;
 
-namespace Medusa.Enap.Common.AspNetCore.ErrorHandling;
+namespace Common.AspNetCore.ErrorHandling;
 
 public class ErrorHandlingMiddleware(RequestDelegate next)
 {
     public async Task InvokeAsync(
         HttpContext context,
         CorrelationIdAccessor correlationIdAccessor,
-        MedusaLogger<ErrorHandlingMiddleware> logger
+        DeliveryNoteServiceLogger<ErrorHandlingMiddleware> logger
     )
     {
         try
@@ -58,7 +58,6 @@ public class ErrorHandlingMiddleware(RequestDelegate next)
         return ex switch
         {
             BadHttpRequestException => StatusCodes.Status400BadRequest,
-            BatchProcessingFailedException => StatusCodes.Status422UnprocessableEntity,
             DataValidationException => StatusCodes.Status400BadRequest,
             UniqueKeyConflictException => StatusCodes.Status409Conflict,
             NotFoundException => StatusCodes.Status404NotFound,
@@ -68,7 +67,7 @@ public class ErrorHandlingMiddleware(RequestDelegate next)
         };
     }
 
-    private static void LogNonSuccessResponseException(MedusaLogger<ErrorHandlingMiddleware> logger, NonSuccessResponseException ex)
+    private static void LogNonSuccessResponseException(DeliveryNoteServiceLogger<ErrorHandlingMiddleware> logger, NonSuccessResponseException ex)
     {
         var logParams = new LogParams()
             .AddParam(ex.Url)

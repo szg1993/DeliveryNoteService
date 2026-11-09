@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
-namespace Medusa.Enap.Common.Infrastructure.Persistence;
+namespace Common.Infrastructure.Persistence;
 
 /// <summary>
 /// Used for design time migration creation and apply. No startup project needed.

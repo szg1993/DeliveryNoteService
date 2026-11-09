@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Prometheus;
 
-namespace Medusa.Enap.Common.AspNetCore;
+namespace Common.AspNetCore;
 
 public static class UseMetrics
 {

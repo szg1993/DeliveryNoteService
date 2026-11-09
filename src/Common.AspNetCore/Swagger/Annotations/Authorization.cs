@@ -1,10 +1,10 @@
-using Medusa.Enap.Common.AspNetCore.ErrorHandling;
+using Common.AspNetCore.ErrorHandling;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Medusa.Enap.Common.AspNetCore.Swagger.Annotations;
+namespace Common.AspNetCore.Swagger.Annotations;
 
 internal sealed class AuthorizationFilter : IOperationFilter
 {

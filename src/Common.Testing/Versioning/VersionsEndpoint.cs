@@ -1,8 +1,8 @@
-using Medusa.Enap.Common.Core.Versioning;
-using Medusa.Enap.Common.Testing.ApiWrappers;
+using Common.Core.Versioning;
+using Common.Testing.ApiWrappers;
 using System.Text.Json;
 
-namespace Medusa.Enap.Common.Testing.Versioning;
+namespace Common.Testing.Versioning;
 
 public class VersionsEndpoint(HttpClient client, JsonSerializerOptions jsonOptions)
 {

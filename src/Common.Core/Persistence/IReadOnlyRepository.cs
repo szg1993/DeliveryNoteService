@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 
-namespace Medusa.Enap.Common.Core.Persistence;
+namespace Common.Core.Persistence;
 
 public interface IReadOnlyRepository<TModel>
 {

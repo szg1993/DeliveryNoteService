@@ -1,6 +1,6 @@
 using Quartz;
 
-namespace Medusa.Enap.Common.Testing;
+namespace Common.Testing;
 
 internal sealed class TestJobListener(JobKey jobKey) : IJobListener
 {

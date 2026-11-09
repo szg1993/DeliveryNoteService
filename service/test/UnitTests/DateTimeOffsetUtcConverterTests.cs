@@ -1,5 +1,5 @@
 using FluentAssertions;
-using Medusa.Enap.Common.Infrastructure.Persistence;
+using Common.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using UnitTests.TestSuite;
 

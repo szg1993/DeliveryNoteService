@@ -1,9 +1,9 @@
-using Medusa.Enap.Common.Core.Logging;
+using Common.Core.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Medusa.Enap.Common.AspNetCore.Logging;
+namespace Common.AspNetCore.Logging;
 
 public static class AppLifetimeEventLogger
 {

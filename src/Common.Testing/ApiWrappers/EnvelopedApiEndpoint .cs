@@ -1,9 +1,9 @@
-using Medusa.Enap.Common.Core.Messaging;
+using Common.Core.Messaging;
 using Microsoft.AspNetCore.Http;
 using System.Net;
 using System.Text.Json;
 
-namespace Medusa.Enap.Common.Testing.ApiWrappers;
+namespace Common.Testing.ApiWrappers;
 
 public class EnvelopedApiEndpoint(string url, HttpClient client, JsonSerializerOptions? jsonOptions = null)
     : ApiEndpoint(url, client, jsonOptions)

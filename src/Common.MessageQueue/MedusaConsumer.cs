@@ -1,5 +1,5 @@
 
-namespace Medusa.Enap.Common.MessageQueue;
+namespace Common.MessageQueue;
 
 public interface IMedusaConsumer
 {

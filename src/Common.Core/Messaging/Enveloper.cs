@@ -1,6 +1,6 @@
-using Medusa.Enap.Common.Core.Utils;
+using Common.Core.Utils;
 
-namespace Medusa.Enap.Common.Core.Messaging;
+namespace Common.Core.Messaging;
 
 public static class Enveloper
 {

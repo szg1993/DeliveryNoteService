@@ -1,8 +1,8 @@
-using Medusa.Enap.Common.Core.Configuration;
-using Medusa.Enap.Common.Testing.ApiWrappers;
-using Medusa.Enap.Common.Testing.Versioning;
+using Common.Core;
+using Common.Testing.ApiWrappers;
+using Common.Testing.Versioning;
 
-namespace Medusa.Enap.Common.Testing;
+namespace Common.Testing;
 
 public class Api(HttpClient client)
 {

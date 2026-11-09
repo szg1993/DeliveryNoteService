@@ -1,8 +1,8 @@
-using Medusa.Enap.Common.Core.Utils;
+using Common.Core.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace Medusa.Enap.Common.Core.DependencyInjection;
+namespace Common.Core.DependencyInjection;
 
 public static class AddAutoRegisteredServicesHelper
 {

@@ -1,8 +1,8 @@
-using Medusa.Enap.Common.Core.Infrastructure;
+using Common.Core.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Concurrent;
 
-namespace Medusa.Enap.Common.Testing.Infrastructure;
+namespace Common.Testing.Infrastructure;
 
 public class TestTimeService : TimeService
 {
@@ -67,7 +67,7 @@ public static class TestTimeServiceHelper
 
     public static IServiceCollection AddTestTimeService(this IServiceCollection services)
         => services.AddSingleton<ITimeService, TestTimeService>();
-        
+
     public static TestTimeService Time(this IScenario scenario)
         => scenario.Services.GetTestTimeService();
 

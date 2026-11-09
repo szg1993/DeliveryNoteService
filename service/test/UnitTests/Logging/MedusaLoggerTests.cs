@@ -1,9 +1,9 @@
 using FluentAssertions;
-using Medusa.Enap.Common.AspNetCore.Logging;
-using Medusa.Enap.Common.Core.Exceptions;
-using Medusa.Enap.Common.Core.Integration;
-using Medusa.Enap.Common.Core.Logging;
-using Medusa.Enap.Common.Testing.Logging;
+using Common.AspNetCore.Logging;
+using Common.Core.Exceptions;
+using Common.Core.Integration;
+using Common.Core.Logging;
+using Common.Testing.Logging;
 using Microsoft.Extensions.Logging;
 using Serilog;
 
@@ -13,7 +13,7 @@ public class MedusaLoggerTests
 {
     public class TestLogSourceContext { }
 
-    private readonly MedusaLogger<MedusaLoggerTests> _logger;
+    private readonly DeliveryNoteServiceLogger<MedusaLoggerTests> _logger;
     private LogEntry _logEntry = null!;
     private readonly ILogger<TestLogSourceContext> _externalSystemLogger;
     private readonly Guid _guid = Guid.Parse("5D492C13-86F6-43FC-B0F6-245DE46853DC");
@@ -24,7 +24,7 @@ public class MedusaLoggerTests
         _correlationIdAccessor.CorrelationId = _guid.ToString();
         var lf = new LoggerFactory()
             .AddSerilog(new TestSerilogLogger((e) => _logEntry = e.ToLogEntry()));
-        _logger = new MedusaLogger<MedusaLoggerTests>(new Logger<MedusaLoggerTests>(lf));
+        _logger = new DeliveryNoteServiceLogger<MedusaLoggerTests>(new Logger<MedusaLoggerTests>(lf));
         _logger.PushCorrelationIdProperty(_correlationIdAccessor.CorrelationId);
         _externalSystemLogger = new Logger<TestLogSourceContext>(lf);
     }
@@ -72,7 +72,7 @@ public class MedusaLoggerTests
         _logEntry!.CorrelationId.Should().Be(_guid);
         _logEntry!.ErrorCode.Should().Be("test error code");
         _logEntry!.Params.Should().Contain("key", "value");
-        _logEntry!.Params.Should().Contain("exceptionType", "Medusa.Enap.Common.Core.Exceptions.MedusaException");
+        _logEntry!.Params.Should().Contain("exceptionType", "Common.Core.Exceptions.MedusaException");
         _logEntry!.Params.Should().NotContainKey("innerExceptions");
     }
 

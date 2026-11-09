@@ -1,14 +1,14 @@
 using FluentAssertions;
-using Medusa.Enap.Common.AspNetCore.ErrorHandling;
-using Medusa.Enap.Common.Core.Configuration;
-using Medusa.Enap.Common.Core.Exceptions;
-using Medusa.Enap.Common.Core.Utils;
+using Common.AspNetCore.ErrorHandling;
+using Common.Core;
+using Common.Core.Exceptions;
+using Common.Core.Utils;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 using Xunit.Sdk;
 
-namespace Medusa.Enap.Common.Testing;
+namespace Common.Testing;
 
 public static class HttpResponseMessageExtensions
 {

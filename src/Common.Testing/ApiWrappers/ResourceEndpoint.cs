@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 
-namespace Medusa.Enap.Common.Testing.ApiWrappers;
+namespace Common.Testing.ApiWrappers;
 
 public class ResourceEndpoint<TResourceDetails>(string url, HttpClient client)
     : EnvelopedApiEndpoint(url, client)

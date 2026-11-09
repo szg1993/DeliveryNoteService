@@ -1,7 +1,7 @@
-using Medusa.Enap.Common.Core.Versioning;
+using Common.Core.Versioning;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Medusa.Enap.Common.Testing.Versioning;
+namespace Common.Testing.Versioning;
 
 public static class TestVersionServiceHelper
 {

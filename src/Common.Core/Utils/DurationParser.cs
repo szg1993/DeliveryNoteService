@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Medusa.Enap.Common.Core.Utils;
+namespace Common.Core.Utils;
 
 public static partial class DurationParser
 {

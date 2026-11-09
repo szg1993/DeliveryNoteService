@@ -1,9 +1,9 @@
-using Medusa.Enap.Common.Core.Persistence;
+using Common.Core.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
 
-namespace Medusa.Enap.Common.Infrastructure.Persistence;
+namespace Common.Infrastructure.Persistence;
 
 public class Repository<TModel> : ReadonlyRepository<TModel>, IRepository<TModel> where TModel : class
 {

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-namespace Medusa.Enap.Common.Infrastructure.Persistence;
+namespace Common.Infrastructure.Persistence;
 
 public record DbSetInfo(string Name, Type EntityType)
 {

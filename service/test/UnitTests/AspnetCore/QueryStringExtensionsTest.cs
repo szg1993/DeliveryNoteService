@@ -1,6 +1,6 @@
 using FluentAssertions;
-using Medusa.Enap.Common.Core.Messaging;
-using Medusa.Enap.Common.Testing;
+using Common.Core.Messaging;
+using Common.Testing;
 using Microsoft.AspNetCore.Http;
 
 namespace UnitTests.AspnetCore;

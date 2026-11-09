@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Medusa.Enap.DemoService.Persistence.Migrations
+namespace DeliveryNoteService.Persistence.Migrations
 {
     /// <inheritdoc />
     public partial class ExtendDemoModelWithScheduledJobCounters : Migration

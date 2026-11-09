@@ -1,6 +1,6 @@
-using Medusa.Enap.Common.Core.Utils;
+using Common.Core.Utils;
 
-namespace Medusa.Enap.Common.Testing.TestSuite;
+namespace Common.Testing.TestSuite;
 
 public static class TestDateStrings
 {

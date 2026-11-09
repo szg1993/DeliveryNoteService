@@ -1,6 +1,5 @@
-using Medusa.Enap.Common.Testing.Database;
-using Medusa.Enap.Common.Testing.MessageQueue.Fixtures;
-using Medusa.Enap.DemoService.Persistence;
+using Common.Testing.Database;
+using DeliveryNoteService.Persistence;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ApiTests;
@@ -12,8 +11,5 @@ public static class Startup
         CommonStartup.ConfigureServices(services);
 
         services.AddSqlDatabase<AppDbContext>();
-
-        services.AddSingleton<MessagingFixture>();
-        services.AddAsyncInitializer<MessagingFixture>();
     }
 }

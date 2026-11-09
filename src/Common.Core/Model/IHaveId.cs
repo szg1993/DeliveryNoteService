@@ -1,4 +1,4 @@
-namespace Medusa.Enap.Common.Core.Model;
+namespace Common.Core.Model;
 
 /// <summary>
 /// Entities with unique integer ID

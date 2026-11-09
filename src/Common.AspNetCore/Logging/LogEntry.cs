@@ -1,7 +1,7 @@
-using Medusa.Enap.Common.Core.Logging;
+using Common.Core.Logging;
 using Serilog.Events;
 
-namespace Medusa.Enap.Common.AspNetCore.Logging;
+namespace Common.AspNetCore.Logging;
 
 public class LogEntry(LogEvent logEvent)
 {

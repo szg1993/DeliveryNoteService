@@ -1,4 +1,4 @@
-namespace Medusa.Enap.Common.AspNetCore;
+namespace Common.AspNetCore;
 
 public static class CommonWebErrorCodes
 {

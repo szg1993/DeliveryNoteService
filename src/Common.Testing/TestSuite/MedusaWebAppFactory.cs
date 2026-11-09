@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
-namespace Medusa.Enap.Common.Testing.TestSuite;
+namespace Common.Testing.TestSuite;
 
 internal class MedusaWebAppFactory<TWebAppEntryPoint> : WebApplicationFactory<TWebAppEntryPoint>
     where TWebAppEntryPoint : class

@@ -1,11 +1,11 @@
-using Medusa.Enap.Common.Core.Utils;
+using Common.Core.Utils;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.ComponentModel;
 using System.Reflection;
 
-namespace Medusa.Enap.Common.AspNetCore.Swagger.Annotations;
+namespace Common.AspNetCore.Swagger.Annotations;
 
 public class ParameterDescriptionFilter : IOperationFilter
 {

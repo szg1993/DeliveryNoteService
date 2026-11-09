@@ -1,7 +1,7 @@
-using Medusa.Enap.Common.Core.Utils;
+using Common.Core.Utils;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Medusa.Enap.Common.Testing;
+namespace Common.Testing;
 
 public static class CommonStartup
 {

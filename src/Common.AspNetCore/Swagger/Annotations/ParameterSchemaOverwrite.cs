@@ -1,9 +1,9 @@
-using Medusa.Enap.Common.Core.Utils;
+using Common.Core.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Medusa.Enap.Common.AspNetCore.Swagger.Annotations;
+namespace Common.AspNetCore.Swagger.Annotations;
 
 public static class ParameterSchemaOverwriteUtil
 {

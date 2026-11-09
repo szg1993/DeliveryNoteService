@@ -1,4 +1,4 @@
-namespace Medusa.Enap.Common.Testing.Database;
+namespace Common.Testing.Database;
 
 public enum NullSortingStyle
 {

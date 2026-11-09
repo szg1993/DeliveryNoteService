@@ -1,5 +1,5 @@
 
-namespace Medusa.Enap.Common.MessageQueue.Routing;
+namespace Common.MessageQueue.Routing;
 
 public record MessageRoute(string Exchange, string RoutingKey);
 

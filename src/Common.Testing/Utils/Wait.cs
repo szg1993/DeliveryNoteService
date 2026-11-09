@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using Xunit.Sdk;
 
-namespace Medusa.Enap.Common.Testing.Utils;
+namespace Common.Testing.Utils;
 
 public static class Wait
 {

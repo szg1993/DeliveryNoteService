@@ -1,8 +1,8 @@
-using Medusa.Enap.Common.Core.Exceptions;
-using Medusa.Enap.Common.Core.Utils;
+using Common.Core.Exceptions;
+using Common.Core.Utils;
 using System.Net;
 
-namespace Medusa.Enap.Common.Core.Integration;
+namespace Common.Core.Integration;
 
 public class IntegrationException(string message, Exception? innerException = null)
     : Exception(message, innerException)
@@ -24,7 +24,7 @@ public class NonSuccessResponseException : IntegrationException
 
         try
         {
-            var s = EnapSerializer.FromJson<MedusaError>(ResponseBody);
+            var s = CommonSerializer.FromJson<MedusaError>(ResponseBody);
             this.SetErrorCode(s?.ErrorCode ?? CommonErrorCodes.Unknown);
         }
         catch (Exception)

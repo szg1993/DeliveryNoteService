@@ -3,7 +3,7 @@ using Npgsql;
 using System.Collections.Concurrent;
 using Testcontainers.PostgreSql;
 
-namespace Medusa.Enap.Common.Testing.Database.TestContainerPostgres;
+namespace Common.Testing.Database.TestContainerPostgres;
 
 public sealed class PostgresDatabaseFixture(Type dbContextType) : IDatabaseFixture
 {

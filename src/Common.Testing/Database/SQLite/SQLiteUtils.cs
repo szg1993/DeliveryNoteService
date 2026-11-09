@@ -1,6 +1,6 @@
 using Microsoft.Data.Sqlite;
 
-namespace Medusa.Enap.Common.Testing.Database.SQLite;
+namespace Common.Testing.Database.SQLite;
 
 public static class SQLiteUtils
 {

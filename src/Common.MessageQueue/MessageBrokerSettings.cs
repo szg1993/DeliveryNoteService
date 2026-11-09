@@ -1,4 +1,4 @@
-namespace Medusa.Enap.Common.MessageQueue;
+namespace Common.MessageQueue;
 
 public class MessageBrokerSettings
 {

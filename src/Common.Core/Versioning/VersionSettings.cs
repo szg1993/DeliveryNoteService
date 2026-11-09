@@ -1,4 +1,4 @@
-namespace Medusa.Enap.Common.Core.Versioning;
+namespace Common.Core.Versioning;
 
 public class VersionSettings
 {

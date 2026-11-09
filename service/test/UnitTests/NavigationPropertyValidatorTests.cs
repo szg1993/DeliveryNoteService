@@ -1,7 +1,7 @@
 using FluentAssertions;
-using Medusa.Enap.Common.Core.Model;
-using Medusa.Enap.Common.Core.Persistence;
-using Medusa.Enap.Common.Infrastructure.Persistence;
+using Common.Core.Model;
+using Common.Core.Persistence;
+using Common.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using System.Linq.Expressions;

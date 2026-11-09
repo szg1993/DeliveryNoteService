@@ -1,13 +1,13 @@
-using Medusa.Enap.Common.Core.DependencyInjection;
-using Medusa.Enap.Common.Core.Exceptions;
-using Medusa.Enap.Common.Core.Integration;
-using Medusa.Enap.Common.Core.Logging;
-using Medusa.Enap.Common.Core.Utils;
+using Common.Core.DependencyInjection;
+using Common.Core.Exceptions;
+using Common.Core.Integration;
+using Common.Core.Logging;
+using Common.Core.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Net.Sockets;
 
-namespace Medusa.Enap.Common.MessageQueue;
+namespace Common.MessageQueue;
 
 [AutoRegister]
 public class MessageHandler(

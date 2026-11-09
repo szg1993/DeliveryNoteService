@@ -1,7 +1,7 @@
-using Medusa.Enap.Common.Infrastructure.Persistence;
-using Medusa.Enap.Common.Testing.Database;
-using Medusa.Enap.Common.Testing.Database.SQLite;
-using Medusa.Enap.Common.Testing.Logging;
+using Common.Infrastructure.Persistence;
+using Common.Testing.Database;
+using Common.Testing.Database.SQLite;
+using Common.Testing.Logging;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Testcontainers.PostgreSql;

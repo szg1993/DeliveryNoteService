@@ -1,7 +1,7 @@
-using Medusa.Enap.Common.Core.Exceptions;
+using Common.Core.Exceptions;
 using Microsoft.Extensions.Logging;
 
-namespace Medusa.Enap.Common.Core.Logging;
+namespace Common.Core.Logging;
 
 public enum LogBeginEvent
 {
@@ -36,7 +36,7 @@ public class BusinessEventLogger<TUseCase>(
     ILogger<TUseCase> logger,
     IRequestContext requestContext
 )
-    : MedusaLogger<TUseCase>(logger), IBusinessEventLogger
+    : DeliveryNoteServiceLogger<TUseCase>(logger), IBusinessEventLogger
     where TUseCase : class
 #pragma warning restore S6672 // Generic logger injection should match enclosing type
 {

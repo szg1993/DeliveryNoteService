@@ -1,4 +1,4 @@
-namespace Medusa.Enap.Common.AspNetCore.Logging;
+namespace Common.AspNetCore.Logging;
 
 public static class LogLevels
 {

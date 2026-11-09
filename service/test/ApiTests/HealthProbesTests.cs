@@ -1,10 +1,10 @@
-using Medusa.Enap.Common.Core.HealthProbes;
+using Common.Core.HealthProbes;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net;
 
 namespace ApiTests;
 
-public class HealthProbesTests : DemoServiceApiTestBase
+public class HealthProbesTests : DeliveryNoteServiceApiTestBase
 {
     [Fact]
     public Task Liveness()

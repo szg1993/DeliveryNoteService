@@ -1,4 +1,4 @@
-namespace Medusa.Enap.Common.Core.Exceptions;
+namespace Common.Core.Exceptions;
 
 public class AuthorizationException(
     string errorCode = CommonErrorCodes.InsufficientPrivileges,

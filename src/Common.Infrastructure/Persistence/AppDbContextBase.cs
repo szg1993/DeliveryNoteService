@@ -1,5 +1,5 @@
-using Medusa.Enap.Common.Core.Exceptions;
-using Medusa.Enap.Common.Core.Persistence;
+using Common.Core.Exceptions;
+using Common.Core.Persistence;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -8,7 +8,7 @@ using Npgsql;
 using System.Data;
 using System.Globalization;
 
-namespace Medusa.Enap.Common.Infrastructure.Persistence;
+namespace Common.Infrastructure.Persistence;
 
 public class AppDbContextBase : DbContext, IUnitOfWork
 {

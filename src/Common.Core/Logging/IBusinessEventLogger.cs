@@ -1,9 +1,9 @@
-using Medusa.Enap.Common.Core.Exceptions;
+using Common.Core.Exceptions;
 using Microsoft.Extensions.Logging;
 
-namespace Medusa.Enap.Common.Core.Logging;
+namespace Common.Core.Logging;
 
-public interface IBusinessEventLogger : IMedusaLogger
+public interface IBusinessEventLogger : IDeliveryNoteServiceLogger
 {
     void LogBusinessEvent(string? eventId = null, Dictionary<string, object?>? logParams = null, LogLevel? logLevel = null);
 

@@ -1,12 +1,12 @@
-using Medusa.Enap.Common.Core.Configuration;
-using Medusa.Enap.Common.Core.Utils;
+using Common.Core;
+using Common.Core.Utils;
 using Microsoft.AspNetCore.Http;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Mime;
 using System.Text.Json;
 
-namespace Medusa.Enap.Common.Testing.ApiWrappers;
+namespace Common.Testing.ApiWrappers;
 
 public class ApiEndpoint(string url, HttpClient client, JsonSerializerOptions? jsonOptions = null)
 {

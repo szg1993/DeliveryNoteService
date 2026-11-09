@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 
-namespace Medusa.Enap.Common.Core.Messaging;
+namespace Common.Core.Messaging;
 
 /*
  * Mostly AI-generated code

@@ -1,6 +1,6 @@
-using Medusa.Enap.Common.Core.Messaging;
+using Common.Core.Messaging;
 
-namespace Medusa.Enap.Common.Core.Persistence;
+namespace Common.Core.Persistence;
 
 public interface IRepositoryQueryEvaluator
 {

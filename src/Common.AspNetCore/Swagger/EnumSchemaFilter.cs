@@ -1,9 +1,9 @@
-using Medusa.Enap.Common.Core.Utils;
+using Common.Core.Utils;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Medusa.Enap.Common.AspNetCore.Swagger;
+namespace Common.AspNetCore.Swagger;
 
 class EnumSchemaFilter : ISchemaFilter
 {

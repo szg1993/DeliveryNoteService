@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace Medusa.Enap.Common.Core.Exceptions;
+namespace Common.Core.Exceptions;
 
 public static class Extensions
 {

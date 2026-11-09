@@ -1,10 +1,10 @@
-using Medusa.Enap.Common.Core.Logging;
-using Medusa.Enap.Common.Infrastructure.Persistence;
+using Common.Core.Logging;
+using Common.Infrastructure.Persistence;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Serilog;
 
-namespace Medusa.Enap.Common.Testing.Logging;
+namespace Common.Testing.Logging;
 
 public class NewEntityLoggerMock
 {
@@ -16,7 +16,7 @@ public class NewEntityLoggerMock
     {
         var lf = new LoggerFactory()
            .AddSerilog(new TestSerilogLogger((e) => { }));
-        var loggerMock = new Mock<MedusaLogger<NewEntityLogger>>(new Logger<NewEntityLogger>(lf));
+        var loggerMock = new Mock<DeliveryNoteServiceLogger<NewEntityLogger>>(new Logger<NewEntityLogger>(lf));
         _mock = new Mock<NewEntityLogger>(loggerMock.Object);
     }
 }

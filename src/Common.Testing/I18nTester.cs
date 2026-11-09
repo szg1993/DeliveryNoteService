@@ -1,8 +1,8 @@
-using Medusa.Enap.Common.AspNetCore;
-using Medusa.Enap.Common.Core.Exceptions;
-using Medusa.Enap.Common.Core.Utils;
+using Common.AspNetCore;
+using Common.Core.Exceptions;
+using Common.Core.Utils;
 
-namespace Medusa.Enap.Common.Testing;
+namespace Common.Testing;
 
 public static class I18nTester
 {
@@ -18,7 +18,7 @@ public static class I18nTester
 
         string json = File.ReadAllText(filePath);
 
-        var i18n = EnapSerializer.FromJson<Dictionary<string, string>>(json) ?? [];
+        var i18n = CommonSerializer.FromJson<Dictionary<string, string>>(json) ?? [];
         var missingErrorCodes = new List<string>();
 
         foreach (var errorCode in errorCodes)

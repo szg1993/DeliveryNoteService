@@ -1,13 +1,13 @@
-using Medusa.Enap.Common.Core.DependencyInjection;
-using Medusa.Enap.Common.Core.Exceptions;
-using Medusa.Enap.Common.Core.Logging;
+using Common.Core.DependencyInjection;
+using Common.Core.Exceptions;
+using Common.Core.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Medusa.Enap.Common.Core.UseCases.BatchOperations;
+namespace Common.Core.UseCases.BatchOperations;
 
 [AutoRegister(ServiceLifetime.Transient)]
-public class BatchOperation<TRequestDto>(MedusaLogger<BatchOperation<TRequestDto>> logger)
+public class BatchOperation<TRequestDto>(DeliveryNoteServiceLogger<BatchOperation<TRequestDto>> logger)
 {
     public BatchResult<TRequestDto> Result { get; } = new();
 

@@ -1,4 +1,4 @@
-namespace Medusa.Enap.Common.Core.Messaging;
+namespace Common.Core.Messaging;
 
 public class Envelope<T>(T content)
 {

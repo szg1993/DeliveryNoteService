@@ -1,7 +1,7 @@
-using Medusa.Enap.Common.Core.Exceptions;
+using Common.Core.Exceptions;
 using System.Text.Json.Serialization;
 
-namespace Medusa.Enap.Common.AspNetCore.ErrorHandling;
+namespace Common.AspNetCore.ErrorHandling;
 
 public class MedusaErrorResponse : MedusaError
 {

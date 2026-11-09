@@ -1,5 +1,5 @@
 using FluentAssertions;
-using Medusa.Enap.Common.Core.Integration;
+using Common.Core.Integration;
 using Microsoft.Extensions.Options;
 using Moq;
 

@@ -1,8 +1,8 @@
-using Medusa.Enap.Common.Core.Messaging;
-using Medusa.Enap.Common.Core.UseCases.BatchOperations;
+using Common.Core.Messaging;
+using Common.Core.UseCases.BatchOperations;
 using Microsoft.AspNetCore.Http;
 
-namespace Medusa.Enap.Common.Testing.ApiWrappers;
+namespace Common.Testing.ApiWrappers;
 
 public class CollectionEndpoint<TResource>(string url, HttpClient client)
     : CollectionEndpoint<TResource, TResource>(url, client);

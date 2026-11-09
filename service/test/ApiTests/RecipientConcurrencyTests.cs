@@ -1,12 +1,12 @@
-using Medusa.Enap.Common.Core.Exceptions;
-using Medusa.Enap.Common.Core.Messaging;
-using Medusa.Enap.DemoService.Application.Recipients;
+using Common.Core.Exceptions;
+using Common.Core.Messaging;
+using DeliveryNoteService.Application.UseCases.Recipients;
 using System.Net;
 
 namespace ApiTests;
 
 [Trait("Database", "PostgreSQL")]
-public class RecipientConcurrencyTests : PostgresDemoServiceApiTestBase
+public class RecipientConcurrencyTests : PostgresDeliveryNoteServiceApiTestBase
 {
     [Fact]
     public async Task ConcurrentEquivalentCodes_CreateOneRecipientAndReturnOneConflict()
@@ -22,7 +22,7 @@ public class RecipientConcurrencyTests : PostgresDemoServiceApiTestBase
         );
         using var createdResponse = responses.Single(response => response.StatusCode == HttpStatusCode.Created);
         using var conflictResponse = responses.Single(response => response.StatusCode == HttpStatusCode.Conflict);
-        var created = (await createdResponse.ReadAsync<Envelope<RecipientDetails>>()).Content;
+        var created = (await createdResponse.ReadAsync<Envelope<RecipientDetailsDto>>()).Content;
         await conflictResponse.AssertErrorAsync(HttpStatusCode.Conflict)
             .AndErrorCodeAsync(CommonErrorCodes.UniqueKeyConflict);
         var listed = await Api.Recipients().GetAsync(new QueryString("?page=1&limit=0"));

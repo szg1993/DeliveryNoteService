@@ -1,7 +1,7 @@
 using FluentAssertions;
 using FluentAssertions.Equivalency;
 
-namespace Medusa.Enap.Common.Testing;
+namespace Common.Testing;
 
 public static class AssertionHelpers
 {

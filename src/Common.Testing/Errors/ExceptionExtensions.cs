@@ -1,6 +1,6 @@
 using FluentAssertions;
 
-namespace Medusa.Enap.Common.Testing.Errors;
+namespace Common.Testing.Errors;
 
 public static class ExceptionExtensions
 {

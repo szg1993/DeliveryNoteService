@@ -1,11 +1,11 @@
-using Medusa.Enap.Common.Core.DependencyInjection;
-using Medusa.Enap.Common.Core.Messaging;
-using Medusa.Enap.Common.Core.Persistence;
-using Medusa.Enap.Common.Core.UseCases;
+using Common.Core.DependencyInjection;
+using Common.Core.Messaging;
+using Common.Core.Persistence;
+using Common.Core.UseCases;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Medusa.Enap.Common.Infrastructure.Persistence;
+namespace Common.Infrastructure.Persistence;
 
 [AutoRegister(ServiceLifetime.Scoped, typeof(IRepositoryQueryEvaluator))]
 public class RepositoryQueryEvaluator : IRepositoryQueryEvaluator

@@ -1,12 +1,12 @@
 using FluentAssertions;
-using Medusa.Enap.Common.AspNetCore.Logging;
-using Medusa.Enap.Common.Core.Logging;
+using Common.AspNetCore.Logging;
+using Common.Core.Logging;
 using Serilog.Core;
 using Serilog.Events;
 using System.Collections.Concurrent;
 using System.Linq.Expressions;
 
-namespace Medusa.Enap.Common.Testing.Logging;
+namespace Common.Testing.Logging;
 
 public class TestLogSink(TestLogStore testLogStore) : ILogEventSink
 {

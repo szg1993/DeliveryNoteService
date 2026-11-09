@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Configuration;
 
-namespace Medusa.Enap.Common.Testing;
+namespace Common.Testing;
 
 public static class ConfigurationBuilderExtensions
 {

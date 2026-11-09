@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 
-namespace Medusa.Enap.Common.MessageQueue.RabbitMq;
+namespace Common.MessageQueue.RabbitMq;
 
 public class RabbitMqConnectionFactory(IOptions<MessageBrokerSettings> settings)
 {

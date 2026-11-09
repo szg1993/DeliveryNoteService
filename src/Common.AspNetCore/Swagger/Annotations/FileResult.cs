@@ -4,7 +4,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Net;
 using System.Net.Mime;
 
-namespace Medusa.Enap.Common.AspNetCore.Swagger.Annotations;
+namespace Common.AspNetCore.Swagger.Annotations;
 
 public static class FileResultUtil
 {

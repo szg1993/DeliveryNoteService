@@ -1,9 +1,10 @@
-using Medusa.Enap.Common.Core.Exceptions;
+using Common.Core.Exceptions;
+using Common.Core.Utils;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
-namespace Medusa.Enap.Common.Core.UseCases;
+namespace Common.Core.UseCases;
 
 public static class Guard
 {
@@ -28,6 +29,13 @@ public static class Guard
         if (string.IsNullOrEmpty(property))
             ThrowFieldMissing(propertyName!);
     }
+
+    public static void ThrowIfTooLong(
+        string? property,
+        int maxLength,
+        [CallerArgumentExpression(nameof(property))] string? propertyName = null
+    )
+        => property.ValidateMaxLength(maxLength, GetUnqualifiedPropertyName(propertyName!));
 
     public static void ThrowIfMissing<TProperty>([NotNull] TProperty? property, [CallerArgumentExpression(nameof(property))] string? propertyName = null)
     {

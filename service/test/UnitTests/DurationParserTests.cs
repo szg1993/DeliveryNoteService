@@ -1,5 +1,5 @@
 using FluentAssertions;
-using Medusa.Enap.Common.Core.Utils;
+using Common.Core.Utils;
 
 namespace UnitTests;
 
@@ -27,7 +27,7 @@ public class DurationParserTests
     public void Parse_WrongFormat()
     {
         var duration = "13asd";
-        
+
         var act = () => DurationParser.Parse(duration);
 
         act.Should().Throw<FormatException>();

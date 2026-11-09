@@ -1,10 +1,10 @@
-using Medusa.Enap.Common.Core.Configuration;
-using Medusa.Enap.Common.Core.Messaging;
+using Common.Core;
+using Common.Core.Messaging;
 using Microsoft.AspNetCore.Http;
 using System.Net;
 using System.Net.Http.Json;
 
-namespace Medusa.Enap.Common.Testing.ApiWrappers;
+namespace Common.Testing.ApiWrappers;
 
 /// <summary>
 /// RpcEndpoint wrapper without request/response DTOs

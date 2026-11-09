@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Data.Common;
 using System.Globalization;
 
-namespace Medusa.Enap.Common.Infrastructure.Persistence;
+namespace Common.Infrastructure.Persistence;
 
 /// <summary>
 /// Contains utilities so that Hungarian letters (e.g.: á, é) will be properly

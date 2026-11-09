@@ -2,7 +2,7 @@ using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Formatting.Compact;
 
-namespace Medusa.Enap.Common.AspNetCore.Logging;
+namespace Common.AspNetCore.Logging;
 
 public static class LoggerConfigurationExtensions
 {

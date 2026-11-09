@@ -1,26 +1,23 @@
-using Medusa.Enap.Common.Core.HealthProbes;
-using Medusa.Enap.Common.Core.Logging;
-using Medusa.Enap.Common.Infrastructure.Scheduling;
-using Medusa.Enap.Common.Testing.Database;
-using Medusa.Enap.Common.Testing.Infrastructure;
-using Medusa.Enap.Common.Testing.Logging;
-using Medusa.Enap.Common.Testing.TestSuite;
-using Medusa.Enap.Common.Testing.Versioning;
+using Common.Core.HealthProbes;
+using Common.Core.Logging;
+using Common.Testing.Database;
+using Common.Testing.Infrastructure;
+using Common.Testing.Logging;
+using Common.Testing.TestSuite;
+using Common.Testing.Versioning;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Quartz;
 using Quartz.Impl;
-using Quartz.Impl.Matchers;
 using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace Medusa.Enap.Common.Testing;
+namespace Common.Testing;
 
 public abstract class ApiTestBase<TWebAppEntryPoint, TApi>(string? testId = null) :
     IScenario,
@@ -143,34 +140,11 @@ public abstract class ApiTestBase<TWebAppEntryPoint, TApi>(string? testId = null
     /// </summary>
     protected virtual void ConfigureTestAppConfiguration(WebHostBuilderContext context, IConfigurationBuilder configBuilder) { }
 
-    protected async Task TriggerJob<TJob>() where TJob : MedusaJob
-    {
-        GetLogger().LogTechnical(LogLevel.Information, "Triggering job: " + typeof(TJob).Name);
-        var scheduler = await Services
-            .GetRequiredService<ISchedulerFactory>()
-            .GetScheduler($"testScheduler_{TestId}") ?? throw new InvalidOperationException();
-        if (!scheduler.IsStarted)
-            await scheduler.Start();
-
-        var jobKey = new JobKey(typeof(TJob).Name);
-
-        var listener = new TestJobListener(jobKey);
-        scheduler.ListenerManager.AddJobListener(
-            listener,
-            KeyMatcher<JobKey>.KeyEquals(jobKey)
-        );
-
-        await scheduler!.TriggerJob(jobKey);
-
-        using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(60));
-        await listener.WaitAsync(cts.Token);
-    }
-
     protected static QueryString QS() => QueryString.Empty;
 
     protected static QueryString QS(string key, string value) => QueryString.Create(key, value);
 
-    protected IMedusaLogger GetLogger() => Services.GetRequiredService<AppLogger>();
+    protected IDeliveryNoteServiceLogger GetLogger() => Services.GetRequiredService<AppLogger>();
 
     protected void WriteLog(string message)
     {

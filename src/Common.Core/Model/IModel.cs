@@ -1,3 +1,3 @@
-namespace Medusa.Enap.Common.Core.Model;
+namespace Common.Core.Model;
 
 public interface IModel : IHaveId;

@@ -1,8 +1,8 @@
-using Medusa.Enap.Common.Core.Persistence;
+using Common.Core.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace Medusa.Enap.Common.Infrastructure.Persistence;
+namespace Common.Infrastructure.Persistence;
 
 public class ReadonlyRepository<TModel>(DbContext dbContext, IQueryable<TModel> q) : IReadOnlyRepository<TModel>
     where TModel : class

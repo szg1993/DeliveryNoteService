@@ -1,9 +1,9 @@
 using FluentAssertions;
-using Medusa.Enap.Common.AspNetCore.Logging;
-using Medusa.Enap.Common.Core.Logging;
-using Medusa.Enap.Common.Core.Model;
-using Medusa.Enap.Common.Infrastructure.Persistence;
-using Medusa.Enap.Common.Testing.Logging;
+using Common.AspNetCore.Logging;
+using Common.Core.Logging;
+using Common.Core.Model;
+using Common.Infrastructure.Persistence;
+using Common.Testing.Logging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Serilog;
@@ -14,7 +14,7 @@ namespace UnitTests.Logging;
 [Collection(SqlUnitTestCollection.Name)]
 public class NewEntityLoggerTests : SqlUnitTestBase
 {
-    private readonly MedusaLogger<NewEntityLogger> _logger;
+    private readonly DeliveryNoteServiceLogger<NewEntityLogger> _logger;
     private LogEntry _logEntry = null!;
     private readonly NewEntityLogger _newEntityLogger;
 
@@ -22,7 +22,7 @@ public class NewEntityLoggerTests : SqlUnitTestBase
     {
         var lf = new LoggerFactory()
            .AddSerilog(new TestSerilogLogger((e) => _logEntry = e.ToLogEntry()));
-        _logger = new MedusaLogger<NewEntityLogger>(new Logger<NewEntityLogger>(lf));
+        _logger = new DeliveryNoteServiceLogger<NewEntityLogger>(new Logger<NewEntityLogger>(lf));
         _newEntityLogger = new(_logger);
     }
 

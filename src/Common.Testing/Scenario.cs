@@ -1,4 +1,4 @@
-namespace Medusa.Enap.Common.Testing;
+namespace Common.Testing;
 
 public interface IScenario
 {

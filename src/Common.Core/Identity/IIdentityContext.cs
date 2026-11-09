@@ -1,4 +1,4 @@
-namespace Medusa.Enap.Common.Core.Identity;
+namespace Common.Core.Identity;
 
 public interface IIdentityContext
 {

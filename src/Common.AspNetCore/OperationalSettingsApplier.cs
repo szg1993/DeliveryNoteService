@@ -1,9 +1,9 @@
-using Medusa.Enap.Common.Core.Utils;
+using Common.Core.Utils;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Medusa.Enap.Common.AspNetCore;
+namespace Common.AspNetCore;
 
 public static class OperationalSettingsApplier
 {

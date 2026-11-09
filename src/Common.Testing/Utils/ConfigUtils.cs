@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-namespace Medusa.Enap.Common.Testing.Utils;
+namespace Common.Testing.Utils;
 
 public static class ConfigUtils
 {

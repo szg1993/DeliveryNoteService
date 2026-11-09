@@ -1,6 +1,6 @@
-using Medusa.Enap.Common.Core.Model;
+using Common.Core.Model;
 
-namespace Medusa.Enap.Common.Core.UseCases;
+namespace Common.Core.UseCases;
 
 public record Permissions
 {
@@ -10,5 +10,5 @@ public record Permissions
 public record ResourcePermission
 {
     public ResourceType ResourceType { get; set; }
-    public required string ResourceId { get; set; } 
+    public required string ResourceId { get; set; }
 }

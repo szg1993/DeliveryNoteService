@@ -1,4 +1,4 @@
-namespace Medusa.Enap.Common.Core;
+namespace Common.Core;
 
 public static class JwtScopes
 {

@@ -1,8 +1,8 @@
 using FluentAssertions;
-using Medusa.Enap.Common.Core.Messaging;
-using Medusa.Enap.Common.Core.UseCases.BatchOperations;
+using Common.Core.Messaging;
+using Common.Core.UseCases.BatchOperations;
 
-namespace Medusa.Enap.Common.Testing.ApiWrappers;
+namespace Common.Testing.ApiWrappers;
 
 public class BatchEndpoint<TResource>(string url, HttpClient client)
     : ApiEndpoint(url, client)

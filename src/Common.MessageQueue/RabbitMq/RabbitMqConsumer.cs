@@ -4,7 +4,7 @@ using RabbitMQ.Client.Events;
 using System.Collections.Concurrent;
 using System.Text;
 
-namespace Medusa.Enap.Common.MessageQueue.RabbitMq;
+namespace Common.MessageQueue.RabbitMq;
 
 public class RabbitMqConsumer(
     IChannel channel,

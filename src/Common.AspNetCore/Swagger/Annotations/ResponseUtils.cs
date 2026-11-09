@@ -1,10 +1,10 @@
-using Medusa.Enap.Common.AspNetCore.ErrorHandling;
-using Medusa.Enap.Common.AspNetCore.Swagger.Annotations;
+using Common.AspNetCore.ErrorHandling;
+using Common.AspNetCore.Swagger.Annotations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using System.Net.Mime;
 
-namespace Medusa.Enap.Common.AspNetCore.Swagger.Annotations;
+namespace Common.AspNetCore.Swagger.Annotations;
 
 public static class ResponseUtils
 {

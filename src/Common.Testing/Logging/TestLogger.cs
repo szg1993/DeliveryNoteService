@@ -1,10 +1,10 @@
-using Medusa.Enap.Common.Core.Logging;
+using Common.Core.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Medusa.Enap.Common.Testing.Logging;
+namespace Common.Testing.Logging;
 
-public class TestLogger : MedusaLogger<TestLogger>
+public class TestLogger : DeliveryNoteServiceLogger<TestLogger>
 {
     public TestLogger(ILogger<TestLogger> logger) : base(logger)
     {

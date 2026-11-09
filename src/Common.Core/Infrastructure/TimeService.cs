@@ -1,4 +1,4 @@
-namespace Medusa.Enap.Common.Core.Infrastructure;
+namespace Common.Core.Infrastructure;
 
 public interface ITimeService
 {
@@ -19,6 +19,6 @@ public class TimeService : ITimeService
     /// <inheritdoc />
     public DateOnly Today => UtcNow.ToHungarianTime().ToDateOnly();
 
-    virtual public Task Delay(string delayId, TimeSpan timeSpan, CancellationToken cancellationToken) 
+    virtual public Task Delay(string delayId, TimeSpan timeSpan, CancellationToken cancellationToken)
         => Task.Delay(timeSpan, cancellationToken);
 }

@@ -1,4 +1,4 @@
-namespace Medusa.Enap.Common.Core.Infrastructure;
+namespace Common.Core.Infrastructure;
 
 /// <summary>
 /// WIP - LockProvider concept is a work in progress. We'll see later how general they will generalize or not.

@@ -1,6 +1,6 @@
 using Npgsql;
 
-namespace Medusa.Enap.Common.Testing.Database.TestContainerPostgres;
+namespace Common.Testing.Database.TestContainerPostgres;
 
 internal static class PostgresDbCloner
 {

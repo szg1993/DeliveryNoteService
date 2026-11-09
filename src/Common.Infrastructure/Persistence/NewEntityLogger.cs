@@ -1,12 +1,12 @@
-using Medusa.Enap.Common.Core.Logging;
-using Medusa.Enap.Common.Core.Model;
+using Common.Core.Logging;
+using Common.Core.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Data;
 
-namespace Medusa.Enap.Common.Infrastructure.Persistence;
+namespace Common.Infrastructure.Persistence;
 
-public class NewEntityLogger(MedusaLogger<NewEntityLogger> logger)
+public class NewEntityLogger(DeliveryNoteServiceLogger<NewEntityLogger> logger)
 {
     private List<IModel> _added = [];
 

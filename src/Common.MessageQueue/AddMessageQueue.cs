@@ -1,10 +1,10 @@
-using Medusa.Enap.Common.Core.MessageQueue;
-using Medusa.Enap.Common.MessageQueue.RabbitMq;
-using Medusa.Enap.Common.MessageQueue.Routing;
+using Common.Core.MessageQueue;
+using Common.MessageQueue.RabbitMq;
+using Common.MessageQueue.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Medusa.Enap.Common.MessageQueue;
+namespace Common.MessageQueue;
 
 public static class AddMessageQueue
 {

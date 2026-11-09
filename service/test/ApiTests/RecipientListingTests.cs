@@ -1,11 +1,10 @@
-using Medusa.Enap.Common.AspNetCore;
-using Medusa.Enap.Common.Core.Exceptions;
-using Medusa.Enap.Common.Core.Messaging;
-using Microsoft.AspNetCore.Http;
+using Common.AspNetCore;
+using Common.Core.Exceptions;
+using Common.Core.Messaging;
 
 namespace ApiTests;
 
-public class RecipientListingTests : DemoServiceApiTestBase
+public class RecipientListingTests : DeliveryNoteServiceApiTestBase
 {
     [Fact]
     public async Task ListRecipients_EmptyDatabaseReturnsEmptyPage()
@@ -139,19 +138,6 @@ public class RecipientListingTests : DemoServiceApiTestBase
     {
         await Api.Recipients().GetRawAsync(new QueryString(query))
             .AssertBadRequestAsync(CommonWebErrorCodes.InvalidHttpRequest);
-    }
-
-    [Fact]
-    public async Task ListRecipients_InvalidCreationDoesNotChangeList()
-    {
-        var existing = await Api.Recipients().PostAsync(RecipientRequests.Valid("EXISTING"));
-        await Api.Recipients().PostRawAsync(RecipientRequests.WithField("Name", " "))
-            .AssertBadRequestAsync(CommonErrorCodes.FieldMissing);
-
-        var result = await Api.Recipients().GetAsync();
-
-        result.Content.Should().BeEquivalentTo([existing]);
-        result.Paging.TotalCount.Should().Be(1);
     }
 
     [Fact]

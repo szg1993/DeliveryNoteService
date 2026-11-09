@@ -1,10 +1,11 @@
 using FluentAssertions;
-using Medusa.Enap.Common.Core.Exceptions;
-using Medusa.Enap.Common.Core.Integration;
-using Medusa.Enap.Common.Core.Utils;
+using Common.Core.Exceptions;
+using Common.Core.Integration;
+using Common.Core.Utils;
 using System.Net;
 
 namespace UnitTests;
+
 public class NonSuccessResponseExceptionTests
 {
     [Fact]
@@ -17,11 +18,11 @@ public class NonSuccessResponseExceptionTests
         e.Url.Should().Be("test Url");
         e.GetErrorCode().Should().Be("error:DNC::Unknown");
     }
-    
+
     [Fact]
     public void ErrorCodeFromResponseBody()
     {
-        var responseBody = EnapSerializer.ToJson(new MedusaError { ErrorCode = "test error code" });
+        var responseBody = CommonSerializer.ToJson(new MedusaError { ErrorCode = "test error code" });
 
         var e = new NonSuccessResponseException(HttpStatusCode.NotFound, responseBody, "dummy url");
 

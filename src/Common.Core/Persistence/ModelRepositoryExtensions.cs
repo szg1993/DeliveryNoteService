@@ -1,6 +1,6 @@
-using Medusa.Enap.Common.Core.Model;
+using Common.Core.Model;
 
-namespace Medusa.Enap.Common.Core.Persistence;
+namespace Common.Core.Persistence;
 
 /// <summary>
 /// IRepository<TModel> extension methods, when TModel is IHaveId and has a unique ID

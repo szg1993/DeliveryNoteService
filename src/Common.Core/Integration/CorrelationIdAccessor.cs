@@ -1,4 +1,4 @@
-namespace Medusa.Enap.Common.Core.Integration;
+namespace Common.Core.Integration;
 
 public class CorrelationIdAccessor
 {

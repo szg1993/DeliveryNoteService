@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace Medusa.Enap.Common.Testing;
+namespace Common.Testing;
 
 public static class ErrorCodeCollector
 {

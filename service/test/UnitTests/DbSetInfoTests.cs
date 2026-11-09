@@ -1,6 +1,6 @@
 using FluentAssertions;
-using Medusa.Enap.Common.Core.Model;
-using Medusa.Enap.Common.Infrastructure.Persistence;
+using Common.Core.Model;
+using Common.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace UnitTests;

@@ -1,7 +1,7 @@
 using System.Reflection;
 using Xunit.Abstractions;
 
-namespace Medusa.Enap.Common.Testing;
+namespace Common.Testing;
 
 public static class TestContext
 {

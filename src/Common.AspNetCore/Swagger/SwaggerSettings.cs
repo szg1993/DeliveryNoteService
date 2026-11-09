@@ -1,4 +1,4 @@
-namespace Medusa.Enap.Common.AspNetCore.Swagger;
+namespace Common.AspNetCore.Swagger;
 
 public class SwaggerSettings
 {

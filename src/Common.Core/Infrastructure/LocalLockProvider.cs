@@ -1,6 +1,6 @@
 using System.Collections.Concurrent;
 
-namespace Medusa.Enap.Common.Core.Infrastructure;
+namespace Common.Core.Infrastructure;
 
 public class LocalLockProvider : ILockProvider
 {
@@ -22,7 +22,7 @@ public class LocalLockProvider : ILockProvider
         if (!await semaphore.WaitAsync(0, ct))
             return null;
 
-        return new LockHandle(semaphore); 
+        return new LockHandle(semaphore);
     }
 
     private sealed class LockHandle(SemaphoreSlim? semaphore) : IDisposable

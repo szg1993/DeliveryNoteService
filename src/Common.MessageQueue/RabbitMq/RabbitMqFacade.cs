@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace Medusa.Enap.Common.MessageQueue.RabbitMq;
+namespace Common.MessageQueue.RabbitMq;
 
 public class RabbitMqFacade(
     IOptions<MessageBrokerSettings> settings,

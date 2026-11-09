@@ -1,9 +1,9 @@
-using Medusa.Enap.Common.Core.Configuration;
+using Common.Core;
 
-namespace Medusa.Enap.DemoService.WebApp.Configuration;
+namespace DeliveryNoteService.WebApp.Configuration;
 
 public static class JsonInit
 {
-    public static IServiceCollection AddMedusaJsonOptions(this IServiceCollection services)
+    public static IServiceCollection AddJsonOptions(this IServiceCollection services)
         => services.ConfigureHttpJsonOptions(opt => JsonConfiguration.Configure(opt.SerializerOptions));
 }

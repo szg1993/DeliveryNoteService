@@ -1,7 +1,7 @@
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Medusa.Enap.Common.AspNetCore.Swagger;
+namespace Common.AspNetCore.Swagger;
 
 internal sealed class SortPathsDocumentFilter : IDocumentFilter
 {

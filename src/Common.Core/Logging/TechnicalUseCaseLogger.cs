@@ -1,12 +1,12 @@
 using Microsoft.Extensions.Logging;
 
-namespace Medusa.Enap.Common.Core.Logging;
+namespace Common.Core.Logging;
 
 #pragma warning disable S6672 // Generic logger injection should match enclosing type
 public class TechnicalUseCaseLogger<TUseCase>(
     ILogger<TUseCase> logger,
     IRequestContext requestContext)
-    : MedusaLogger<TUseCase>(logger)
+    : DeliveryNoteServiceLogger<TUseCase>(logger)
 #pragma warning restore S6672 // Generic logger injection should match enclosing type
 {
     public T Run<T>(Func<T> operation)

@@ -1,13 +1,13 @@
-using Medusa.Enap.Common.Core.Model;
-using Medusa.Enap.Common.Core.Persistence;
-using Medusa.Enap.Common.Core.Utils;
-using Medusa.Enap.Common.Infrastructure.Persistence;
+using Common.Core.Model;
+using Common.Core.Persistence;
+using Common.Core.Utils;
+using Common.Infrastructure.Persistence;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Concurrent;
 
-namespace Medusa.Enap.Common.Testing.Database.SQLite;
+namespace Common.Testing.Database.SQLite;
 
 public sealed class SQLiteDatabaseFixture(Type dbContextType) : IDatabaseFixture
 {

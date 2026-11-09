@@ -1,7 +1,7 @@
 using FluentAssertions;
-using Medusa.Enap.Common.Core.Persistence;
-using Medusa.Enap.Common.Infrastructure.Persistence;
-using Medusa.Enap.Common.Testing.Database.SQLite;
+using Common.Core.Persistence;
+using Common.Infrastructure.Persistence;
+using Common.Testing.Database.SQLite;
 using Microsoft.EntityFrameworkCore;
 using UnitTests.TestSuite;
 

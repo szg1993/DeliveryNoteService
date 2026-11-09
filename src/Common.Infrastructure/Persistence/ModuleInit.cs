@@ -1,15 +1,15 @@
-using Medusa.Enap.Common.Core.Persistence;
+using Common.Core.Persistence;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 
-namespace Medusa.Enap.Common.Infrastructure.Persistence;
+namespace Common.Infrastructure.Persistence;
 
 public static class ModuleInit
 {
-    public static IServiceCollection AddMedusaPersistenceCore<TDbContext>(
+    public static IServiceCollection AddPersistenceCore<TDbContext>(
         this IServiceCollection services,
         IConfigurationSection configuration
     )

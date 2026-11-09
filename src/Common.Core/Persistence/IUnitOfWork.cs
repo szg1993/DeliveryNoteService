@@ -1,4 +1,4 @@
-namespace Medusa.Enap.Common.Core.Persistence;
+namespace Common.Core.Persistence;
 
 public interface IUnitOfWork
 {

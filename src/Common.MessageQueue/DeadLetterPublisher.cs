@@ -1,9 +1,9 @@
-using Medusa.Enap.Common.Core.Integration;
-using Medusa.Enap.Common.Core.Logging;
-using Medusa.Enap.Common.Core.MessageQueue;
+using Common.Core.Integration;
+using Common.Core.Logging;
+using Common.Core.MessageQueue;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Medusa.Enap.Common.MessageQueue;
+namespace Common.MessageQueue;
 
 public static class DeadLetterInit
 {

@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Logging;
 
-namespace Medusa.Enap.Common.Core.Logging;
+namespace Common.Core.Logging;
 
 public static class LogContext
 {

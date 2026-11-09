@@ -1,5 +1,5 @@
 using FluentAssertions;
-using Medusa.Enap.Common.Core.Messaging;
+using Common.Core.Messaging;
 
 namespace UnitTests;
 

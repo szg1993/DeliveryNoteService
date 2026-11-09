@@ -1,11 +1,11 @@
-using Medusa.Enap.Common.Core.Integration;
-using Medusa.Enap.Common.Core.Logging;
-using Medusa.Enap.Common.Core.MessageQueue;
-using Medusa.Enap.Common.MessageQueue.RabbitMq;
-using Medusa.Enap.Common.MessageQueue.Routing;
+using Common.Core.Integration;
+using Common.Core.Logging;
+using Common.Core.MessageQueue;
+using Common.MessageQueue.RabbitMq;
+using Common.MessageQueue.Routing;
 using Microsoft.Extensions.Logging;
 
-namespace Medusa.Enap.Common.MessageQueue;
+namespace Common.MessageQueue;
 
 public record DeadLetter(string Json, Type MessageType);
 

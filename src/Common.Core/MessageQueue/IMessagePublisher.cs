@@ -1,4 +1,4 @@
-namespace Medusa.Enap.Common.Core.MessageQueue;
+namespace Common.Core.MessageQueue;
 
 public interface IMessagePublisher
 {

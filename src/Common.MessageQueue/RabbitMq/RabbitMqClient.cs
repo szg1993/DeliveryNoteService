@@ -1,6 +1,6 @@
-using Medusa.Enap.Common.Core.Logging;
-using Medusa.Enap.Common.Core.Utils;
-using Medusa.Enap.Common.MessageQueue.Routing;
+using Common.Core.Logging;
+using Common.Core.Utils;
+using Common.MessageQueue.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -8,7 +8,7 @@ using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Medusa.Enap.Common.MessageQueue.RabbitMq;
+namespace Common.MessageQueue.RabbitMq;
 
 [ExcludeFromCodeCoverage(Justification = "No test environment yet.")]
 public sealed class RabbitMqClient : IDisposable

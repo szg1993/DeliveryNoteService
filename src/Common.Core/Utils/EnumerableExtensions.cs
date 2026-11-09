@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace Medusa.Enap.Common.Core.Utils;
+namespace Common.Core.Utils;
 
 /*
  * ONLY general Enumerable extensions, no domain specific functions 

@@ -1,10 +1,10 @@
-using Medusa.Enap.Common.Core.Versioning;
-using Medusa.Enap.Common.Testing.Versioning;
+using Common.Core.Versioning;
+using Common.Testing.Versioning;
 using RichardSzalay.MockHttp;
 
 namespace ApiTests;
 
-public class VersionsTests : DemoServiceApiTestBase
+public class VersionsTests : DeliveryNoteServiceApiTestBase
 {
     [Fact]
     public async Task ConnectedServices_False()

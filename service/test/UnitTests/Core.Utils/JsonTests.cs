@@ -1,7 +1,7 @@
 using FluentAssertions;
-using Medusa.Enap.Common.Core.Exceptions;
-using Medusa.Enap.Common.Core.Utils;
-using Medusa.Enap.Common.Testing.TestSuite;
+using Common.Core.Exceptions;
+using Common.Core.Utils;
+using Common.Testing.TestSuite;
 using System.Text.Json;
 
 namespace UnitTests.Core.Utils;

@@ -1,4 +1,3 @@
-using Medusa.Enap.Common.Core.Configuration;
 using System.Net.Http.Headers;
 using System.Net.Mime;
 using System.Text;
@@ -6,7 +5,7 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
 
-namespace Medusa.Enap.Common.Core.Integration;
+namespace Common.Core.Integration;
 
 public class ApiClient : IDisposable
 {

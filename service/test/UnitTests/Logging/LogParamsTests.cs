@@ -1,5 +1,5 @@
 using FluentAssertions;
-using Medusa.Enap.Common.Core.Logging;
+using Common.Core.Logging;
 
 namespace UnitTests.Logging;
 

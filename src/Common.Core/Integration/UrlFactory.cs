@@ -1,6 +1,6 @@
 using System.Web;
 
-namespace Medusa.Enap.Common.Core.Integration;
+namespace Common.Core.Integration;
 
 public static class UrlFactory
 {

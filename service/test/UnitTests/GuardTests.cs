@@ -1,6 +1,6 @@
 using FluentAssertions;
-using Medusa.Enap.Common.Core.Exceptions;
-using Medusa.Enap.Common.Core.UseCases;
+using Common.Core.Exceptions;
+using Common.Core.UseCases;
 using System.Text.RegularExpressions;
 
 namespace UnitTests;
