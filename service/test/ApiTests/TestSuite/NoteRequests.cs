@@ -38,15 +38,6 @@ public static class NoteRequests
             parent[parts[^1]] = value;
     }
 
-    public static void Remove(JsonObject request, string path)
-    {
-        var parts = path.Split('.');
-        JsonNode parent = request;
-        foreach (var part in parts[..^1])
-            parent = parent is JsonArray array ? array[int.Parse(part)]! : parent[part]!;
-        parent.AsObject().Remove(parts[^1]);
-    }
-
     public static JsonObject Valid(int recipientId)
     {
         var request = JsonNode.Parse(

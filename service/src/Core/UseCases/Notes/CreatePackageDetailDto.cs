@@ -1,3 +1,6 @@
+using Common.Core.Exceptions;
+using Common.Core.UseCases;
+using DeliveryNoteService.Core.Errors;
 using DeliveryNoteService.Core.Models;
 using System.Text.Json.Serialization;
 
@@ -29,14 +32,19 @@ public record CreatePackageDetailDto
 
     public void Validate()
     {
-        NoteInput.Number(TareWgt, nameof(TareWgt), false);
-        NoteInput.Text(TareWgtUm, NoteLimits.TareWgtUm, nameof(TareWgtUm), false);
-        NoteInput.Number(PkgQty, nameof(PkgQty), true);
-        NoteInput.Text(PkgScale, NoteLimits.PkgScale, nameof(PkgScale), false);
-        NoteInput.Number(PkgSizeX, nameof(PkgSizeX), false);
-        NoteInput.Number(PkgSizeY, nameof(PkgSizeY), false);
-        NoteInput.Number(PkgSizeZ, nameof(PkgSizeZ), false);
-        NoteInput.Text(PkgSizeUm, NoteLimits.PkgSizeUm, nameof(PkgSizeUm), false);
+        Guard.ThrowIfMissing(TareWgt);
+        Guard.ThrowIfMissing(PkgQty);
+        Guard.ThrowIfMissing(PkgSizeX);
+        Guard.ThrowIfMissing(PkgSizeY);
+        Guard.ThrowIfMissing(PkgSizeZ);
+        if (PkgQty <= 0 || TareWgt < 0 || PkgSizeX < 0 || PkgSizeY < 0 || PkgSizeZ < 0)
+            throw new DataValidationException(ErrorCodes.Note.InvalidInput, "Invalid package quantity, weight or dimensions.");
+        Guard.ThrowIfMissing(TareWgtUm?.Trim(), nameof(TareWgtUm));
+        Guard.ThrowIfTooLong(TareWgtUm?.Trim(), NoteLimits.TareWgtUm, nameof(TareWgtUm));
+        Guard.ThrowIfMissing(PkgScale?.Trim(), nameof(PkgScale));
+        Guard.ThrowIfTooLong(PkgScale?.Trim(), NoteLimits.PkgScale, nameof(PkgScale));
+        Guard.ThrowIfMissing(PkgSizeUm?.Trim(), nameof(PkgSizeUm));
+        Guard.ThrowIfTooLong(PkgSizeUm?.Trim(), NoteLimits.PkgSizeUm, nameof(PkgSizeUm));
     }
 
     public NotePackageDetail ToModel() => MapTo(new NotePackageDetail());

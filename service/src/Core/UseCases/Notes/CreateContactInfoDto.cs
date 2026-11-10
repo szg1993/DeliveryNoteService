@@ -1,3 +1,4 @@
+using Common.Core.UseCases;
 using DeliveryNoteService.Core.Models;
 using System.Text.Json.Serialization;
 
@@ -16,10 +17,14 @@ public record CreateContactInfoDto
 
     public void Validate()
     {
-        NoteInput.Text(AssignTo, NoteLimits.AssignTo, nameof(AssignTo), false);
-        NoteInput.Text(AssignToPhone, NoteLimits.AssignToPhone, nameof(AssignToPhone), false);
-        NoteInput.Text(Contact, NoteLimits.Contact, nameof(Contact), false);
-        NoteInput.Text(ContactPhone, NoteLimits.ContactPhone, nameof(ContactPhone), false);
+        Guard.ThrowIfMissing(AssignTo?.Trim(), nameof(AssignTo));
+        Guard.ThrowIfTooLong(AssignTo?.Trim(), NoteLimits.AssignTo, nameof(AssignTo));
+        Guard.ThrowIfMissing(AssignToPhone?.Trim(), nameof(AssignToPhone));
+        Guard.ThrowIfTooLong(AssignToPhone?.Trim(), NoteLimits.AssignToPhone, nameof(AssignToPhone));
+        Guard.ThrowIfMissing(Contact?.Trim(), nameof(Contact));
+        Guard.ThrowIfTooLong(Contact?.Trim(), NoteLimits.Contact, nameof(Contact));
+        Guard.ThrowIfMissing(ContactPhone?.Trim(), nameof(ContactPhone));
+        Guard.ThrowIfTooLong(ContactPhone?.Trim(), NoteLimits.ContactPhone, nameof(ContactPhone));
     }
 
     public NoteContactInfo ToModel() => MapTo(new NoteContactInfo());

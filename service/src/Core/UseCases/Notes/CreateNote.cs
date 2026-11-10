@@ -22,7 +22,14 @@ public class CreateNote(
     {
         return logger.RunAsync(async () =>
         {
-            dto.Validate();
+            try
+            {
+                dto.Validate();
+            }
+            catch (DataValidationException exception) when (exception is FieldMissingException or FieldTooLongException)
+            {
+                throw new DataValidationException(ErrorCodes.Note.InvalidInput, exception.Message, exception);
+            }
             var recipient = await recipients.GetAsync(dto.RecipientId, ct)
                 ?? throw new NotFoundException(ErrorCodes.Recipient.NotFound, "Recipient not found.");
             var note = dto.ToModel(timeService);

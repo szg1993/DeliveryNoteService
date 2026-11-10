@@ -1,4 +1,7 @@
+using Common.Core.Exceptions;
 using Common.Core.Infrastructure;
+using Common.Core.UseCases;
+using DeliveryNoteService.Core.Errors;
 using DeliveryNoteService.Core.Models;
 using System.Text.Json.Serialization;
 
@@ -31,13 +34,20 @@ public record CreateNoteDto
 
     public void Validate()
     {
-        NoteInput.Text(EkaerNbr, NoteLimits.EkaerNbr, nameof(EkaerNbr), true);
-        NoteInput.Text(TakeoverPlace, NoteLimits.TakeoverPlace, nameof(TakeoverPlace), false);
-        NoteInput.Text(Category, NoteLimits.Category, nameof(Category), false);
-        NoteInput.Text(Comments, NoteLimits.Comments, nameof(Comments), true);
-        NoteInput.Require(RecipientId > 0, nameof(RecipientId));
-        NoteInput.Require(ContactInfo is not null && PackageDetail is not null && Deadline is not null, "Details");
-        NoteInput.Require(NoteLines is { Count: > 0 } && NoteLines.All(line => line is not null), nameof(NoteLines));
+        Guard.ThrowIfTooLong(EkaerNbr?.Trim(), NoteLimits.EkaerNbr, nameof(EkaerNbr));
+        Guard.ThrowIfMissing(TakeoverPlace?.Trim(), nameof(TakeoverPlace));
+        Guard.ThrowIfTooLong(TakeoverPlace?.Trim(), NoteLimits.TakeoverPlace, nameof(TakeoverPlace));
+        Guard.ThrowIfMissing(Category?.Trim(), nameof(Category));
+        Guard.ThrowIfTooLong(Category?.Trim(), NoteLimits.Category, nameof(Category));
+        Guard.ThrowIfTooLong(Comments?.Trim(), NoteLimits.Comments, nameof(Comments));
+        if (RecipientId <= 0)
+            throw new DataValidationException(ErrorCodes.Note.InvalidInput, "Invalid RecipientId.");
+        Guard.ThrowIfMissing(ContactInfo);
+        Guard.ThrowIfMissing(PackageDetail);
+        Guard.ThrowIfMissing(Deadline);
+        Guard.ThrowIfMissingOrEmpty(NoteLines);
+        if (NoteLines.Any(line => line is null))
+            throw new DataValidationException(ErrorCodes.Note.InvalidInput, "Invalid NoteLines.");
         ContactInfo.Validate();
         PackageDetail.Validate();
         Deadline.Validate();
@@ -49,10 +59,10 @@ public record CreateNoteDto
 
     public Note MapTo(Note model, ITimeService timeService)
     {
-        model.EkaerNbr = NoteInput.Optional(EkaerNbr);
+        model.EkaerNbr = string.IsNullOrWhiteSpace(EkaerNbr) ? null : EkaerNbr.Trim();
         model.TakeoverPlace = TakeoverPlace.Trim();
         model.Category = Category.Trim();
-        model.Comments = NoteInput.Optional(Comments);
+        model.Comments = string.IsNullOrWhiteSpace(Comments) ? null : Comments.Trim();
         model.IsUrgent = IsUrgent;
         model.IsCrackable = IsCrackable;
         model.IsDangerous = IsDangerous;

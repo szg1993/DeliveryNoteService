@@ -9,15 +9,6 @@ namespace ApiTests;
 public class NoteDetailsTests : DeliveryNoteServiceApiTestBase
 {
     [Fact]
-    public async Task CreatedNote_CanBeRetrievedThroughLocation()
-    {
-        var recipient = await Api.Recipients().PostAsync(RecipientRequests.Valid());
-        using var createdResponse = await Api.Notes().PostRawAsync(NoteRequests.Valid(recipient.Id));
-
-        await Api.AssertSavedNote(createdResponse);
-    }
-
-    [Fact]
     public async Task RetrievedNote_PreservesCompleteGraphAndOrderedDistinctLines()
     {
         var recipient = await Api.Recipients().PostAsync(RecipientRequests.Valid());
@@ -39,12 +30,11 @@ public class NoteDetailsTests : DeliveryNoteServiceApiTestBase
                 """
             )
         );
-        var created = await Api.Notes().PostAsync(request);
+        using var createdResponse = await Api.Notes().PostRawAsync(request);
         this.Time().SetDateTime(createdAt.AddDays(1));
 
-        var saved = await Api.Notes(created.Id).GetAsync();
+        var saved = await Api.AssertSavedNote(createdResponse);
 
-        saved.Should().BeEquivalentTo(created, options => options.WithStrictOrdering());
         saved.Should().BeEquivalentTo(
             new
             {
@@ -78,30 +68,9 @@ public class NoteDetailsTests : DeliveryNoteServiceApiTestBase
     }
 
     [Fact]
-    public async Task RetrievedNote_ReturnsExactCalendarDatesAndNormalizedOptionalText()
-    {
-        var recipient = await Api.Recipients().PostAsync(RecipientRequests.Valid());
-        var request = NoteRequests.Valid(recipient.Id);
-        request["ekaerNbr"] = "  ";
-        request["comments"] = "  ";
-        NoteRequests.Set(request, "noteLines.0.partCmt", JsonValue.Create("  "));
-        var created = await Api.Notes().PostAsync(request);
-
-        using var response = await Api.Notes(created.Id).GetRawAsync();
-
-        await response.AssertStatusCode(HttpStatusCode.OK);
-        var saved = (await response.ReadAsync<JsonObject>())["content"]!;
-        saved["deadline"]!["takeoverDate"]!.GetValue<string>().Should().Be("2020-01-01");
-        saved["deadline"]!["shipDate"]!.GetValue<string>().Should().Be("2020-01-01");
-        saved["deadline"]!["estimatedArrivalDate"]!.GetValue<string>().Should().Be("2020-01-02");
-        saved["ekaerNbr"].Should().BeNull();
-        saved["comments"].Should().BeNull();
-        saved["noteLines"]![0]!["partCmt"].Should().BeNull();
-    }
-
-    [Fact]
     public async Task IdenticalCreations_HaveSeparateRetrievableLocations()
     {
+        await this.SetNoteIdentity(0);
         var recipient = await Api.Recipients().PostAsync(RecipientRequests.Valid());
         var request = NoteRequests.Valid(recipient.Id);
         using var firstResponse = await Api.Notes().PostRawAsync(request);
@@ -120,27 +89,24 @@ public class NoteDetailsTests : DeliveryNoteServiceApiTestBase
         var second = (await secondRead.ReadAsync<Envelope<NoteDetailsDto>>()).Content;
         firstResponse.Headers.Location.Should().NotBe(secondResponse.Headers.Location);
         first.Id.Should().NotBe(second.Id);
+        first.NoteNbr.Should().Be("N00001");
+        second.NoteNbr.Should().Be("N00002");
         first.NoteNbr.Should().NotBe(second.NoteNbr);
         first.Should().BeEquivalentTo(firstCreated, options => options.WithStrictOrdering());
         second.Should().BeEquivalentTo(secondCreated, options => options.WithStrictOrdering());
     }
 
-    [Theory]
-    [InlineData(0)]
-    [InlineData(-1)]
-    [InlineData(123456)]
-    public Task AbsentNote_ReturnsStandardNotFound(int id)
-        => Api.Notes(id).GetRawAsync().AssertNotFoundAsync("Note.NotFound");
+    [Fact]
+    public Task AbsentNote_ReturnsStandardNotFound()
+        => Api.Notes(123456).GetRawAsync().AssertNotFoundAsync("Note.NotFound");
 
-    [Theory]
-    [InlineData("not-a-number")]
-    [InlineData("2147483648")]
-    public Task MalformedNoteId_ReturnsStandardBadRequest(string id)
-        => Api.Client.GetAsync($"/api/delivery-notes/{id}")
+    [Fact]
+    public Task MalformedNoteId_ReturnsStandardBadRequest()
+        => Api.Client.GetAsync("/api/delivery-notes/not-a-number")
             .AssertBadRequestAsync(CommonWebErrorCodes.InvalidHttpRequest);
 
     [Theory]
-    [InlineData("packageDetail.tareWgt", null, HttpStatusCode.BadRequest, "Note.InvalidInput")]
+    [InlineData("takeoverPlace", null, HttpStatusCode.BadRequest, "Note.InvalidInput")]
     [InlineData("recipientId", "123456", HttpStatusCode.NotFound, "Recipient.NotFound")]
     [InlineData("contactInfo.id", "99", HttpStatusCode.BadRequest, CommonWebErrorCodes.InvalidHttpRequest)]
     public async Task RejectedCreation_LeavesNoRetrievableNote(
@@ -159,6 +125,7 @@ public class NoteDetailsTests : DeliveryNoteServiceApiTestBase
 
         var error = await rejected.AssertErrorAsync(expectedStatus);
         error.ErrorCode.Should().Be(expectedCode);
-        await Api.Notes(1).GetRawAsync().AssertNotFoundAsync("Note.NotFound");
+        using var absent = await Api.Notes(1).GetRawAsync();
+        await absent.AssertNotFoundAsync("Note.NotFound");
     }
 }

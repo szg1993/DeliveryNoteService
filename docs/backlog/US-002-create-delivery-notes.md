@@ -26,6 +26,7 @@ so that I can record the details needed to prepare a delivery.
 The requirements below incorporate the developer's initial refinements and
 subsequent grilling answers, confirmed on 2026-11-10. A three-task breakdown
 exists; all coding tasks are complete and [agent review 02 passed](US-002-create-delivery-notes/review-02.md).
+The subsequent developer-requested Guard/test cleanup requires follow-up review.
 Human review and explicit acceptance remain. Legacy observations are historical
 reference, not the new contract.
 
@@ -154,10 +155,13 @@ None blocking. The developer confirmed shared understanding after grilling.
 
 ## Agreed test boundary
 
-Use HTTP through the existing API test host, creating prerequisite recipients
-through their endpoint. Verify creation responses and retrieve the saved note
-through its detail endpoint. POST and GET-by-ID are the confirmed application
-test boundary for US-002.
+The developer refined the test agreement on 2026-11-10: test DTO validation with
+a few unit tests calling `.Validate()` directly, and keep API coverage to a small
+representative set of complete workflows and essential HTTP behavior. This
+supersedes the earlier HTTP-only validation agreement and exhaustive field matrices.
+For HTTP tests, use the existing host and create prerequisite recipients through
+their endpoint. Verify saved details through POST and GET-by-ID. Parsing remains
+an HTTP concern, covered by representative cases rather than every numeric field.
 
 Use TDD against the confirmed public boundary and product criteria. Routine
 API verification uses SQLite. Testcontainers execution requires separate explicit

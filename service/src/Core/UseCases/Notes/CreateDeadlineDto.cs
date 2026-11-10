@@ -1,3 +1,6 @@
+using Common.Core.Exceptions;
+using Common.Core.UseCases;
+using DeliveryNoteService.Core.Errors;
 using DeliveryNoteService.Core.Models;
 using System.Text.Json.Serialization;
 
@@ -17,10 +20,11 @@ public record CreateDeadlineDto
 
     public void Validate()
     {
-        NoteInput.Require(TakeoverDate.HasValue, nameof(TakeoverDate));
-        NoteInput.Require(ShipDate.HasValue, nameof(ShipDate));
-        NoteInput.Require(EstimatedArrivalDate.HasValue, nameof(EstimatedArrivalDate));
-        NoteInput.Require(TakeoverDate <= ShipDate && ShipDate <= EstimatedArrivalDate, "DeadlineOrder");
+        Guard.ThrowIfMissing(TakeoverDate);
+        Guard.ThrowIfMissing(ShipDate);
+        Guard.ThrowIfMissing(EstimatedArrivalDate);
+        if (TakeoverDate > ShipDate || ShipDate > EstimatedArrivalDate)
+            throw new DataValidationException(ErrorCodes.Note.InvalidInput, "Invalid deadline order.");
     }
 
     public NoteDeadline ToModel() => MapTo(new NoteDeadline());
