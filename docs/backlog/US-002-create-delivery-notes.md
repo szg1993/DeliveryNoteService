@@ -25,8 +25,8 @@ so that I can record the details needed to prepare a delivery.
 
 The requirements below incorporate the developer's initial refinements and
 subsequent grilling answers, confirmed on 2026-11-10. A three-task breakdown
-exists; all coding tasks are complete and [agent review 02 passed](US-002-create-delivery-notes/review-02.md).
-The subsequent developer-requested Guard/test cleanup requires follow-up review.
+exists; all coding tasks and the developer-requested Guard/test cleanup are complete.
+[Agent review 03 passed](US-002-create-delivery-notes/review-03.md).
 Human review and explicit acceptance remain. Legacy observations are historical
 reference, not the new contract.
 
