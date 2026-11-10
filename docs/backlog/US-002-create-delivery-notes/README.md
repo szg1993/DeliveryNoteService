@@ -17,8 +17,8 @@ the creation Location header next, then exercise contention and number exhaustio
 through the same HTTP boundary. Each increment includes its own tests and OpenAPI
 metadata; correctness prerequisites are implemented in the first affected task.
 
-The source story is the authoritative confirmed specification, now In progress after
-the developer authorized implementation following confirmed grilling. Its legacy
+The source story is the authoritative confirmed specification, now In review after
+all three coding tasks completed. Its legacy
 investigation remains historical reference. The refinements below summarize the
 agreed contract for this breakdown; keep them synchronized with the story.
 
@@ -78,7 +78,7 @@ agreed contract for this breakdown; keep them synchronized with the story.
 | --- | --- | --- | --- | --- |
 | 1 | [T001: Create a complete delivery note](tasks/T001-create-complete-note.md) | done | US-001 recipient creation, verified present | Skeleton |
 | 2 | [T002: Retrieve a saved delivery note](tasks/T002-retrieve-saved-note.md) | done | T001 | Extension |
-| 3 | [T003: Verify concurrent creation and number exhaustion](tasks/T003-verify-number-boundaries.md) | todo | T001, T002 | Edge case |
+| 3 | [T003: Verify concurrent creation and number exhaustion](tasks/T003-verify-number-boundaries.md) | done | T001, T002 | Edge case |
 
 There are three coding tasks. Execute them sequentially: they share note DTOs,
 route registration, and HTTP helpers, and T003 verifies results through T002.
@@ -237,3 +237,4 @@ external adapter or runtime upgrade is assumed.
 
 - 2026-11-10: Resumed reservation aa94e8f5-208c-4204-a53b-50dac3e54bd0 after explicit developer direction; origin marker aafe717307555d4d8dc865b2dd4240ddeaee091d still matches the persisted attempt. T001 complete with 154 focused note tests, 210 SQLite API regressions and 171 unit tests passing; scoped formatter verification passed. See T001 Progress for migration/provider fidelity and preserved pre-existing JobExecutions snapshot drift. Next eligible task is T002 (GET and Location); T003 depends on it. Story remains In progress, plan active; no agent review or human acceptance yet.
 - 2026-11-10: T002 complete: GET fully reloads saved details/current recipient, POST advertises its Location, and generated metadata covers both. All 167 focused note tests, 223 SQLite API regressions and 171 unit tests passed; scoped formatting verification passed. See T002 Progress for red/green and reuse evidence. Next eligible task is T003 (concurrency/exhaustion through HTTP). Story remains In progress, plan active; no agent review or human acceptance yet. Reuse the same confirmed reservation attempt and local Git metadata record during delegation.
+- 2026-11-10: T003 complete: bounded HTTP contention, N99999/repeated exhaustion and final-number competition pass with saved graph readback. A real unrelated-check scenario exposed prefix-based SQLite error translation; exact named matching now preserves the technical 500. Shared concurrency/observation infrastructure and failure-path response disposal are verified. Final solution verification passed 228 non-PostgreSQL API tests and 171 unit tests; scoped formatting verification passed. See T003 Progress for exact commands, refactoring and provider fidelity. All three tasks are done; story is In review and plan remains active. Next action is a fresh independent initial story review against master; no prior US-002 report or human acceptance exists. Reuse reservation aa94e8f5-208c-4204-a53b-50dac3e54bd0 and its persisted local record. Nothing was pushed.

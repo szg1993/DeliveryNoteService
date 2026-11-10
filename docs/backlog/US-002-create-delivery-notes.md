@@ -1,6 +1,6 @@
 # US-002: Create delivery notes
 
-- Status: In progress
+- Status: In review
 - Area: Delivery notes
 - Implementation repository: DeliveryNoteService
 - Implementation solution: `service/DeliveryNoteService.sln`
@@ -25,7 +25,7 @@ so that I can record the details needed to prepare a delivery.
 
 The requirements below incorporate the developer's initial refinements and
 subsequent grilling answers, confirmed on 2026-11-10. A three-task breakdown
-exists; implementation is in progress. Legacy observations are historical
+exists; all coding tasks are complete and independent review is next. Legacy observations are historical
 reference, not the new contract.
 
 ## Creation contract

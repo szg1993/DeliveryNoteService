@@ -13,15 +13,8 @@ public class NoteDetailsTests : DeliveryNoteServiceApiTestBase
     {
         var recipient = await Api.Recipients().PostAsync(RecipientRequests.Valid());
         using var createdResponse = await Api.Notes().PostRawAsync(NoteRequests.Valid(recipient.Id));
-        await createdResponse.AssertStatusCode(HttpStatusCode.Created);
-        var created = (await createdResponse.ReadAsync<Envelope<NoteDetailsDto>>()).Content;
-        createdResponse.Headers.Location.Should().NotBeNull();
 
-        using var response = await Api.Client.GetAsync(createdResponse.Headers.Location);
-
-        await response.AssertStatusCode(HttpStatusCode.OK);
-        var saved = (await response.ReadAsync<Envelope<NoteDetailsDto>>()).Content;
-        saved.Should().BeEquivalentTo(created, options => options.WithStrictOrdering());
+        await Api.AssertSavedNote(createdResponse);
     }
 
     [Fact]

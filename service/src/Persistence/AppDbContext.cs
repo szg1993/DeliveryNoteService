@@ -41,7 +41,7 @@ public class AppDbContext : AppDbContextBase
             Npgsql.PostgresException postgres => postgres.SqlState == Npgsql.PostgresErrorCodes.CheckViolation &&
                 postgres.ConstraintName == NoteMapping.NumberRangeConstraint,
             Microsoft.Data.Sqlite.SqliteException sqlite => sqlite.SqliteExtendedErrorCode == 275 &&
-                sqlite.Message.Contains("CHECK constraint failed: " + NoteMapping.NumberRangeConstraint, StringComparison.Ordinal),
+                sqlite.Message.EndsWith("CHECK constraint failed: " + NoteMapping.NumberRangeConstraint + "'.", StringComparison.Ordinal),
             _ => false
         };
     }
