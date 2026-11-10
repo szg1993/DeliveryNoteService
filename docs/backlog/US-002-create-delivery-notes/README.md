@@ -17,8 +17,8 @@ the creation Location header next, then exercise contention and number exhaustio
 through the same HTTP boundary. Each increment includes its own tests and OpenAPI
 metadata; correctness prerequisites are implemented in the first affected task.
 
-The source story is the authoritative confirmed specification, now Planned after
-the developer confirmed shared understanding following grilling. Its legacy
+The source story is the authoritative confirmed specification, now In progress after
+the developer authorized implementation following confirmed grilling. Its legacy
 investigation remains historical reference. The refinements below summarize the
 agreed contract for this breakdown; keep them synchronized with the story.
 
@@ -76,7 +76,7 @@ agreed contract for this breakdown; keep them synchronized with the story.
 
 | Order | Task | Status | Depends on | Increment |
 | --- | --- | --- | --- | --- |
-| 1 | [T001: Create a complete delivery note](tasks/T001-create-complete-note.md) | todo | US-001 recipient creation, verified present | Skeleton |
+| 1 | [T001: Create a complete delivery note](tasks/T001-create-complete-note.md) | done | US-001 recipient creation, verified present | Skeleton |
 | 2 | [T002: Retrieve a saved delivery note](tasks/T002-retrieve-saved-note.md) | todo | T001 | Extension |
 | 3 | [T003: Verify concurrent creation and number exhaustion](tasks/T003-verify-number-boundaries.md) | todo | T001, T002 | Edge case |
 
@@ -234,3 +234,5 @@ external adapter or runtime upgrade is assumed.
 - Only the empty reservation marker was published. This skill authorizes a local
   planning commit; it does not authorize pushing the planning commit, opening a
   pull request, merging, or starting implementation.
+
+- 2026-11-10: Resumed reservation aa94e8f5-208c-4204-a53b-50dac3e54bd0 after explicit developer direction; origin marker aafe717307555d4d8dc865b2dd4240ddeaee091d still matches the persisted attempt. T001 complete with 154 focused note tests, 210 SQLite API regressions and 171 unit tests passing; scoped formatter verification passed. See T001 Progress for migration/provider fidelity and preserved pre-existing JobExecutions snapshot drift. Next eligible task is T002 (GET and Location); T003 depends on it. Story remains In progress, plan active; no agent review or human acceptance yet.

@@ -12,4 +12,10 @@ public static class ErrorCodes
         public const string InvalidCountry = _prefix + "InvalidCountry";
         public const string AlreadyExists = _prefix + "InvalidCountry";
     }
+    public static class Note
+    {
+        private const string _prefix = nameof(Note) + ".";
+        public const string InvalidInput = _prefix + "InvalidInput";
+        public const string NumberExhausted = _prefix + "NumberExhausted";
+    }
 }

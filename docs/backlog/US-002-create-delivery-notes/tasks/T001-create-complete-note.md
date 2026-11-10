@@ -1,7 +1,7 @@
 # T001: Create a complete delivery note
 
 - Parent: [US-002](../README.md)
-- Status: todo
+- Status: done
 - Depends on: US-001 recipient creation (verified in published master)
 - Increment: Skeleton
 
@@ -63,41 +63,41 @@ must not call an unimplemented GET route or advertise a URI that returns 404.
 
 ## Acceptance criteria
 
-- [ ] Valid full input creates a note and returns 201 with the standard envelope,
+- [x] Valid full input creates a note and returns 201 with the standard envelope,
   all mapped details/current recipient details, and positive server-assigned IDs.
-- [ ] With the note identity reset in an isolated SQLite test, the first creation
+- [x] With the note identity reset in an isolated SQLite test, the first creation
   is N00001 and the next is N00002. Arbitrary initial fixture IDs are not treated
   as a production numbering rule. Input does not assign the generated fields.
-- [ ] The fixed clock controls UTC CreatedDate and status is always Pending;
+- [x] The fixed clock controls UTC CreatedDate and status is always Pending;
   creation requires no authentication and stores no placeholder creator.
-- [ ] Text normalization and every source length limit apply after trimming.
+- [x] Text normalization and every source length limit apply after trimming.
   Optional EKAER/comments may be null, absent, or blank; blank becomes null.
   False flags and free-form nonblank unit labels are accepted.
-- [ ] Missing/null required objects or required text, whitespace-only text,
+- [x] Missing/null required objects or required text, whitespace-only text,
   oversized values, empty/null lines, and null line entries return standard 400
   errors. Validate each nested field rather than relying on EF annotations.
-- [ ] Positive decimal quantities, nonnegative decimal weights/dimensions, and
+- [x] Positive decimal quantities, nonnegative decimal weights/dimensions, and
   fractional values are accepted. Nonpositive quantities and negative
   weights/dimensions are rejected with 400, without silently rounding. Every
   numeric field must be explicitly supplied; missing/null values return 400,
   while explicit zero weights/dimensions remain valid.
-- [ ] All deadline dates are required and ordered; equal/past dates are accepted,
+- [x] All deadline dates are required and ordered; equal/past dates are accepted,
   reversed dates are rejected. All three deadlines use DateOnly in DTOs/domain,
   accept/return exactly yyyy-MM-dd, and undergo no timezone conversion.
   Timestamps, date-time strings, blanks, missing/null values, and invalid dates
   return 400; the permissive shared converter must not bypass these rules.
-- [ ] Unknown properties, including caller-assigned server fields, at the note or
+- [x] Unknown properties, including caller-assigned server fields, at the note or
   any nested level are rejected with 400; known names match case-insensitively.
   Null bodies and malformed JSON fail as requests with the standard error
   format; existing recipient request behavior remains intact.
-- [ ] Invalid/nonpositive RecipientId is 400; an unknown positive recipient is
+- [x] Invalid/nonpositive RecipientId is 400; an unknown positive recipient is
   404. Business errors have stable codes grouped under Note when entity-specific.
-- [ ] Required relationships, identity uniqueness/range, and transactional save
+- [x] Required relationships, identity uniqueness/range, and transactional save
   prevent partial persisted graphs. Number exhaustion is mapped specifically to
   400 rather than a generic uniqueness conflict or unhandled provider exception.
-- [ ] Two sequential identical valid POSTs each return 201 with distinct IDs and
+- [x] Two sequential identical valid POSTs each return 201 with distinct IDs and
   note numbers. No duplicate suppression or idempotent retry behavior is implied.
-- [ ] Generated OpenAPI describes required/nested inputs, numeric/date/text rules,
+- [x] Generated OpenAPI describes required/nested inputs, numeric/date/text rules,
   rejection of server fields, anonymous access, 201/400/404, and response schemas.
 
 ## Verification
@@ -123,5 +123,13 @@ commands here. Never start Testcontainers without explicit approval.
 
 ## Progress
 
-No implementation started. Record dated work, verification evidence, and remaining
-work here during implementation.
+- 2026-11-10: Implemented anonymous POST creation through the agreed HTTP seam, with full note/contact/package/deadline/line graph, existing recipient reference, DTO-local validation/normalization/mapping, UTC clock, Pending status, and complete response envelope. No Location header is advertised until T002 implements GET.
+- TDD evidence: first HTTP tracer failed with 404 before the route existed, then passed with 201 and normalized full details/server fields. Documentation tracer failed because required schema constraints were absent, then passed after the scoped schema filter. Added field/date/numeric/unknown-property rejection cases, text boundary acceptance, exact decimal/line-order/flags scenarios, malformed bodies, missing recipient, and repeated creation. Basic exhaustion check initially exposed a no-op test sequence UPDATE; note-only setup now inserts an absent sqlite_sequence row before updating, and the request returns Note.NumberExhausted/400.
+- Persistence: one SaveChangesAsync persists the entire graph under EF's automatic transaction. Named CK_Notes_NumberRange enforces 1..99999; only this check violation is translated at the persistence boundary for SQLite and PostgreSQL. NoteNbr derives from the immutable generated ID; no separate counter, process lock or mutable number string. PostgreSQL decimal columns are unconstrained numeric; SQLite migration uses TEXT matching EF decimal storage to avoid numeric-affinity rounding. Dates remain DateOnly/date.
+- Migration inspection found pre-existing snapshot drift: JobExecution was still recorded although its CLR/runtime mapping had already been removed. The scaffold attempted to drop JobExecutions. Removed that unrelated operation and retained its prior metadata in the new designer/snapshot, preserving the existing table and keeping this migration additive. Runtime behavior is unchanged by that preservation; a future migration author must account for this existing drift rather than accepting another unrelated drop. The Recipient CLR namespace is now reflected as Core without changing the existing table contract.
+- Refactoring assessment (production and tests): centralized text limits in NoteLimits across validation, EF mapping and OpenAPI; shared NoteInput owns only validation/normalization primitives, and each DTO owns mapping. Reviewed logger/clock/cancellation, complete response projections and named provider-error filtering. Clean-code assessment: 9/10; schema metadata remains a larger declarative method, with further rule grouping useful only if that contract grows. No speculative abstraction or unrelated cleanup was justified. Followed implement-task's required pre-verification refactoring despite the tdd skill's generic suggestion to defer it to review.
+- Reuse assessment: inspected RecipientCreationTests, RecipientDetailsTests, RecipientConcurrencyTests and the existing TestSuite. Extended DeliveryNoteServiceApi with Notes(), composed NoteRequests and note-only identity setup around the existing host, and reused recipient setup. Each test retains its own database/clock/client; DeliveryNoteServiceApiTestBase remains the sole host/database/client disposal owner. Documentation configuration is set before startup; identity setup runs after initialization and before requests. No new harness or internal mocks. Scenario-specific data stays in tests; capability helpers remove JSON/protocol/setup mechanics.
+- Verification commands (repository root): dotnet test service/test/ApiTests/ApiTests.csproj --filter "FullyQualifiedName~Note&Database!=PostgreSQL" -v minimal: 154 passed. dotnet test service/test/ApiTests/ApiTests.csproj --filter "Database!=PostgreSQL" -v minimal -- xUnit.ParallelizeTestCollections=false: 210 passed. dotnet test service/DeliveryNoteService.sln --filter "Database!=PostgreSQL" -v minimal -- xUnit.ParallelizeTestCollections=false: 210 API and 171 unit tests passed. Scoped dotnet format service/DeliveryNoteService.sln --include <all task C# files> --no-restore and the same command with --verify-no-changes passed. No Markdown formatter is configured; Markdown follows the existing repository layout. Final whitespace-only migration alignment was followed by scoped formatter verification and focused note checks.
+- Tooling: SDK 10.0.302 targets the existing net8.0 projects; installed dotnet-ef 8.0.10 only under ignored .git/tools for migration scaffolding. No tool manifest, production dependency, or runtime upgrade was added.
+- Skills used: tdd (HTTP red/green behavior), clean-code (implementation and scoped refactoring), component-testing (required by .NET testing policy; real HTTP host/persistence with SQLite and deterministic external substitutes). No loaded-but-unused skills.
+- Limits/remaining work: SQLite does not verify PostgreSQL identity/locking/migration/constraint-error semantics; production migration and exact named translation were inspected, and no Testcontainers were started. Durable GET readback and Location belong to T002; concurrent/final-number/rollback workflows belong to T003. Story remains In progress and plan active; human acceptance has not occurred.
