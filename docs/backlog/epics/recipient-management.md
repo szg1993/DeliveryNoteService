@@ -11,7 +11,9 @@ backend, preserving agreed business rules from the legacy implementation.
 ## Initial story
 
 - [US-001: Create and view recipients](../US-001-create-and-view-recipients.md):
-  create recipients, list them, and retrieve a recipient's details by ID.
+  create recipients, list them, and retrieve a recipient's details by ID. Merged
+  into master in [PR #1](https://github.com/szg1993/DeliveryNoteService/pull/1) on
+  2026-11-10; formal closure is pending the follow-up review recorded in the story.
 
 ## Candidate stories to refine
 

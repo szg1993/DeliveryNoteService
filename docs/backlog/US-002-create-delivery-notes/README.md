@@ -160,9 +160,11 @@ instead of deferring the basic validation and transaction requirements of T001.
 
 ## External prerequisites and gates
 
-- US-001 recipient creation is implemented in the current published master base
-  025ec1cc157ab38b5cd4e5b8a133eec5f55839f9. Source tracking still says In review;
-  this plan does not record human acceptance or modify that unrelated story.
+- US-001 is merged into master through PR #1 at
+  025ec1cc157ab38b5cd4e5b8a133eec5f55839f9, confirmed by the developer on
+  2026-11-10. Its recipient-creation dependency is satisfied. Formal US-001 closure
+  remains pending a follow-up review of changes after its recorded PASS; this
+  does not make the existing recipient implementation unavailable to US-002.
 - .NET SDK, restored packages, and local formatter/test availability must be
   checked at implementation start. This planning invocation does not run builds,
   tests, containers, or dependency installation.
