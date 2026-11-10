@@ -34,6 +34,10 @@ note details and current recipient details through GET.
 - [ ] A new GET request returns the normalized, persisted header/flags, complete
   contact/package/deadline details, and every line, including repeated part codes,
   optional text, decimal values, server child IDs, and original line order.
+- [ ] All three deadlines round-trip as the same yyyy-MM-dd calendar dates using
+  DateOnly response properties, without offsets or timezone conversion.
+- [ ] Identical valid POSTs create separate notes; both can be retrieved through
+  their distinct Location URIs with their own IDs/numbers and complete details.
 - [ ] GET exposes the referenced recipient's current details using the existing
   recipient DTO. No recipient snapshot is persisted on the note. Reference
   loading is verified using the recipient created through HTTP; no recipient
@@ -42,7 +46,8 @@ note details and current recipient details through GET.
   with a stable Note error code. Malformed/out-of-range integer route input
   returns 400 using the current HTTP error convention.
 - [ ] Creation remains anonymous and GET is anonymous. Reads do not change the
-  stored note or assign new identifiers/timestamps.
+  stored note or assign new identifiers/timestamps. Anonymous GET returns full
+  contact/current recipient details; access control is explicitly deferred.
 - [ ] For representative failed validation and missing-recipient requests in a
   fresh identity-controlled test, GET confirms that no note was created at the
   next candidate ID before any subsequent valid creation is made.

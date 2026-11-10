@@ -1,30 +1,73 @@
 # US-002: Create delivery notes
 
-- Status: Draft
+- Status: Planned
 - Area: Delivery notes
 - Implementation repository: DeliveryNoteService
 - Implementation solution: `service/DeliveryNoteService.sln`
 - Breakdown: [Implementation plan, confirmed refinements, and tasks](US-002-create-delivery-notes/README.md).
 - Dependencies: Recipient creation from [US-001](US-001-create-and-view-recipients.md).
-  User attribution remains unresolved; no user-management dependency is agreed.
+  Creator attribution and access control are deferred; no user-management dependency.
+- Refinement: Developer confirmed shared understanding after grilling on 2026-11-10.
 
 ## User story
 
 As a delivery-note user, I want to create a delivery note for an existing recipient
 so that I can record the details needed to prepare a delivery.
 
-## Scope under refinement
+## Confirmed scope
 
 - Introduce the Note model and persist notes through a creation use case exposed
   by POST /api/delivery-notes.
-- Decide whether this increment includes the complete legacy note or only its
-  header. Contact details, package details, deadlines, and lines are not yet
-  confirmed scope.
-- Define the creation response and a public way to verify saved details.
+- Create the complete legacy note: header, contact details, package details,
+  deadlines, and at least one line, linked to an existing recipient.
+- Include GET /api/delivery-notes/{id} and return complete saved details and
+  current recipient details from both endpoints, using Envelope<T>.
 
-The user selected note creation as the next story and requested investigation of
-the legacy POST endpoint. The proposals below are not an approved specification.
-No task breakdown or implementation has started.
+The requirements below incorporate the developer's initial refinements and
+subsequent grilling answers, confirmed on 2026-11-10. A three-task breakdown
+exists; implementation has not started. Legacy observations are historical
+reference, not the new contract.
+
+## Creation contract
+
+- Retain legacy business field names and maximum lengths listed below. Trim
+  text before length validation and storage, preserving internal whitespace.
+  Optional EKAER/comments may be absent, null, or blank; blank becomes null.
+  Require legacy-required text and nonblank free-text unit labels; no unit list
+  or new category enumeration is introduced.
+- Require ContactInfo, PackageDetail, Deadline, and a nonempty NoteLines
+  collection without null entries. Preserve line order and distinct lines even
+  when part codes repeat. No additional maximum line count is imposed.
+- Use decimal quantities, weights, and dimensions without business-specific
+  precision limits or silent rounding. Quantities must be positive; weights and
+  dimensions must be nonnegative and explicitly supplied, including zero.
+  Missing/null numeric values are invalid. Omitted handling flags are false.
+- TakeoverDate, ShipDate, and EstimatedArrivalDate use DateOnly in request and
+  response DTOs and the domain model. Accept and return exactly yyyy-MM-dd;
+  reject timestamps, date-time strings, blanks, missing/null values, and invalid
+  dates. Do not convert calendar dates to UTC instants. Require TakeoverDate <=
+  ShipDate <= EstimatedArrivalDate; equal and past dates are allowed.
+- The caller supplies RecipientId for an existing recipient. Nonpositive IDs
+  are invalid input (400); unknown positive IDs return 404. Recipient data is a
+  live relationship, not a historical snapshot.
+- The server assigns note/child IDs, NoteNbr, UTC CreatedDate using ITimeService,
+  and initial Pending status. No User relationship or placeholder creator is
+  introduced. Both creation and full detail retrieval are anonymous; access
+  control and creator attribution are deferred.
+- Reject caller-supplied server fields, including nested IDs and legacy UserId.
+  Reject every unknown property at every request level with 400. Retain
+  case-insensitive property matching and apply these rules only to the new note
+  contract.
+- Use one permanent service-wide sequence N00001 through N99999, without reset
+  or reuse. Successful concurrent creations have distinct numbers. Gaps are
+  allowed and may exhaust the sequence before 99,999 notes have been saved.
+  Exhaustion stops creation with 400 until a later feature changes the scheme.
+- Each POST is a separate creation, even when content is identical. A retry
+  after an uncertain response may create another note; idempotency is deferred.
+- POST returns 201 and Location pointing to GET-by-ID, which returns 200. Both
+  expose full note details, server fields, and current recipient details.
+  Business-rule failures return 400; missing resources return 404. Use the
+  existing error envelope and stable error codes.
 
 ## Legacy creation flow
 
@@ -51,8 +94,8 @@ The Minimal API maps POST /api/delivery-notes/ to NoteService.AddNoteAsync:
 | Deadline | TakeoverDate, ShipDate, EstimatedArrivalDate |
 | NoteLines | PartCode, PartDesc, PartCmt, PartQty, PartQtyUm, PartWgt, PartWgtUm |
 
-Nested DTOs also accept Id. Decide the new creation contract explicitly rather
-than carrying these identifiers into it automatically. NoteLines defaults to an
+Legacy nested DTOs also accept Id; the new contract rejects these inputs.
+Legacy NoteLines defaults to an
 empty list. The Note model references one recipient and one user, has contact,
 package, and deadline navigation properties, and holds a collection of lines.
 
@@ -82,62 +125,50 @@ package, and deadline navigation properties, and holds a collection of lines.
 - CreatedDate uses local server time. CancellationToken is accepted by the route
   but is not passed to AddNoteAsync.
 
-## Proposed acceptance criteria
+## Acceptance criteria
 
-These criteria require refinement and developer confirmation.
+Apply the confirmed creation contract to every criterion.
 
 1. Creating a note with valid, agreed details and an existing recipient persists
    it and returns HTTP 201 with its generated identifier and note number in the
    service's response envelope.
 2. The server assigns the note identifier, note number, and UTC creation time.
-   Initial status is Pending, subject to confirmation of the status policy.
-3. Saved details can be observed through the agreed public API boundary. Decide
-   whether to include GET /api/delivery-notes/{id}; if included, creation returns
-   a Location header pointing to that resource.
+   Initial status is always Pending.
+3. Saved details can be observed through GET /api/delivery-notes/{id}; creation
+   returns a Location header pointing to that resource. Retrieval preserves
+   submitted line order and calendar dates without timezone conversion.
 4. Invalid input is rejected using the service's error format and stable error
-   codes, without saving a note or any of its new dependent records. Exact
-   validation rules and unknown-recipient response remain to be agreed.
-5. If nested details and lines are included, the complete creation succeeds or
+   codes, without saving a note or any of its new dependent records. This includes
+   missing numeric values, invalid date formats, and unknown nested properties.
+5. The complete creation, including nested details and lines, succeeds or
    fails together; partial notes are not left behind.
-6. Successful concurrent creations receive different note numbers. Number format,
-   upper bound, exhaustion response, and gap policy remain to be agreed.
+6. Successful concurrent creations receive different note numbers in the permanent
+   N00001..N99999 sequence; gaps are allowed and exhaustion returns 400.
 7. The generated OpenAPI document describes the agreed creation contract,
-   responses, and any detail endpoint included in this story.
+   responses, and detail endpoint, including anonymous access and strict inputs.
 
 ## Open questions
 
-1. Full legacy note creation or header only? If full, which nested details are
-   mandatory, and are zero lines allowed?
-2. Should all notes start Pending, with approval and rejection handled later?
-3. How should the creator be represented before authentication and user management
-   exist? The previous story's anonymous-access decision applies to recipients;
-   note creation needs its own decision.
-4. Keep N plus five digits? Is the legacy 55555 limit intentional? Are gaps in
-   numbering acceptable after failures, and what happens when numbers run out?
-5. Which legacy fields and limits remain? Clarify Category, TakeoverPlace,
-   IsCrackable, IsOwnCost, AssignTo, TareWgt, and PkgScale before renaming them or
-   prescribing new rules. Agree requiredness, trimming, numeric ranges, supported
-   units, and whether deadlines are dates or instants with ordering constraints.
-6. Include detail retrieval for verification? Agree creation/read response fields,
-   unknown-recipient behavior, and whether recipient details are referenced live
-   or captured as a snapshot when the note is created.
+None blocking. The developer confirmed shared understanding after grilling.
 
-## Proposed test boundary
+## Agreed test boundary
 
 Use HTTP through the existing API test host, creating prerequisite recipients
-through their endpoint. Verify creation responses and, if agreed, retrieve the
-saved note through its detail endpoint. HTTP is proposed for this story; the
-recipient story's agreement does not automatically confirm it here.
+through their endpoint. Verify creation responses and retrieve the saved note
+through its detail endpoint. POST and GET-by-ID are the confirmed application
+test boundary for US-002.
 
-Use TDD after confirmation of the public boundary and product criteria. Routine
+Use TDD against the confirmed public boundary and product criteria. Routine
 API verification uses SQLite. Testcontainers execution requires separate explicit
 approval under repository instructions.
 
-## Excluded scope proposed for this increment
+## Excluded scope
 
 - Updating, deleting, listing, dashboard queries, and status transitions.
-- Frontend changes, authentication implementation, and legacy data migration.
+- Frontend changes, authentication/access control, creator attribution, and legacy
+  data migration.
 - Standalone note-line management endpoints.
+- Request idempotency and numbering reset, reuse, or expansion beyond N99999.
 
 ## Legacy references
 

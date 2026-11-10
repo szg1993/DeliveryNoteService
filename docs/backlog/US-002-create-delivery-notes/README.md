@@ -2,6 +2,7 @@
 
 - Source: DeliveryNoteService/docs/backlog/US-002-create-delivery-notes.md
 - Refinement source: conversation: US-002 creation rules, 2026-11-10
+- Grilling: Shared understanding explicitly confirmed by the developer, 2026-11-10
 - Lifecycle: active
 - Created: 2026-11-10
 - Updated: 2026-11-10
@@ -16,11 +17,10 @@ the creation Location header next, then exercise contention and number exhaustio
 through the same HTTP boundary. Each increment includes its own tests and OpenAPI
 metadata; correctness prerequisites are implemented in the first affected task.
 
-The source file preserves the original Draft investigation. The developer's
-subsequent answers below resolve its proposed scope and open questions for this
-breakdown. The skill permits only a breakdown link and an agreed lifecycle change
-in the source specification; its original text and Draft status are preserved.
-Read the source together with these confirmed refinements when implementing.
+The source story is the authoritative confirmed specification, now Planned after
+the developer confirmed shared understanding following grilling. Its legacy
+investigation remains historical reference. The refinements below summarize the
+agreed contract for this breakdown; keep them synchronized with the story.
 
 ## Confirmed refinements
 
@@ -33,21 +33,33 @@ Read the source together with these confirmed refinements when implementing.
 - Require ContactInfo, PackageDetail, and Deadline, all legacy-required text
   fields, and a nonempty NoteLines collection without null elements. Package and
   line quantities are positive decimals; weights and dimensions are nonnegative
-  decimals. Do not introduce rounding or additional precision limits. False
+  decimals. Numeric values must be explicitly supplied; missing/null values are
+  invalid, including weights and dimensions for which explicit zero is valid.
+  Do not introduce rounding or additional precision limits. False
   handling flags and zero weights/dimensions are valid. There is no extra maximum
   line count in this story.
 - Use calendar dates for all three deadlines, with TakeoverDate <= ShipDate <=
   EstimatedArrivalDate. Past dates and equal dates are allowed. Require all three
-  values; serialize dates as yyyy-MM-dd. Creation time is a UTC instant assigned
+  values as DateOnly in DTOs and the domain model. Accept and return exactly
+  yyyy-MM-dd, without timezone conversion. Reject timestamps, date-time strings,
+  blanks, missing/null values, and invalid dates. Creation time is a UTC instant assigned
   by the server using ITimeService, separate from these calendar dates.
-- Creation works anonymously and always starts Pending. Creator attribution is
+- Creation and full GET-by-ID retrieval work anonymously; access control is
+  deferred. Creation always starts Pending. Creator attribution is
   deferred; no User relationship, user prerequisite, or placeholder user is
   introduced. The caller supplies RecipientId for an existing recipient. Other
   note/nested IDs, note number, status, creation time, and legacy UserId are not
   accepted as caller-assigned creation fields; their presence is rejected.
+  Reject every other unknown property at every request level with 400 as well;
+  retain case-insensitive matching of known properties.
 - Number notes N00001 through N99999. Distinct successful creations, including
   concurrent ones, must have different numbers. Gaps are allowed. Exhaustion is
-  a business failure returning HTTP 400. Do not retain the legacy 55555 boundary.
+  a business failure returning HTTP 400. This is one permanent service-wide
+  sequence without reset or reuse; gaps can exhaust it before 99,999 notes are
+  saved. Creation then stops until a later feature changes the numbering scheme.
+  Do not retain the legacy 55555 boundary.
+- Each POST is a separate creation, even for identical content. Retrying after
+  an uncertain response may create another note; no idempotency is promised.
 - Business-rule failures return HTTP 400; missing notes or referenced recipients
   return 404. Use the existing error envelope and stable codes. This supersedes
   the earlier proposed 409 exhaustion response. It does not change the recipient
@@ -97,13 +109,18 @@ progress; keep the table synchronized with those files.
   avoid read-last/increment logic and process-local locks. Translate only this
   named range-constraint violation to ErrorCodes.Note.NumberExhausted and HTTP
   400 in the persistence boundary. Keep unrelated technical failures distinct.
-- Keep numeric values decimal and dates DateOnly in the new model. Use the
-  existing JSON and UTC timestamp conventions; response property names follow
+- Keep numeric values decimal and deadline dates DateOnly in the model and DTOs.
+  Enforce the strict calendar-date contract locally: the shared DateOnly
+  converter also accepts timestamps/nulls and cannot establish this contract on
+  its own. Preserve required-value detection instead of silently substituting
+  zero or a default date. Use existing UTC timestamp conventions for CreatedDate;
+  response property names follow
   the legacy note names, including NoteNbr, CreatedDate, and NoteStatusId.
   Status is represented by the service's normal enum serialization. Reuse
   RecipientDetailsDto for current recipient data.
-- Restrict server-field rejection to the new note creation contract, including
-  nested objects. Ensure model-binding failures use the standard 400 error shape;
+- Restrict unknown-property rejection, including server fields, to the new note
+  creation contract at every nested level. Retain case-insensitive matching.
+  Ensure model-binding failures use the standard 400 error shape;
   do not change unknown-property behavior for existing recipient requests.
 - Extend the existing DeliveryNoteServiceApi wrapper, request factories, and
   TestSuite helpers. Keep the real host, validation, models, EF mappings,
@@ -127,8 +144,7 @@ progress; keep the table synchronized with those files.
 
 ## Acceptance coverage
 
-Criterion numbers refer to the source's Proposed acceptance criteria, resolved
-by the confirmed conversation refinements above.
+Criterion numbers refer to the source's confirmed acceptance criteria.
 
 | Source criterion or refinement | Tasks |
 | --- | --- |
@@ -140,8 +156,11 @@ by the confirmed conversation refinements above.
 | AC6: Unique concurrent numbers, correct range and exhaustion | T001, T003 |
 | AC7: Generated OpenAPI for POST and GET | T001, T002, T003 |
 | Required nested data, at least one line, text normalization/limits | T001, T002 |
-| Decimal ranges and calendar-date ordering | T001, T002 |
-| Reject caller-supplied server fields, allow anonymous creation | T001 |
+| Explicit numeric inputs, decimal ranges, strict DateOnly dates and ordering | T001, T002 |
+| Reject unknown/server fields at every level | T001 |
+| Anonymous creation and full detail retrieval | T001, T002 |
+| Each repeated POST creates separately; no idempotency | T001, T002 |
+| Permanent sequence, no reset/reuse, exhaustion despite allowed gaps | T001, T003 |
 | Existing recipient reference, current recipient response, unknown ID | T001, T002 |
 | HTTP 400 business failures and 404 missing resources | T001, T002, T003 |
 
@@ -179,8 +198,9 @@ instead of deferring the basic validation and transaction requirements of T001.
 
 ## Assumptions and open questions
 
-No unresolved product question blocks this breakdown. The confirmed rules above
-supersede the source Draft's open questions. Harmless representation choices:
+No unresolved product question blocks this breakdown. The developer confirmed
+shared understanding after grilling; the source now records those decisions.
+Harmless representation choices:
 blank optional text is null, absent Boolean flags are false, positive unknown
 RecipientId is 404, and nonpositive RecipientId is invalid input (400). Follow
 the current recipient detail route for integer binding: malformed/out-of-range
@@ -194,6 +214,13 @@ external adapter or runtime upgrade is assumed.
 
 ## Resume notes
 
+- 2026-11-10: Grilling completed and shared understanding explicitly confirmed.
+  Updated the authoritative story, index, and existing tasks without starting
+  implementation. Confirmed permanent numbering without reset/reuse, separate
+  creation on repeated POSTs, anonymous full retrieval, explicit numeric inputs,
+  strict unknown-property rejection, and DateOnly deadline DTOs/domain values
+  with exact yyyy-MM-dd input/output and no timezone conversion. The interim
+  DateTimeOffset proposal was withdrawn; CreatedDate remains a UTC instant.
 - 2026-11-10: Developer confirmed full legacy creation, Pending, anonymous access,
   deferred creator attribution, HTTP POST/GET test boundary, live recipient data,
   range through N99999 with gaps, validation rules, decimals, calendar dates, and

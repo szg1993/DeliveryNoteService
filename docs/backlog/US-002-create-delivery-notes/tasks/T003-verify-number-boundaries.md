@@ -40,6 +40,8 @@ atomic-creation contract, with exhaustion reported as a business error (400).
 - [ ] At exhaustion, repeated valid requests remain 400 and do not alter the
   previously saved N99999 note or its children. GET for a failed next candidate
   note ID remains 404; the successful note remains fully retrievable.
+  Exhaustion does not reset or reuse the permanent sequence. Gaps are allowed;
+  do not require 99,999 saved notes before the allocated range can be exhausted.
 - [ ] When two valid creations compete for the last available number, exactly
   one returns 201/N99999 and the other 400/Note.NumberExhausted. No duplicate or
   out-of-range note is observable; the winner's full graph reads back correctly.

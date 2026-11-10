@@ -13,8 +13,8 @@ details, and current recipient details in a 201 envelope.
 
 ## Scope
 
-- Read the source and the parent's confirmed refinements together; the source
-  retains historical Draft questions. Target service/src/Core/Models and
+- Read the confirmed source story and the parent's refinements together. Target
+  service/src/Core/Models and
   Core/UseCases/Notes, Persistence, and WebApp/RestApi in the existing solution.
 - Add Note, its contact/package/deadline/line graph, limits, initial status, and
   DTOs. Include all legacy business inputs from the source, including optional
@@ -22,11 +22,14 @@ details, and current recipient details in a 201 envelope.
   not new recipient data or a user/status choice.
 - Implement the complete confirmed validation and mapping in DTOs from the start.
   This includes required nested objects and text, at least one nonnull line,
-  trimmed length limits, decimal quantity/weight/dimension ranges, required
-  calendar dates and their ordering. Preserve fractional values, internal text
+  trimmed length limits, explicitly supplied decimal quantities/weights/dimensions,
+  and required DateOnly calendar dates in DTOs/domain with exact yyyy-MM-dd
+  input/output and their agreed ordering. Reject omitted/null numeric values
+  rather than defaulting to zero. Preserve fractional values, internal text
   whitespace, line sequence, and distinct lines even when part codes repeat.
-- Reject note/nested server IDs, note number, status, creation time, and legacy
-  UserId supplied in JSON. Apply this only to the new creation DTO family.
+- Reject every unknown property, including note/nested server IDs, note number,
+  status, creation time, and legacy UserId supplied in JSON. Retain case-insensitive
+  matching of known properties. Apply this only to the new creation DTO family.
   Preserve the existing JSON contract of other capabilities.
 - Add an additive PostgreSQL migration, model snapshot, and SQLite-compatible
   mapping. Configure required relationships, database-generated IDs, and one
@@ -36,6 +39,10 @@ details, and current recipient details in a 201 envelope.
   Add the named 1..99999 database range constraint and translate only its violation
   to Note.NumberExhausted/400 at the persistence boundary. Implement this invariant
   now, not in T003. Do not compute the next number by querying existing notes.
+  The sequence is permanent without reset or reuse; permitted gaps consume its
+  finite capacity. Exhaustion stops creation until a later feature changes it.
+- Treat every POST as a separate creation, including identical requests and
+  retries after uncertain responses. Do not introduce idempotency handling.
 - Follow CreateRecipient's logging, DTO mapping, repository/unit-of-work, and
   response conventions; inject the existing clock. Explicitly bind API parameters
   and pass CancellationToken through queries and persistence. Return current
@@ -71,17 +78,25 @@ must not call an unimplemented GET route or advertise a URI that returns 404.
   errors. Validate each nested field rather than relying on EF annotations.
 - [ ] Positive decimal quantities, nonnegative decimal weights/dimensions, and
   fractional values are accepted. Nonpositive quantities and negative
-  weights/dimensions are rejected with 400, without silently rounding.
+  weights/dimensions are rejected with 400, without silently rounding. Every
+  numeric field must be explicitly supplied; missing/null values return 400,
+  while explicit zero weights/dimensions remain valid.
 - [ ] All deadline dates are required and ordered; equal/past dates are accepted,
-  reversed dates are rejected. Dates are represented independently of time zones.
-- [ ] Caller-assigned server fields at the note or nested level are rejected with
-  400. Null bodies and malformed JSON fail as requests with the standard error
+  reversed dates are rejected. All three deadlines use DateOnly in DTOs/domain,
+  accept/return exactly yyyy-MM-dd, and undergo no timezone conversion.
+  Timestamps, date-time strings, blanks, missing/null values, and invalid dates
+  return 400; the permissive shared converter must not bypass these rules.
+- [ ] Unknown properties, including caller-assigned server fields, at the note or
+  any nested level are rejected with 400; known names match case-insensitively.
+  Null bodies and malformed JSON fail as requests with the standard error
   format; existing recipient request behavior remains intact.
 - [ ] Invalid/nonpositive RecipientId is 400; an unknown positive recipient is
   404. Business errors have stable codes grouped under Note when entity-specific.
 - [ ] Required relationships, identity uniqueness/range, and transactional save
   prevent partial persisted graphs. Number exhaustion is mapped specifically to
   400 rather than a generic uniqueness conflict or unhandled provider exception.
+- [ ] Two sequential identical valid POSTs each return 201 with distinct IDs and
+  note numbers. No duplicate suppression or idempotent retry behavior is implied.
 - [ ] Generated OpenAPI describes required/nested inputs, numeric/date/text rules,
   rejection of server fields, anonymous access, 201/400/404, and response schemas.
 
