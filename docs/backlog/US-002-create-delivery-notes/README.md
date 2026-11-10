@@ -3,7 +3,7 @@
 - Source: DeliveryNoteService/docs/backlog/US-002-create-delivery-notes.md
 - Refinement source: conversation: US-002 creation rules, 2026-11-10
 - Grilling: Shared understanding explicitly confirmed by the developer, 2026-11-10
-- Lifecycle: active
+- Lifecycle: complete
 - Created: 2026-11-10
 - Updated: 2026-11-10
 - Branch: feature/US-002-create-delivery-notes
@@ -17,8 +17,8 @@ the creation Location header next, then exercise contention and number exhaustio
 through the same HTTP boundary. Each increment includes its own tests and OpenAPI
 metadata; correctness prerequisites are implemented in the first affected task.
 
-The source story is the authoritative confirmed specification, now In review after
-all three coding tasks completed. Its legacy
+The source story is the authoritative confirmed specification, now Done after
+all three coding tasks and explicit human acceptance completed. Its legacy
 investigation remains historical reference. The refinements below summarize the
 agreed contract for this breakdown; keep them synchronized with the story.
 
@@ -218,6 +218,8 @@ implementation blocker rather than switching to an unplanned allocator. No
 external adapter or runtime upgrade is assumed.
 
 ## Resume notes
+
+- 2026-11-10: Human review and required manual verification approved explicitly by the developer. Recorded [human acceptance 05](review-05.md), accepting review-04 and reviewed implementation 44f40f55d66a92771185ea26f75f731c92dcc2a8. Verified all three tasks are done, the working tree was clean, and subsequent commits contain only review/handoff metadata. Story is Done and plan complete; task outcomes and previous reviews are preserved. No new tests ran. No Markdown formatter is configured; completion records follow repository conventions and are checked with git diff --check. External PR and merge status are not established by this acceptance.
 
 - 2026-11-10: Grilling completed and shared understanding explicitly confirmed.
   Updated the authoritative story, index, and existing tasks without starting

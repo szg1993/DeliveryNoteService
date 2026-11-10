@@ -1,6 +1,6 @@
 # US-002: Create delivery notes
 
-- Status: In review
+- Status: Done
 - Area: Delivery notes
 - Implementation repository: DeliveryNoteService
 - Implementation solution: `service/DeliveryNoteService.sln`
@@ -28,8 +28,9 @@ subsequent grilling answers, confirmed on 2026-11-10. A three-task breakdown
 exists; all coding tasks and the developer-requested Guard/test cleanup are complete.
 [Agent review 04 passed](US-002-create-delivery-notes/review-04.md), including
 the developer-requested text/ID changes.
-Human review and explicit acceptance remain. Legacy observations are historical
-reference, not the new contract.
+Human review and required manual verification were approved on 2026-11-10;
+[human acceptance 05](US-002-create-delivery-notes/review-05.md) records completion.
+Legacy observations are historical reference, not the new contract.
 
 ## Creation contract
 
