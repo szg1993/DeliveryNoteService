@@ -1,4 +1,3 @@
-using Common.AspNetCore;
 using Common.Core.Messaging;
 using DeliveryNoteService.Core.UseCases.Notes;
 using System.Net;
@@ -8,22 +7,6 @@ namespace ApiTests;
 
 public class NoteDecimalTests : DeliveryNoteServiceApiTestBase
 {
-    [Theory]
-    [InlineData("packageDetail.tareWgt", "0.12345678901234567890123456789")]
-    [InlineData("noteLines.0.partWgt", "-0.00000000000000000000000000001")]
-    [InlineData("packageDetail.pkgQty", "79228162514264337593543950336")]
-    public async Task UnrepresentableNumber_ReturnsBadRequestWithoutCreatingNote(string path, string number)
-    {
-        await this.SetNoteIdentity(0);
-        var recipient = await Api.Recipients().PostAsync(RecipientRequests.Valid());
-
-        using var response = await Api.PostRawNumberAsync(recipient.Id, path, number);
-
-        await response.AssertBadRequestAsync(CommonWebErrorCodes.InvalidHttpRequest);
-        using var absent = await Api.Notes(1).GetRawAsync();
-        await absent.AssertNotFoundAsync("Note.NotFound");
-    }
-
     [Theory]
     [InlineData("packageDetail.tareWgt", "1e-28", "0.0000000000000000000000000001")]
     [InlineData("noteLines.0.partQty", "1.2300e2", "123")]

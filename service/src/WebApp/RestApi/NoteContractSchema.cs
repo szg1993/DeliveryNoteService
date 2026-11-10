@@ -25,7 +25,7 @@ public sealed class NoteContractSchema : ISchemaFilter
                 ["pkgSizeUm"] = NoteLimits.PkgSizeUm,
             },
             [typeof(CreateDeadlineDto)] = new Dictionary<string, int>(),
-            [typeof(CreateNoteLineDto)] = new Dictionary<string, int>
+            [typeof(CreateDeliveryNoteLineDto)] = new Dictionary<string, int>
             {
                 ["partCode"] = NoteLimits.PartCode,
                 ["partDesc"] = NoteLimits.PartDesc,
@@ -33,7 +33,7 @@ public sealed class NoteContractSchema : ISchemaFilter
                 ["partQtyUm"] = NoteLimits.PartQtyUm,
                 ["partWgtUm"] = NoteLimits.PartWgtUm,
             },
-            [typeof(CreateNoteDto)] = new Dictionary<string, int>
+            [typeof(CreateDeliveryNoteDto)] = new Dictionary<string, int>
             {
                 ["ekaerNbr"] = NoteLimits.EkaerNbr,
                 ["takeoverPlace"] = NoteLimits.TakeoverPlace,
@@ -96,7 +96,7 @@ public sealed class NoteContractSchema : ISchemaFilter
     private static void DescribeDecimals(OpenApiSchema schema, Type type)
     {
         if (type != typeof(CreatePackageDetailDto) &&
-            type != typeof(CreateNoteLineDto) &&
+            type != typeof(CreateDeliveryNoteLineDto) &&
             type != typeof(PackageDetailDetailsDto) &&
             type != typeof(NoteLineDetailsDto)
         )

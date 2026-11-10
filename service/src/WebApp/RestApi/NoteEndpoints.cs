@@ -14,9 +14,9 @@ public static class NoteEndpoints
             "/api/delivery-notes/{id}",
             async (
                 [FromRoute] int id,
-                [FromServices] GetNote getNote,
+                [FromServices] GetDeliveryNote getDeliveryNote,
                 CancellationToken ct
-            ) => await getNote.RunAsync(id, ct)
+            ) => await getDeliveryNote.RunAsync(id, ct)
         )
             .WithTags("Delivery notes")
             .WithName("GetNote")
@@ -30,21 +30,21 @@ public static class NoteEndpoints
         app.MapPost(
             "/api/delivery-notes",
             async (
-                [FromBody] CreateNoteDto dto,
-                [FromServices] CreateNote createNote,
+                [FromBody] CreateDeliveryNoteDto dto,
+                [FromServices] CreateDeliveryNote createDeliveryNote,
                 CancellationToken ct
             ) =>
             {
-                var result = await createNote.RunAsync(dto, ct);
+                var result = await createDeliveryNote.RunAsync(dto, ct);
                 return Results.Created($"/api/delivery-notes/{result.Content.Id}", result);
             }
         )
             .WithTags("Delivery notes")
             .WithName("CreateNote")
             .WithSummary("Create a complete delivery note")
-            .WithDescription("Creates a complete note for an existing recipient. Authentication is not required. Each POST creates separately, including retries. Text is validated and stored exactly as supplied, including surrounding whitespace and optional blank strings. Unit labels are free text. All quantities must be positive; all weights and dimensions must be explicitly supplied and nonnegative, without rounding. All deadlines require yyyy-MM-dd calendar dates in takeover, shipment, arrival order; equal and past dates are accepted. Unknown properties and caller-assigned IDs, UserId, number, status and creation time are rejected at every request level; known names match case-insensitively. Server assigns IDs, UTC creation time and Pending status. Permanent numbers N00001..N99999 are unique; gaps are allowed, no reset or reuse. Exhaustion and invalid input return 400; any absent recipient, including zero or negative IDs, returns 404. Full current recipient details are returned. The 201 Location header points to the saved note detail endpoint.")
+            .WithDescription("Creates a complete note for an existing recipient. Authentication is not required. Each POST creates separately, including retries. Text is trimmed before validation and storage; blank optional EKAER/comments become null. Unit labels are free text. All quantities must be positive; all weights and dimensions must be explicitly supplied and nonnegative, without rounding. All deadlines require yyyy-MM-dd calendar dates in takeover, shipment, arrival order; equal and past dates are accepted. Unknown properties and caller-assigned IDs, UserId, number, status and creation time are rejected at every request level; known names match case-insensitively. Server assigns IDs, UTC creation time and Pending status. Permanent numbers N00001..N99999 are unique; gaps are allowed, no reset or reuse. Exhaustion and invalid input return 400; an unknown positive recipient returns 404. Full current recipient details are returned. The 201 Location header points to the saved note detail endpoint.")
             .AllowAnonymous()
-            .Accepts<CreateNoteDto>("application/json")
+            .Accepts<CreateDeliveryNoteDto>("application/json")
             .Produces<Envelope<NoteDetailsDto>>(StatusCodes.Status201Created)
             .Produces<MedusaErrorResponse>(StatusCodes.Status400BadRequest)
             .Produces<MedusaErrorResponse>(StatusCodes.Status404NotFound)

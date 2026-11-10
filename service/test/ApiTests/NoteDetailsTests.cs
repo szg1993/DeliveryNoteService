@@ -106,7 +106,6 @@ public class NoteDetailsTests : DeliveryNoteServiceApiTestBase
             .AssertBadRequestAsync(CommonWebErrorCodes.InvalidHttpRequest);
 
     [Theory]
-    [InlineData("takeoverPlace", null, HttpStatusCode.BadRequest, "Note.InvalidInput")]
     [InlineData("recipientId", "123456", HttpStatusCode.NotFound, "Recipient.NotFound")]
     [InlineData("recipientId", "0", HttpStatusCode.NotFound, "Recipient.NotFound")]
     [InlineData("recipientId", "-1", HttpStatusCode.NotFound, "Recipient.NotFound")]

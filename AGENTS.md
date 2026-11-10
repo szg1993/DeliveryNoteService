@@ -17,6 +17,9 @@ shared guides and skills.
 - Use the framework's normal property parsing and binding. Create custom parsing
   only for a necessary, concrete business requirement the framework cannot meet.
   Validate ordinary user mistakes and protect persisted data.
+  Before committing to strict numeric representability or date-token rules,
+  explain the maintenance cost of custom converters and recommend normal binding
+  when its practical behavior is sufficient.
 - Write a few happy-path and unhappy-path tests. Choose representative cases
   for meaningful behavior; do not test every possible scenario or multiply
   shared validation checks across every field.
@@ -27,6 +30,10 @@ shared guides and skills.
   shared skills and older plans, including HTTP-only validation test agreements.
 - Keep test helpers small and reuse the existing test host. Extract helpers when
   they remove real duplication or make scenarios easier to understand.
+- Justify specialized parsing and generated-OpenAPI tests by a concrete consumer
+  need or material risk. Do not add exhaustive checks merely to mirror endpoint
+  metadata or enforce every framework edge case. Keep representative coverage
+  of meaningful application behavior.
 - Run checks appropriate to the change. Broaden or repeat verification when a
   meaningful edit, failure, or unresolved concern warrants it.
 - Review for correctness, clarity, and reuse. Avoid speculative refactoring and
@@ -39,6 +46,29 @@ shared guides and skills.
   a change.
 - Keep the existing task delegation and independent review process. Apply these
   proportionality and reuse expectations during reviews.
+- Treat the developer's simplifications as feedback about maintainability.
+  Identify the intended simpler approach before discussing workflow gates.
+  If a simplification changes agreed behavior, explain the specific tradeoff
+  briefly and reconcile the requirement; do not automatically recreate the
+  removed complexity or silently assume the behavior is unchanged.
+
+## Use case readability and errors
+
+- Use explicit business-operation names, such as `CreateDeliveryNote` and
+  `GetDeliveryNote`. Name a single repository dependency `repository`; distinguish
+  multiple repositories with names such as `noteRepository` and
+  `recipientRepository`.
+- Keep use cases as a straightforward sequence of validation, resource lookup,
+  DTO mapping, persistence and response mapping. Separate those steps with blank
+  lines so the happy path is easy to scan.
+- Call `dto.Validate()` directly and let established validation exceptions use
+  the existing error handling. Do not catch and rethrow them solely to replace
+  their codes with an entity-specific error code. Add translation only for a
+  concrete agreed contract that requires it.
+- Check a utility's actual semantics before substituting it for explicit code.
+  For example, `Guard.ThrowIfMissing(string)` currently rejects null and empty
+  strings but accepts whitespace. Reuse it where those semantics are sufficient;
+  flag any required behavior change rather than assuming equivalence.
 
 ## Use case logging
 

@@ -11,7 +11,7 @@ namespace DeliveryNoteService.Core.UseCases.Recipients;
 
 [AutoRegister]
 public class CreateRecipient(
-    IRepository<Recipient> recipientRepository,
+    IRepository<Recipient> repository,
     IUnitOfWork unitOfWork,
     ITimeService timeService,
     TechnicalUseCaseLogger<CreateRecipient> logger
@@ -27,12 +27,12 @@ public class CreateRecipient(
 
             var code = dto.Code.Trim().ToUpperInvariant();
 
-            if (await recipientRepository.AnyAsync(recipient => recipient.Code == code, ct))
+            if (await repository.AnyAsync(recipient => recipient.Code == code, ct))
                 throw new DataValidationException(ErrorCodes.Recipient.InvalidCode);
 
             var recipient = dto.ToModel(timeService);
 
-            recipientRepository.Add(recipient);
+            repository.Add(recipient);
 
             await unitOfWork.SaveChangesAsync(ct);
 

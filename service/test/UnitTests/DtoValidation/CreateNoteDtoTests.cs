@@ -7,19 +7,10 @@ namespace UnitTests.DtoValidation;
 public class CreateNoteDtoTests
 {
     [Fact]
-    public void CompleteNote_WithSuppliedTextAndZeroWeights_IsValid()
+    public void OversizedNestedText_IsRejected()
     {
-        var dto = ValidNote() with { TakeoverPlace = " " + new string('x', 28) + " ", Comments = "  " };
-
-        var validate = () => dto.Validate();
-
-        validate.Should().NotThrow();
-    }
-
-    [Fact]
-    public void BlankRequiredText_IsRejected()
-    {
-        var dto = ValidNote() with { TakeoverPlace = "   " };
+        var dto = ValidNote();
+        dto = dto with { ContactInfo = dto.ContactInfo with { Contact = new string('x', 201) } };
 
         var validate = () => dto.Validate();
 
@@ -27,32 +18,9 @@ public class CreateNoteDtoTests
     }
 
     [Fact]
-    public void SurroundingWhitespace_CountsTowardTextLengthLimit()
+    public void MissingDetails_AreRejected()
     {
-        var dto = ValidNote() with { TakeoverPlace = " " + new string('x', 30) + " " };
-
-        var validate = () => dto.Validate();
-
-        validate.Should().Throw<FieldTooLongException>();
-    }
-
-    [Theory]
-    [InlineData(0)]
-    [InlineData(-1)]
-    public void RecipientIdSign_IsNotValidated(int recipientId)
-    {
-        var dto = ValidNote() with { RecipientId = recipientId };
-
-        var validate = () => dto.Validate();
-
-        validate.Should().NotThrow();
-    }
-
-    [Fact]
-    public void OversizedNestedText_IsRejected()
-    {
-        var dto = ValidNote();
-        dto = dto with { ContactInfo = dto.ContactInfo with { Contact = new string('x', 201) } };
+        var dto = ValidNote() with { PackageDetail = null! };
 
         var validate = () => dto.Validate();
 
@@ -100,6 +68,16 @@ public class CreateNoteDtoTests
     }
 
     [Fact]
+    public void MissingDeadline_IsRejected()
+    {
+        var dto = ValidNote().Deadline with { ShipDate = null };
+
+        var validate = () => dto.Validate();
+
+        validate.Should().Throw<DataValidationException>();
+    }
+
+    [Fact]
     public void ReversedDeadlines_AreRejected()
     {
         var dto = ValidNote().Deadline with { ShipDate = new DateOnly(2019, 12, 31) };
@@ -109,9 +87,9 @@ public class CreateNoteDtoTests
         validate.Should().Throw<DataValidationException>();
     }
 
-    private static CreateNoteDto ValidNote()
+    private static CreateDeliveryNoteDto ValidNote()
     {
-        return new CreateNoteDto
+        return new CreateDeliveryNoteDto
         {
             RecipientId = 1,
             TakeoverPlace = "Warehouse",
@@ -140,7 +118,7 @@ public class CreateNoteDtoTests
                 ShipDate = new DateOnly(2020, 1, 1),
                 EstimatedArrivalDate = new DateOnly(2020, 1, 2)
             },
-            NoteLines = [new CreateNoteLineDto
+            NoteLines = [new CreateDeliveryNoteLineDto
             {
                 PartCode = "A", PartDesc = "Part A", PartQty = 2.25m, PartQtyUm = "pcs",
                 PartWgt = 0, PartWgtUm = "kg"

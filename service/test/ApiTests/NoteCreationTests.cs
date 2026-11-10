@@ -1,7 +1,5 @@
 using Common.AspNetCore;
-using System.Net;
 using System.Text;
-using System.Text.Json.Nodes;
 
 namespace ApiTests;
 
@@ -17,30 +15,6 @@ public class NoteCreationTests : DeliveryNoteServiceApiTestBase
         using var response = await Api.Client.PostAsync("/api/delivery-notes", content);
 
         await response.AssertBadRequestAsync(CommonWebErrorCodes.InvalidHttpRequest);
-    }
-
-    [Fact]
-    public async Task TimestampDeadline_ReturnsStandardRequestError()
-    {
-        var recipient = await Api.Recipients().PostAsync(RecipientRequests.Valid());
-        var request = NoteRequests.Valid(recipient.Id);
-        request["deadline"]!["takeoverDate"] = "2020-01-01T00:00:00Z";
-
-        using var response = await Api.Notes().PostRawAsync(request);
-
-        await response.AssertBadRequestAsync(CommonWebErrorCodes.InvalidHttpRequest);
-    }
-
-    [Fact]
-    public async Task OversizedText_ReturnsExistingValidationError()
-    {
-        var recipient = await Api.Recipients().PostAsync(RecipientRequests.Valid());
-        var request = NoteRequests.Valid(recipient.Id);
-        request["comments"] = new string('x', 201);
-
-        using var response = await Api.Notes().PostRawAsync(request);
-
-        await response.AssertBadRequestAsync("Note.InvalidInput");
     }
 
     [Fact]

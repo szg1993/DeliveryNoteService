@@ -8,7 +8,7 @@ using System.Text.Json.Serialization;
 namespace DeliveryNoteService.Core.UseCases.Notes;
 
 [JsonUnmappedMemberHandling(JsonUnmappedMemberHandling.Disallow)]
-public record CreateNoteDto
+public record CreateDeliveryNoteDto
 {
     public string? EkaerNbr { get; init; }
 
@@ -30,32 +30,34 @@ public record CreateNoteDto
     public CreateContactInfoDto ContactInfo { get; init; } = null!;
     public CreatePackageDetailDto PackageDetail { get; init; } = null!;
     public CreateDeadlineDto Deadline { get; init; } = null!;
-    public IReadOnlyList<CreateNoteLineDto> NoteLines { get; init; } = null!;
+    public IReadOnlyList<CreateDeliveryNoteLineDto> NoteLines { get; init; } = null!;
 
     public void Validate()
     {
         Guard.ThrowIfTooLong(EkaerNbr, NoteLimits.EkaerNbr);
-        if (string.IsNullOrWhiteSpace(TakeoverPlace))
-            throw new FieldMissingException(nameof(TakeoverPlace));
+        Guard.ThrowIfMissing(TakeoverPlace);
         Guard.ThrowIfTooLong(TakeoverPlace, NoteLimits.TakeoverPlace);
-        if (string.IsNullOrWhiteSpace(Category))
-            throw new FieldMissingException(nameof(Category));
+        Guard.ThrowIfMissing(Category);
         Guard.ThrowIfTooLong(Category, NoteLimits.Category);
         Guard.ThrowIfTooLong(Comments, NoteLimits.Comments);
         Guard.ThrowIfMissing(ContactInfo);
         Guard.ThrowIfMissing(PackageDetail);
         Guard.ThrowIfMissing(Deadline);
         Guard.ThrowIfMissingOrEmpty(NoteLines);
+
         if (NoteLines.Any(line => line is null))
             throw new DataValidationException(ErrorCodes.Note.InvalidInput, "Invalid NoteLines.");
+
         ContactInfo.Validate();
         PackageDetail.Validate();
         Deadline.Validate();
+
         foreach (var line in NoteLines)
             line.Validate();
     }
 
-    public Note ToModel(ITimeService timeService) => MapTo(new Note(), timeService);
+    public Note ToModel(ITimeService timeService)
+        => MapTo(new Note(), timeService);
 
     public Note MapTo(Note model, ITimeService timeService)
     {
@@ -73,12 +75,12 @@ public record CreateNoteDto
         model.ContactInfo = ContactInfo.ToModel();
         model.PackageDetail = PackageDetail.ToModel();
         model.Deadline = Deadline.ToModel();
-        model.NoteLines = NoteLines.Select((line, index) =>
+        model.NoteLines = [.. NoteLines.Select((line, index) =>
         {
             var result = line.ToModel();
             result.Position = index;
             return result;
-        }).ToList();
+        })];
 
         return model;
     }
