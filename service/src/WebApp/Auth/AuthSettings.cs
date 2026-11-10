@@ -1,6 +1,6 @@
 namespace DeliveryNoteService.WebApp.Auth;
 
-public class MedusaAuthSettings
+public class AuthSettings
 {
     public required string TokenSigningPublicKey { get; set; }
 }

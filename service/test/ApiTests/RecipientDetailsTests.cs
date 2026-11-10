@@ -1,6 +1,6 @@
 using Common.AspNetCore;
 using Common.Core.Messaging;
-using DeliveryNoteService.Application.UseCases.Recipients;
+using DeliveryNoteService.Core.UseCases.Recipients;
 using System.Net;
 
 namespace ApiTests;
@@ -19,17 +19,18 @@ public class RecipientDetailsTests : DeliveryNoteServiceApiTestBase
 
         await response.AssertStatusCode(HttpStatusCode.OK);
         var result = (await response.ReadAsync<Envelope<RecipientDetailsDto>>()).Content;
-        result.Should().BeEquivalentTo(new RecipientDetailsDto(
-            created.Content.Id,
-            "ACME",
-            "Acme Ltd",
-            "HU",
-            "0101",
-            "Budapest",
-            "Main street 1",
-            createdAt,
-            false
-        ));
+        result.Should().BeEquivalentTo(new RecipientDetailsDto
+        {
+            Id = created.Content.Id,
+            Code = "ACME",
+            Name = "Acme Ltd",
+            Country = "HU",
+            Zip = "0101",
+            City = "Budapest",
+            Address = "Main street 1",
+            CreatedAt = createdAt,
+            IsForeign = false
+        });
         result.Id.Should().BePositive();
         created.Content.Should().BeEquivalentTo(result);
     }
@@ -37,9 +38,9 @@ public class RecipientDetailsTests : DeliveryNoteServiceApiTestBase
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
-    public Task InvalidRecipientId_ReturnsBadRequest(int id)
+    public Task NonPositiveRecipientId_ReturnsNotFound(int id)
         => Api.Recipients(id).GetRawAsync()
-            .AssertBadRequestAsync("InvalidRecipientId");
+            .AssertNotFoundAsync("Recipient.NotFound");
 
     [Theory]
     [InlineData("not-a-number")]
@@ -51,5 +52,5 @@ public class RecipientDetailsTests : DeliveryNoteServiceApiTestBase
     [Fact]
     public Task UnknownRecipientId_ReturnsNotFound()
         => Api.Recipients(123456).GetRawAsync()
-            .AssertNotFoundAsync("RecipientNotFound");
+            .AssertNotFoundAsync("Recipient.NotFound");
 }

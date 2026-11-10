@@ -1,7 +1,7 @@
-using FluentAssertions;
 using Common.Core.Exceptions;
 using Common.Core.Utils;
 using Common.Testing.TestSuite;
+using FluentAssertions;
 using System.Text.Json;
 
 namespace UnitTests.Core.Utils;
@@ -25,7 +25,7 @@ public partial class JsonTests
     [Fact]
     public void Serialize()
     {
-        var json = EnapSerializer.ToJson(TestDto.WithTestData());
+        var json = CommonSerializer.ToJson(TestDto.WithTestData());
         json.Should().Be("""
             {
               "id": 42,
@@ -39,7 +39,7 @@ public partial class JsonTests
     [Fact]
     public void Deserialize()
     {
-        var msg = EnapSerializer.FromJson<TestDto>("""
+        var msg = CommonSerializer.FromJson<TestDto>("""
             {
               "Id": 42,
               "tEsTDAte": "2025-11-20",
@@ -53,7 +53,7 @@ public partial class JsonTests
     [Fact]
     public void DeserializationError()
     {
-        Action act = () => EnapSerializer.FromJson<TestDto>("malformed");
+        Action act = () => CommonSerializer.FromJson<TestDto>("malformed");
         act.Should().Throw<DeserializationException>()
             .WithInnerException<JsonException>();
     }
@@ -63,7 +63,7 @@ public partial class JsonTests
     [InlineData("1711922400", TestDateStrings.Apr1)] // 2024-04-01 00:00:00 UTC+1 (Hungarian time)
     public void Date_UnixTimeSeconds(string dateString, string expectedDate)
     {
-        var deserialized = EnapSerializer.FromJson<TestDto>("{" +
+        var deserialized = CommonSerializer.FromJson<TestDto>("{" +
             "\"testDate\":" + dateString +
             "}"
         );
@@ -74,7 +74,7 @@ public partial class JsonTests
     [Fact]
     public void Date_Null_Serialize()
     {
-        var json = EnapSerializer.ToJson(new TestDto());
+        var json = CommonSerializer.ToJson(new TestDto());
         json.Should().Be("""
             {
               "id": 0,
@@ -88,7 +88,7 @@ public partial class JsonTests
     [Fact]
     public void Date_Null_Deserialize()
     {
-        var deserialized = EnapSerializer.FromJson<TestDto>("""
+        var deserialized = CommonSerializer.FromJson<TestDto>("""
             {            
                 "testDate": null,
                 "nullableTestDate": null
@@ -103,7 +103,7 @@ public partial class JsonTests
     [Fact]
     public void Date_EmptyString_Deserialize()
     {
-        var deserialized = EnapSerializer.FromJson<TestDto>("""
+        var deserialized = CommonSerializer.FromJson<TestDto>("""
             {            
                 "testDate": "",
                 "nullableTestDate": ""
@@ -118,7 +118,7 @@ public partial class JsonTests
     [Fact]
     public void Date_WhiteSpaces_Deserialize()
     {
-        var deserialized = EnapSerializer.FromJson<TestDto>("""
+        var deserialized = CommonSerializer.FromJson<TestDto>("""
             {            
                 "testDate": " ",
                 "nullableTestDate": "   "

@@ -1,6 +1,6 @@
 using System.Collections.Frozen;
 
-namespace DeliveryNoteService.Application.UseCases.Recipients;
+namespace DeliveryNoteService.Core.UseCases.Recipients;
 
 internal static class RecipientCountries
 {

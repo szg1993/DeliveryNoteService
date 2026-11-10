@@ -1,5 +1,4 @@
 using Common.AspNetCore;
-using Common.Core.Exceptions;
 using System.Net;
 using System.Text;
 
@@ -54,9 +53,9 @@ public class RecipientCreationTests : DeliveryNoteServiceApiTestBase
         var original = await Api.Recipients().PostAsync(RecipientRequests.Valid());
 
         var error = await Api.Recipients().PostRawAsync(RecipientRequests.Valid(code: code))
-            .AssertErrorAsync(HttpStatusCode.Conflict);
+            .AssertErrorAsync(HttpStatusCode.BadRequest);
 
-        error.ErrorCode.Should().Be(CommonErrorCodes.UniqueKeyConflict);
+        error.ErrorCode.Should().Be("Recipient.InvalidCode");
         (await Api.Recipients(original.Id).GetAsync()).Should().BeEquivalentTo(original);
     }
 

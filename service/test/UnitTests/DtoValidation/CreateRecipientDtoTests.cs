@@ -1,7 +1,7 @@
 using ApiTests.DtoFactories;
 using Common.Core.Exceptions;
 using Common.Testing.TestSuite;
-using DeliveryNoteService.Application.Errors;
+using DeliveryNoteService.Core.Errors;
 using DeliveryNoteService.Core.UseCases.Recipients;
 
 namespace UnitTests.DtoValidation;
@@ -219,7 +219,7 @@ public class CreateRecipientDtoTests
         DtoFactory
             .CreateRecipient()
             .WithCode(code)
-            .AssertDataValidationException(ErrorCodes.InvalidRecipientCode);
+            .AssertDataValidationException(ErrorCodes.Recipient.InvalidCode);
     }
 
     [Theory]
@@ -232,7 +232,7 @@ public class CreateRecipientDtoTests
         DtoFactory
             .CreateRecipient()
             .WithCountry(country)
-            .AssertDataValidationException(ErrorCodes.InvalidRecipientCountry);
+            .AssertDataValidationException(ErrorCodes.Recipient.InvalidCountry);
     }
 
     [Fact]

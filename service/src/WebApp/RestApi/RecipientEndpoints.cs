@@ -1,6 +1,6 @@
 using Common.AspNetCore.ErrorHandling;
+using Common.Core.Exceptions;
 using Common.Core.Messaging;
-using DeliveryNoteService.Application.UseCases.Recipients;
 using DeliveryNoteService.Core.UseCases.Recipients;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
@@ -18,7 +18,12 @@ public static class RecipientEndpoints
                 [AsParameters] Sorting<RecipientsSortBy> sorting,
                 [FromServices] GetRecipients getRecipients,
                 CancellationToken ct
-            ) => await getRecipients.RunAsync(pageRequest.ToUseCaseObject(), sorting, ct)
+            ) =>
+            {
+                var pagination = pageRequest.ToUseCaseObject();
+                ValidateListQuery(pagination, sorting);
+                return await getRecipients.RunAsync(pagination, sorting, ct);
+            }
         )
             .WithTags("Recipients")
             .WithName("GetRecipients")
@@ -39,7 +44,7 @@ public static class RecipientEndpoints
             .WithTags("Recipients")
             .WithName("GetRecipient")
             .WithSummary("Retrieve a recipient")
-            .WithDescription("Retrieves normalized recipient details, including the server-generated ID, UTC creation time, and derived foreign status. ID must be a positive integer. Invalid input returns 400; an unknown positive ID returns 404. Authentication is not required.")
+            .WithDescription("Retrieves normalized recipient details, including the server-generated ID, UTC creation time, and derived foreign status. ID must be an integer. An ID with no matching recipient, including zero or negative values, returns 404. Malformed or out-of-range integer input returns 400. Authentication is not required.")
             .AllowAnonymous()
             .Produces<Envelope<RecipientDetailsDto>>(StatusCodes.Status200OK)
             .Produces<MedusaErrorResponse>(StatusCodes.Status400BadRequest)
@@ -77,5 +82,17 @@ public static class RecipientEndpoints
             });
 
         return app;
+    }
+
+    private static void ValidateListQuery(PageRequest pageRequest, Sorting<RecipientsSortBy> sorting)
+    {
+        if (pageRequest.Page < 1 || pageRequest.Limit < 0)
+            throw new DataValidationException(CommonErrorCodes.InvalidPageRequest);
+
+        if (sorting.SortBy is { } sortBy && !Enum.IsDefined(sortBy))
+            throw new DataValidationException(CommonErrorCodes.InvalidSortField);
+
+        if (sorting.SortDir is { } sortDirection && !Enum.IsDefined(sortDirection))
+            throw new DataValidationException(CommonErrorCodes.InvalidSortField);
     }
 }

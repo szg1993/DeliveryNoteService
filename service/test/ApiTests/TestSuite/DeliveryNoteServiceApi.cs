@@ -1,5 +1,5 @@
 using Common.Testing.ApiWrappers;
-using DeliveryNoteService.Application.UseCases.Recipients;
+using DeliveryNoteService.Core.UseCases.Recipients;
 
 namespace ApiTests.TestSuite;
 

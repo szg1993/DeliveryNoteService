@@ -1,7 +1,7 @@
-using FluentAssertions;
 using Common.Core.Persistence;
 using Common.Infrastructure.Persistence;
 using Common.Testing.Database.SQLite;
+using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using UnitTests.TestSuite;
 
@@ -23,10 +23,10 @@ public class CaseInsensitiveComparerTest : SqlUnitTestBase
     }
 
     [Fact]
-    public async Task SQLite()
+    public Task SQLite()
     {
         InitSQLite<TestDbContext>();
-        await TestCaseInsensitiveComparisonAsync(new InMemoryEfILikeComparer());
+        return TestCaseInsensitiveComparisonAsync(new InMemoryEfILikeComparer());
     }
 
     [Fact]

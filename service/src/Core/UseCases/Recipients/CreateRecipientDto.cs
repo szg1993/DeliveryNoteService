@@ -1,7 +1,7 @@
 using Common.Core.Exceptions;
+using Common.Core.Infrastructure;
 using Common.Core.UseCases;
-using DeliveryNoteService.Application.Errors;
-using DeliveryNoteService.Application.UseCases.Recipients;
+using DeliveryNoteService.Core.Errors;
 using DeliveryNoteService.Core.Models;
 using System.ComponentModel;
 
@@ -44,25 +44,27 @@ public record CreateRecipientDto : IValidatable
         var code = Code.Trim().ToUpperInvariant();
 
         if (!code.All(character => character is >= 'A' and <= 'Z' or >= '0' and <= '9' or '-' or '_'))
-            throw new DataValidationException(ErrorCodes.InvalidRecipientCode, "Recipient code contains unsupported characters.");
+            throw new DataValidationException(ErrorCodes.Recipient.InvalidCode, "Recipient code contains unsupported characters.");
 
         var country = Country.Trim().ToUpperInvariant();
 
         if (!RecipientCountries.Contains(country))
-            throw new DataValidationException(ErrorCodes.InvalidRecipientCountry, "Country must be a recognized two-letter code.");
+            throw new DataValidationException(ErrorCodes.Recipient.InvalidCountry, "Country must be a recognized two-letter code.");
     }
 
-    //public Recipient ToModel()
-    //    => MapTo(new Recipient());
+    public Recipient ToModel(ITimeService timeService)
+        => MapTo(new Recipient(), timeService);
 
-    //public Recipient MapTo(Recipient model)
-    //{
-    //    model.Code = Code.Trim().ToUpperInvariant();
-    //    model.Name = Name.Trim();
-    //    model.Country = Country.Trim().ToUpperInvariant();
-    //    model.Zip = .Zip.Trim();
-    //    model.City = dto.City.Trim();
-    //    model.Address = dto.Address.Trim();
-    //    model.CreatedAt = time.UtcNow;
-    //}
+    public Recipient MapTo(Recipient model, ITimeService timeService)
+    {
+        model.Code = Code.Trim().ToUpperInvariant();
+        model.Name = Name.Trim();
+        model.Country = Country.Trim().ToUpperInvariant();
+        model.Zip = Zip.Trim();
+        model.City = City.Trim();
+        model.Address = Address.Trim();
+        model.CreatedAt = timeService.UtcNow;
+
+        return model;
+    }
 }

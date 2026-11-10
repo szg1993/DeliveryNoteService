@@ -8,6 +8,6 @@ public static class TestAuth
     public static void ConfigureTestAuth(this IConfigurationBuilder configBuilder)
     {
         // used by the JwtBearer middleware to verify token signature
-        configBuilder.Add("Auth:" + nameof(MedusaAuthSettings.TokenSigningPublicKey), MockSigningKeys.Public);
+        configBuilder.Add("Auth:" + nameof(AuthSettings.TokenSigningPublicKey), MockSigningKeys.Public);
     }
 }

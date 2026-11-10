@@ -4,7 +4,7 @@ using Common.Core.Infrastructure;
 using Common.Core.Logging;
 using Common.Core.Messaging;
 using Common.Core.Persistence;
-using DeliveryNoteService.Application.UseCases.Recipients;
+using DeliveryNoteService.Core.Errors;
 using DeliveryNoteService.Core.Models;
 
 namespace DeliveryNoteService.Core.UseCases.Recipients;
@@ -13,11 +13,13 @@ namespace DeliveryNoteService.Core.UseCases.Recipients;
 public class CreateRecipient(
     IRepository<Recipient> recipientRepository,
     IUnitOfWork unitOfWork,
-    ITimeService time,
+    ITimeService timeService,
     TechnicalUseCaseLogger<CreateRecipient> logger
 )
 {
-    public Task<Envelope<RecipientDetailsDto>> RunAsync(CreateRecipientDto dto, CancellationToken ct)
+    public Task<Envelope<RecipientDetailsDto>> RunAsync(
+        CreateRecipientDto dto, CancellationToken ct
+    )
     {
         return logger.RunAsync(async () =>
         {
@@ -26,20 +28,12 @@ public class CreateRecipient(
             var code = dto.Code.Trim().ToUpperInvariant();
 
             if (await recipientRepository.AnyAsync(recipient => recipient.Code == code, ct))
-                throw new UniqueKeyConflictException(null);
+                throw new DataValidationException(ErrorCodes.Recipient.InvalidCode);
 
-            var recipient = new Recipient
-            {
-                Code = code,
-                Name = dto.Name.Trim(),
-                Country = dto.Country.Trim().ToUpperInvariant(),
-                Zip = dto.Zip.Trim(),
-                City = dto.City.Trim(),
-                Address = dto.Address.Trim(),
-                CreatedAt = time.UtcNow
-            };
+            var recipient = dto.ToModel(timeService);
 
             recipientRepository.Add(recipient);
+
             await unitOfWork.SaveChangesAsync(ct);
 
             return RecipientDetailsDto.FromModel(recipient).Envelop();

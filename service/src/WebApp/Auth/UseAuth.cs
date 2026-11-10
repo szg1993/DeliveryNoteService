@@ -25,7 +25,7 @@ public static class UseAuth
                 JwtBearerDefaults.AuthenticationScheme,
                 opt =>
                 {
-                    var authSettings = config.Get<MedusaAuthSettings>()!;
+                    var authSettings = config.Get<AuthSettings>()!;
                     opt.TokenValidationParameters.IssuerSigningKey = GetSecurityKey(authSettings.TokenSigningPublicKey);
                     opt.TokenValidationParameters.ValidateIssuer = false;
                     opt.TokenValidationParameters.ValidateAudience = false;
@@ -51,7 +51,7 @@ public static class UseAuth
             ;
     }
 
-    public static IApplicationBuilder UseMedusaAuth(this IApplicationBuilder app)
+    public static IApplicationBuilder UseDeliveryNoteServiceAuth(this IApplicationBuilder app)
     {
         return app
             .UseAuthentication()

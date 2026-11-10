@@ -14,8 +14,12 @@ public static class PagedResultHelpers
 
         ValidatePageRequest(pagination);
 
+        var offset = ((long)pagination.Page - 1) * pagination.Limit;
+        if (offset > int.MaxValue)
+            return query.Take(0);
+
         return query
-            .Skip((pagination.Page - 1) * pagination.Limit)
+            .Skip((int)offset)
             .Take(pagination.Limit);
     }
 

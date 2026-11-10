@@ -1,29 +1,40 @@
 using DeliveryNoteService.Core.Models;
 
-namespace DeliveryNoteService.Application.UseCases.Recipients;
+namespace DeliveryNoteService.Core.UseCases.Recipients;
 
-public record RecipientDetailsDto(
-    int Id,
-    string Code,
-    string Name,
-    string Country,
-    string Zip,
-    string City,
-    string Address,
-    DateTimeOffset CreatedAt,
-    bool IsForeign
-)
+public record RecipientDetailsDto
 {
+    public int Id { get; init; }
+
+    public string Code { get; init; } = null!;
+
+    public string Name { get; init; } = null!;
+
+    public string Country { get; init; } = null!;
+
+    public string Zip { get; init; } = null!;
+
+    public string City { get; init; } = null!;
+
+    public string Address { get; init; } = null!;
+
+    public DateTimeOffset CreatedAt { get; init; }
+
+    public bool IsForeign { get; init; }
+
     public static RecipientDetailsDto FromModel(Recipient recipient)
-        => new(
-            recipient.Id,
-            recipient.Code!,
-            recipient.Name!,
-            recipient.Country!,
-            recipient.Zip!,
-            recipient.City!,
-            recipient.Address!,
-            recipient.CreatedAt,
-            recipient.Country != "HU"
-        );
+    {
+        return new RecipientDetailsDto
+        {
+            Id = recipient.Id,
+            Code = recipient.Code!,
+            Name = recipient.Name!,
+            Country = recipient.Country!,
+            Zip = recipient.Zip!,
+            City = recipient.City!,
+            Address = recipient.Address!,
+            CreatedAt = recipient.CreatedAt,
+            IsForeign = recipient.Country != "HU"
+        };
+    }
 }
