@@ -27,32 +27,36 @@ public record CreateNoteLineDto
 
     public void Validate()
     {
-        Guard.ThrowIfMissing(PartCode?.Trim(), nameof(PartCode));
-        Guard.ThrowIfTooLong(PartCode?.Trim(), NoteLimits.PartCode, nameof(PartCode));
-        Guard.ThrowIfMissing(PartDesc?.Trim(), nameof(PartDesc));
-        Guard.ThrowIfTooLong(PartDesc?.Trim(), NoteLimits.PartDesc, nameof(PartDesc));
-        Guard.ThrowIfTooLong(PartCmt?.Trim(), NoteLimits.PartCmt, nameof(PartCmt));
+        if (string.IsNullOrWhiteSpace(PartCode))
+            throw new FieldMissingException(nameof(PartCode));
+        Guard.ThrowIfTooLong(PartCode, NoteLimits.PartCode);
+        if (string.IsNullOrWhiteSpace(PartDesc))
+            throw new FieldMissingException(nameof(PartDesc));
+        Guard.ThrowIfTooLong(PartDesc, NoteLimits.PartDesc);
+        Guard.ThrowIfTooLong(PartCmt, NoteLimits.PartCmt);
         Guard.ThrowIfMissing(PartQty);
-        Guard.ThrowIfMissing(PartQtyUm?.Trim(), nameof(PartQtyUm));
-        Guard.ThrowIfTooLong(PartQtyUm?.Trim(), NoteLimits.PartQtyUm, nameof(PartQtyUm));
+        if (string.IsNullOrWhiteSpace(PartQtyUm))
+            throw new FieldMissingException(nameof(PartQtyUm));
+        Guard.ThrowIfTooLong(PartQtyUm, NoteLimits.PartQtyUm);
         Guard.ThrowIfMissing(PartWgt);
         if (PartQty <= 0 || PartWgt < 0)
             throw new DataValidationException(ErrorCodes.Note.InvalidInput, "Invalid line quantity or weight.");
-        Guard.ThrowIfMissing(PartWgtUm?.Trim(), nameof(PartWgtUm));
-        Guard.ThrowIfTooLong(PartWgtUm?.Trim(), NoteLimits.PartWgtUm, nameof(PartWgtUm));
+        if (string.IsNullOrWhiteSpace(PartWgtUm))
+            throw new FieldMissingException(nameof(PartWgtUm));
+        Guard.ThrowIfTooLong(PartWgtUm, NoteLimits.PartWgtUm);
     }
 
     public NoteLine ToModel() => MapTo(new NoteLine());
 
     public NoteLine MapTo(NoteLine model)
     {
-        model.PartCode = PartCode.Trim();
-        model.PartDesc = PartDesc.Trim();
-        model.PartCmt = string.IsNullOrWhiteSpace(PartCmt) ? null : PartCmt.Trim();
+        model.PartCode = PartCode;
+        model.PartDesc = PartDesc;
+        model.PartCmt = PartCmt;
         model.PartQty = PartQty!.Value;
-        model.PartQtyUm = PartQtyUm.Trim();
+        model.PartQtyUm = PartQtyUm;
         model.PartWgt = PartWgt!.Value;
-        model.PartWgtUm = PartWgtUm.Trim();
+        model.PartWgtUm = PartWgtUm;
 
         return model;
     }

@@ -54,7 +54,7 @@ public class NoteCreationTests : DeliveryNoteServiceApiTestBase
 
         var note = await Api.Notes().PostAsync(request);
 
-        note.TakeoverPlace.Should().Be("Warehouse");
+        note.TakeoverPlace.Should().Be(" Warehouse ");
         note.IsUrgent.Should().BeFalse();
         note.IsCrackable.Should().BeFalse();
         note.IsDangerous.Should().BeFalse();

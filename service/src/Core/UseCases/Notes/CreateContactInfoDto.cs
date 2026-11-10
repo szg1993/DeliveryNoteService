@@ -1,3 +1,4 @@
+using Common.Core.Exceptions;
 using Common.Core.UseCases;
 using DeliveryNoteService.Core.Models;
 using System.Text.Json.Serialization;
@@ -17,24 +18,28 @@ public record CreateContactInfoDto
 
     public void Validate()
     {
-        Guard.ThrowIfMissing(AssignTo?.Trim(), nameof(AssignTo));
-        Guard.ThrowIfTooLong(AssignTo?.Trim(), NoteLimits.AssignTo, nameof(AssignTo));
-        Guard.ThrowIfMissing(AssignToPhone?.Trim(), nameof(AssignToPhone));
-        Guard.ThrowIfTooLong(AssignToPhone?.Trim(), NoteLimits.AssignToPhone, nameof(AssignToPhone));
-        Guard.ThrowIfMissing(Contact?.Trim(), nameof(Contact));
-        Guard.ThrowIfTooLong(Contact?.Trim(), NoteLimits.Contact, nameof(Contact));
-        Guard.ThrowIfMissing(ContactPhone?.Trim(), nameof(ContactPhone));
-        Guard.ThrowIfTooLong(ContactPhone?.Trim(), NoteLimits.ContactPhone, nameof(ContactPhone));
+        if (string.IsNullOrWhiteSpace(AssignTo))
+            throw new FieldMissingException(nameof(AssignTo));
+        Guard.ThrowIfTooLong(AssignTo, NoteLimits.AssignTo);
+        if (string.IsNullOrWhiteSpace(AssignToPhone))
+            throw new FieldMissingException(nameof(AssignToPhone));
+        Guard.ThrowIfTooLong(AssignToPhone, NoteLimits.AssignToPhone);
+        if (string.IsNullOrWhiteSpace(Contact))
+            throw new FieldMissingException(nameof(Contact));
+        Guard.ThrowIfTooLong(Contact, NoteLimits.Contact);
+        if (string.IsNullOrWhiteSpace(ContactPhone))
+            throw new FieldMissingException(nameof(ContactPhone));
+        Guard.ThrowIfTooLong(ContactPhone, NoteLimits.ContactPhone);
     }
 
     public NoteContactInfo ToModel() => MapTo(new NoteContactInfo());
 
     public NoteContactInfo MapTo(NoteContactInfo model)
     {
-        model.AssignTo = AssignTo.Trim();
-        model.AssignToPhone = AssignToPhone.Trim();
-        model.Contact = Contact.Trim();
-        model.ContactPhone = ContactPhone.Trim();
+        model.AssignTo = AssignTo;
+        model.AssignToPhone = AssignToPhone;
+        model.Contact = Contact;
+        model.ContactPhone = ContactPhone;
 
         return model;
     }

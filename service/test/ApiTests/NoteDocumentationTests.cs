@@ -53,6 +53,8 @@ public class NoteDocumentationTests : DeliveryNoteServiceApiTestBase
         }
         var note = schemas["CreateNoteDto"]!;
         note["properties"]!["takeoverPlace"]!["maxLength"]!.GetValue<int>().Should().Be(30);
+        note["properties"]!["takeoverPlace"]!["description"]!.GetValue<string>().Should().Contain("exactly as supplied");
+        note["properties"]!["recipientId"]!["minimum"].Should().BeNull();
         note["properties"]!["noteLines"]!["minItems"]!.GetValue<int>().Should().Be(1);
         schemas["CreatePackageDetailDto"]!["properties"]!["pkgQty"]!["exclusiveMinimum"]!.GetValue<bool>().Should().BeTrue();
         schemas["CreateDeadlineDto"]!["properties"]!["takeoverDate"]!["format"]!.GetValue<string>().Should().Be("date");

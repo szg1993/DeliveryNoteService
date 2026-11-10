@@ -31,7 +31,7 @@ note details and current recipient details through GET.
 - [x] Following Location after successful creation returns 200 with the expected
   standard envelope and the same note ID, number, Pending status, and creation
   timestamp.
-- [x] A new GET request returns the normalized, persisted header/flags, complete
+- [x] A new GET request returns the exact supplied, persisted header/flags, complete
   contact/package/deadline details, and every line, including repeated part codes,
   optional text, decimal values, server child IDs, and original line order.
 - [x] All three deadlines round-trip as the same yyyy-MM-dd calendar dates using
@@ -60,7 +60,7 @@ Use TDD at the agreed HTTP boundary: create the recipient, POST a distinctive fu
 note, then GET via Location and compare the complete saved details. Include
 multiple lines whose values and order are deliberately different, positive
 fractional quantities, nondefault handling flags, optional text, and equal/past
-dates. Verify optional blank-text normalization and UTC timestamp consistency
+dates. Verify exact optional text preservation and UTC timestamp consistency
 through a fresh HTTP request rather than a tracked EF entity.
 
 Exercise missing/malformed identifiers and rejected-creation readback. Inspect
@@ -82,3 +82,4 @@ execution is part of routine verification.
 - Remaining work: T003 owns concurrent creation, final-number competition and exhausted-creation readback. SQLite evidence does not prove PostgreSQL-specific migration/locking/error semantics; no PostgreSQL tests or Testcontainers ran. T002 introduced no migration. The prior JobExecutions snapshot drift remains documented in T001. Story remains In progress and plan active; no review or human acceptance is implied.
 - 2026-11-10, review-01 correction attempt 1: F002 decimal response schemas now advertise decimal rather than double for every package/line field; the generated-document test covers all 14 request/detail numeric fields. F001 raw-JSON acceptance cases verify the saved exact value through a fresh GET, while rejection cases verify missing candidate notes. F003 normalized the covered raw-string call in NoteDetailsTests without changing its JSON value. See T001 correction evidence for 285 focused note tests, 342 SQLite API tests, 171 unit tests, formatting/refactoring/reuse assessment and skills. Task remains done, story In review and plan active; F001/F002/F003 resolution requires independent follow-up review.
 - 2026-11-10, developer-authorized targeted cleanup: consolidated overlapping successful creation/detail checks into the full POST-Location-GET readback and repeated-creation workflows. The latter also verifies consecutive N00001/N00002. Representative missing-resource/binding/rejected-creation cases remain, including stable Guard-derived HTTP errors and no retrievable rejected note. DTO validation now has the explicitly agreed direct Validate unit seam; see T001 cleanup evidence for refactoring, test counts, commands and skills. Final solution checks pass 81 API and 179 unit tests. Task remains done; follow-up review of this cleanup is pending.
+- 2026-11-10, developer-requested text/ID refinement: fresh GET now preserves the exact supplied header, contact, package and line strings, including surrounding whitespace and blank optional comments. Updated the existing complete-graph workflow and two existing rejected-creation cases for zero/negative RecipientId lookup failures; GET still confirms absence of a failed note. Final solution verification passed 83 SQLite API and 182 unit tests; scoped formatter verification passed. See T001 for red/green, refactoring/reuse and skill evidence. Task remains done; new behavior needs fresh follow-up review and explicit human acceptance remains separate.

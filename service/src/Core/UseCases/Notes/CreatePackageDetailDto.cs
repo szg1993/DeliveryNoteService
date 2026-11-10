@@ -39,12 +39,15 @@ public record CreatePackageDetailDto
         Guard.ThrowIfMissing(PkgSizeZ);
         if (PkgQty <= 0 || TareWgt < 0 || PkgSizeX < 0 || PkgSizeY < 0 || PkgSizeZ < 0)
             throw new DataValidationException(ErrorCodes.Note.InvalidInput, "Invalid package quantity, weight or dimensions.");
-        Guard.ThrowIfMissing(TareWgtUm?.Trim(), nameof(TareWgtUm));
-        Guard.ThrowIfTooLong(TareWgtUm?.Trim(), NoteLimits.TareWgtUm, nameof(TareWgtUm));
-        Guard.ThrowIfMissing(PkgScale?.Trim(), nameof(PkgScale));
-        Guard.ThrowIfTooLong(PkgScale?.Trim(), NoteLimits.PkgScale, nameof(PkgScale));
-        Guard.ThrowIfMissing(PkgSizeUm?.Trim(), nameof(PkgSizeUm));
-        Guard.ThrowIfTooLong(PkgSizeUm?.Trim(), NoteLimits.PkgSizeUm, nameof(PkgSizeUm));
+        if (string.IsNullOrWhiteSpace(TareWgtUm))
+            throw new FieldMissingException(nameof(TareWgtUm));
+        Guard.ThrowIfTooLong(TareWgtUm, NoteLimits.TareWgtUm);
+        if (string.IsNullOrWhiteSpace(PkgScale))
+            throw new FieldMissingException(nameof(PkgScale));
+        Guard.ThrowIfTooLong(PkgScale, NoteLimits.PkgScale);
+        if (string.IsNullOrWhiteSpace(PkgSizeUm))
+            throw new FieldMissingException(nameof(PkgSizeUm));
+        Guard.ThrowIfTooLong(PkgSizeUm, NoteLimits.PkgSizeUm);
     }
 
     public NotePackageDetail ToModel() => MapTo(new NotePackageDetail());
@@ -52,13 +55,13 @@ public record CreatePackageDetailDto
     public NotePackageDetail MapTo(NotePackageDetail model)
     {
         model.TareWgt = TareWgt!.Value;
-        model.TareWgtUm = TareWgtUm.Trim();
+        model.TareWgtUm = TareWgtUm;
         model.PkgQty = PkgQty!.Value;
-        model.PkgScale = PkgScale.Trim();
+        model.PkgScale = PkgScale;
         model.PkgSizeX = PkgSizeX!.Value;
         model.PkgSizeY = PkgSizeY!.Value;
         model.PkgSizeZ = PkgSizeZ!.Value;
-        model.PkgSizeUm = PkgSizeUm.Trim();
+        model.PkgSizeUm = PkgSizeUm;
 
         return model;
     }

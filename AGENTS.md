@@ -46,6 +46,11 @@ shared guides and skills.
 
 ## DTO style
 
+- Preserve supplied string values. Do not trim them during validation or mapping,
+  or replace optional empty/whitespace strings with null. Apply length limits to
+  the supplied value.
+- Do not reject IDs because they are zero or negative. Use normal binding and
+  resource lookup; an absent referenced resource is not found.
 - For every DTO created or modified in the future, declare every property explicitly with a public `init` setter. Do not use positional record parameters to declare DTO properties.
 - Keep DTO-to-model mapping and normalization in the DTO, following `CreateRecipientDto`: `ToModel(...)` creates a model and delegates to `MapTo(model, ...)`; `MapTo(...)` assigns the mapped properties to the supplied model and returns that same instance. Use cases call these methods instead of duplicating the mapping.
 - Pass dependencies needed for mapping, such as `ITimeService`, explicitly to `ToModel` and `MapTo`, and forward them when delegating.

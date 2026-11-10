@@ -34,14 +34,14 @@ public record CreateNoteDto
 
     public void Validate()
     {
-        Guard.ThrowIfTooLong(EkaerNbr?.Trim(), NoteLimits.EkaerNbr, nameof(EkaerNbr));
-        Guard.ThrowIfMissing(TakeoverPlace?.Trim(), nameof(TakeoverPlace));
-        Guard.ThrowIfTooLong(TakeoverPlace?.Trim(), NoteLimits.TakeoverPlace, nameof(TakeoverPlace));
-        Guard.ThrowIfMissing(Category?.Trim(), nameof(Category));
-        Guard.ThrowIfTooLong(Category?.Trim(), NoteLimits.Category, nameof(Category));
-        Guard.ThrowIfTooLong(Comments?.Trim(), NoteLimits.Comments, nameof(Comments));
-        if (RecipientId <= 0)
-            throw new DataValidationException(ErrorCodes.Note.InvalidInput, "Invalid RecipientId.");
+        Guard.ThrowIfTooLong(EkaerNbr, NoteLimits.EkaerNbr);
+        if (string.IsNullOrWhiteSpace(TakeoverPlace))
+            throw new FieldMissingException(nameof(TakeoverPlace));
+        Guard.ThrowIfTooLong(TakeoverPlace, NoteLimits.TakeoverPlace);
+        if (string.IsNullOrWhiteSpace(Category))
+            throw new FieldMissingException(nameof(Category));
+        Guard.ThrowIfTooLong(Category, NoteLimits.Category);
+        Guard.ThrowIfTooLong(Comments, NoteLimits.Comments);
         Guard.ThrowIfMissing(ContactInfo);
         Guard.ThrowIfMissing(PackageDetail);
         Guard.ThrowIfMissing(Deadline);
@@ -59,10 +59,10 @@ public record CreateNoteDto
 
     public Note MapTo(Note model, ITimeService timeService)
     {
-        model.EkaerNbr = string.IsNullOrWhiteSpace(EkaerNbr) ? null : EkaerNbr.Trim();
-        model.TakeoverPlace = TakeoverPlace.Trim();
-        model.Category = Category.Trim();
-        model.Comments = string.IsNullOrWhiteSpace(Comments) ? null : Comments.Trim();
+        model.EkaerNbr = EkaerNbr;
+        model.TakeoverPlace = TakeoverPlace;
+        model.Category = Category;
+        model.Comments = Comments;
         model.IsUrgent = IsUrgent;
         model.IsCrackable = IsCrackable;
         model.IsDangerous = IsDangerous;

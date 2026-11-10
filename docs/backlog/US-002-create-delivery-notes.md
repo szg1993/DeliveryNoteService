@@ -27,14 +27,16 @@ The requirements below incorporate the developer's initial refinements and
 subsequent grilling answers, confirmed on 2026-11-10. A three-task breakdown
 exists; all coding tasks and the developer-requested Guard/test cleanup are complete.
 [Agent review 03 passed](US-002-create-delivery-notes/review-03.md).
+The subsequent developer-requested text/ID changes require fresh follow-up review.
 Human review and explicit acceptance remain. Legacy observations are historical
 reference, not the new contract.
 
 ## Creation contract
 
-- Retain legacy business field names and maximum lengths listed below. Trim
-  text before length validation and storage, preserving internal whitespace.
-  Optional EKAER/comments may be absent, null, or blank; blank becomes null.
+- Retain legacy business field names and maximum lengths listed below. Validate
+  and store text exactly as supplied, including surrounding whitespace, which
+  counts toward length limits. Optional EKAER/comments may be absent or null;
+  supplied empty or blank strings are preserved.
   Require legacy-required text and nonblank free-text unit labels; no unit list
   or new category enumeration is introduced.
 - Require ContactInfo, PackageDetail, Deadline, and a nonempty NoteLines
@@ -49,8 +51,8 @@ reference, not the new contract.
   reject timestamps, date-time strings, blanks, missing/null values, and invalid
   dates. Do not convert calendar dates to UTC instants. Require TakeoverDate <=
   ShipDate <= EstimatedArrivalDate; equal and past dates are allowed.
-- The caller supplies RecipientId for an existing recipient. Nonpositive IDs
-  are invalid input (400); unknown positive IDs return 404. Recipient data is a
+- The caller supplies RecipientId for an existing recipient. Do not validate its
+  sign; any absent recipient, including zero or negative IDs, returns 404. Recipient data is a
   live relationship, not a historical snapshot.
 - The server assigns note/child IDs, NoteNbr, UTC CreatedDate using ITimeService,
   and initial Pending status. No User relationship or placeholder creator is

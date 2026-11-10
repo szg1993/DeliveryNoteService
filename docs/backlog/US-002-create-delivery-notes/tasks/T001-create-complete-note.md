@@ -22,7 +22,7 @@ details, and current recipient details in a 201 envelope.
   not new recipient data or a user/status choice.
 - Implement the complete confirmed validation and mapping in DTOs from the start.
   This includes required nested objects and text, at least one nonnull line,
-  trimmed length limits, explicitly supplied decimal quantities/weights/dimensions,
+  length limits on supplied text, explicitly supplied decimal quantities/weights/dimensions,
   and required DateOnly calendar dates in DTOs/domain with exact yyyy-MM-dd
   input/output and their agreed ordering. Reject omitted/null numeric values
   rather than defaulting to zero. Preserve fractional values, internal text
@@ -50,7 +50,7 @@ details, and current recipient details in a 201 envelope.
 - Expose POST /api/delivery-notes and its generated OpenAPI operation. Return
   Envelope<NoteDetailsDto>, using legacy note names for response fields and
   server-assigned child IDs where represented. Business validation failures use
-  stable codes and 400; an unknown positive recipient uses 404. Describe no 409
+  stable codes and 400; any absent recipient, including zero or negative IDs, uses 404. Describe no 409
   business response for this operation.
 - Extend existing TestSuite and request factories; add note-specific infrastructure
   setup for the first-number scenario because the shared fixture seeds IDs above
@@ -70,8 +70,9 @@ must not call an unimplemented GET route or advertise a URI that returns 404.
   as a production numbering rule. Input does not assign the generated fields.
 - [x] The fixed clock controls UTC CreatedDate and status is always Pending;
   creation requires no authentication and stores no placeholder creator.
-- [x] Text normalization and every source length limit apply after trimming.
-  Optional EKAER/comments may be null, absent, or blank; blank becomes null.
+- [x] Every source length limit applies to text exactly as supplied, including
+  surrounding whitespace. Optional EKAER/comments may be null or absent;
+  supplied empty or blank strings are preserved.
   False flags and free-form nonblank unit labels are accepted.
 - [x] Missing/null required objects or required text, whitespace-only text,
   oversized values, empty/null lines, and null line entries return standard 400
@@ -90,8 +91,8 @@ must not call an unimplemented GET route or advertise a URI that returns 404.
   any nested level are rejected with 400; known names match case-insensitively.
   Null bodies and malformed JSON fail as requests with the standard error
   format; existing recipient request behavior remains intact.
-- [x] Invalid/nonpositive RecipientId is 400; an unknown positive recipient is
-  404. Business errors have stable codes grouped under Note when entity-specific.
+- [x] RecipientId is not validated by sign; any absent recipient, including zero
+  or negative IDs, is 404. Business errors have stable codes grouped under Note when entity-specific.
 - [x] Required relationships, identity uniqueness/range, and transactional save
   prevent partial persisted graphs. Number exhaustion is mapped specifically to
   400 rather than a generic uniqueness conflict or unhandled provider exception.
@@ -109,7 +110,7 @@ for the standard error shape and relevant stable code. Do not add internal
 service mocks or a second unit-test copy of the same DTO matrix.
 
 Exercise successful responses for optional fields, flags, one/multiple lines,
-repeated part codes, decimals, and normalization, along with the rejection cases.
+repeated part codes, decimals, and exact supplied text, along with the rejection cases.
 T002 will add durable GET readback; these tests must pass without it. Review the
 transaction/migration invariants here; T003 supplies additional contention and
 end-of-range failure evidence, not their initial implementation.
@@ -145,3 +146,8 @@ commands here. Never start Testcontainers without explicit approval.
 - Refactoring/reuse assessment: inspected existing Guard/StringExtensions, recipient validation/unit tests, note DTOs and creation/detail/decimal/numbering/documentation tests. Reused Guard and the existing HTTP host/clients/AssertSavedNote helper. The eight unit cases share one local valid-note factory; it constructs DTOs without host, serialization, mocks or new framework infrastructure. Each API scenario retains the existing per-test database/clock and host/client disposal owner; tests dispose their raw responses. No startup configuration or lifecycle change was needed. Further abstraction, generic numeric guards, or whole-suite cleanup would add maintenance cost without a current benefit.
 - Verification: characterization tests were initially green (11 representative Validate cases before/after the refactor); reduced the final selection to eight distinct cases in line with the agreement. This behavior-preserving cleanup needed no manufactured red failure. After the last C# edit, scoped dotnet format service/DeliveryNoteService.sln --include (the eleven added/modified C# files) --no-restore and its --verify-no-changes pass succeeded. Final dotnet test service/DeliveryNoteService.sln --filter "Database!=PostgreSQL" -v minimal -- xUnit.ParallelizeTestCollections=false passed 81 API tests and 179 unit tests (previous suite: 342 API and 171 unit). git diff --check passed. No Markdown formatter is configured; tracking follows existing conventions. No PostgreSQL tests or containers ran.
 - Skills: clean-code used for reuse and the scoped refactoring assessment; component-testing used for the proportionate HTTP/unit split and existing host lifecycle. tdd loaded but not used for a red/green behavior change because this cleanup preserves behavior; its agreed-seam guidance informed the direct Validate characterization checks. Latest user/repository testing preferences take precedence over broader historical test advice. Task remains done, story In review and plan active; fresh follow-up review is pending. F001/F002/F003 retain their prior resolved history; this is an authorized cleanup, not another failed correction attempt.
+- 2026-11-10, developer-requested text/ID refinement: replaced the earlier trim-and-normalize contract with exact supplied string values. Header, contact, package and line text maps directly, including optional empty/blank strings; omitted/null optional values remain null. Length checks use raw values, with straightforward nonblank required-text checks and existing Guard length checks. RecipientId has no zero/negative guard and follows normal repository lookup, returning Recipient.NotFound/404 when absent. AGENTS.md and current story/plan/task requirements plus OpenAPI descriptions/minimum metadata record this explicit override. Historical progress and reviews remain intact.
+- TDD: the existing full POST-to-GET graph test first failed because returned values lost surrounding whitespace and a blank optional line comment became null; after direct mapping it passed. Added zero/negative cases to the existing rejected-creation workflow; both first failed with 400, then passed with 404 after removing the sign guard. Representative direct Validate cases cover raw length (including surrounding spaces), nonblank required text and ID sign acceptance. No field matrix or new test seam was introduced.
+- Refactoring/reuse assessment: inspected the four changed note DTOs, CreateNote error adaptation, NoteCreationTests, NoteDetailsTests, NoteDocumentationTests, direct DTO unit tests and existing NoteRequests/NoteAssertions consumers. Kept Guard for supported checks; used simple whitespace conditions without rewriting strings or adding a validation abstraction. Removed redundant explicit field-name arguments when Guard can infer raw property names. Reused the complete-graph and rejection workflows, per-test host/database/clock and existing disposal ownership; no new helper, mutable shared state or fixture configuration was needed. Exact numeric token parsing is unrelated to business string trimming and was not modified. Existing recipient creation behavior and server number-range enforcement remain outside this change.
+- Verification (repository root): dotnet test service/test/ApiTests/ApiTests.csproj --filter "FullyQualifiedName~RetrievedNote_PreservesCompleteGraphAndOrderedDistinctLines&Database!=PostgreSQL" -v minimal passed after the red tracer. The same command with filter "FullyQualifiedName~RejectedCreation_LeavesNoRetrievableNote&Database!=PostgreSQL" passed 5 cases after its two red ID cases. Final dotnet test service/DeliveryNoteService.sln --filter "Database!=PostgreSQL" -v minimal -- xUnit.ParallelizeTestCollections=false passed 83 SQLite API tests and 182 unit tests. Scoped dotnet format service/DeliveryNoteService.sln --include <the ten changed C# files> --no-restore and the same command with --verify-no-changes passed after the final C# edit; git diff --check passed. No Markdown formatter is configured; followed repository conventions. No PostgreSQL tests or Testcontainers ran.
+- Skills used: tdd (raw-text and ID red/green slices), clean-code (direct mapping, Guard reuse and scoped refactoring), component-testing (existing HTTP workflow/host alongside the agreed direct Validate unit seam). No loaded-but-unused skills. All tasks remain done, story In review and plan active. Fresh independent follow-up review must cover the new text/ID behavior before human acceptance; no push occurred.

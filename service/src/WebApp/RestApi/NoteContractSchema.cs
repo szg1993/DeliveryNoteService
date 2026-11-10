@@ -70,11 +70,11 @@ public sealed class NoteContractSchema : ISchemaFilter
             {
                 property.MaxLength = limit;
                 property.MinLength = optional ? null : 1;
-                property.Description = "Surrounding whitespace is removed before length validation and storage.";
+                property.Description = "Text is validated and stored exactly as supplied; surrounding whitespace counts toward the length limit.";
             }
             if (property.Type is "number" or "integer")
             {
-                property.Minimum = name == "recipientId" ? 1 : 0;
+                property.Minimum = name == "recipientId" ? null : 0;
                 property.ExclusiveMinimum = name is "pkgQty" or "partQty";
             }
             if (context.Type == typeof(CreateDeadlineDto))

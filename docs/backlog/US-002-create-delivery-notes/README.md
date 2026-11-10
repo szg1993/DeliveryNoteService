@@ -26,9 +26,10 @@ agreed contract for this breakdown; keep them synchronized with the story.
 
 - Create the full legacy note, including contact details, package details,
   deadlines, and at least one line. Retain legacy business field names and maximum
-  lengths from the source's data and constraint sections. Text is trimmed before
-  validating lengths and storing it. Optional EKAER and comment fields may be
-  absent; normalize blank optional text to null. Unit labels are nonblank free
+  lengths from the source's data and constraint sections. Text is validated and
+  stored exactly as supplied, including surrounding whitespace, which counts
+  toward length limits. Optional EKAER/comments may be absent or null; supplied
+  empty or blank strings are preserved. Unit labels are nonblank free
   text, subject to existing length limits where specified, without a unit list.
 - Require ContactInfo, PackageDetail, and Deadline, all legacy-required text
   fields, and a nonempty NoteLines collection without null elements. Package and
@@ -159,7 +160,7 @@ Criterion numbers refer to the source's confirmed acceptance criteria.
 | AC5: Atomic creation of note and all dependent records | T001, T002, T003 |
 | AC6: Unique concurrent numbers, correct range and exhaustion | T001, T003 |
 | AC7: Generated OpenAPI for POST and GET | T001, T002, T003 |
-| Required nested data, at least one line, text normalization/limits | T001, T002 |
+| Required nested data, at least one line, supplied text/limits | T001, T002 |
 | Explicit numeric inputs, decimal ranges, strict DateOnly dates and ordering | T001, T002 |
 | Reject unknown/server fields at every level | T001 |
 | Anonymous creation and full detail retrieval | T001, T002 |
@@ -205,8 +206,8 @@ instead of deferring the basic validation and transaction requirements of T001.
 No unresolved product question blocks this breakdown. The developer confirmed
 shared understanding after grilling; the source now records those decisions.
 Harmless representation choices:
-blank optional text is null, absent Boolean flags are false, positive unknown
-RecipientId is 404, and nonpositive RecipientId is invalid input (400). Follow
+supplied optional text is preserved, absent Boolean flags are false, and any
+absent RecipientId is 404 without sign validation, including zero or negative IDs. Follow
 the current recipient detail route for integer binding: malformed/out-of-range
 route IDs are 400, and absent integer note IDs, including nonpositive values,
 are 404. Do not add new category/unit enumerations or reinterpret legacy names.
@@ -246,3 +247,4 @@ external adapter or runtime upgrade is assumed.
 - 2026-11-10: Independent [review-02](review-02.md), committed as 6e452aad75a7491588336f7c41c0ad198f82f5dc, returned PASS with complete follow-up coverage at reviewed head 8be6fd675bceb150fa227b6c2399bdc085ca59f6 (implementation correction a4ab5d0933b50c6e888207f737ef7513871a7904). F001, F002 and F003 are resolved after correction attempt 1; each has zero confirmed unsuccessful fixes. Reviewer independently passed 342 SQLite API tests, 171 unit tests, scoped formatter verification and diff checks; unchanged requirements inherit complete review-01 coverage. No implementation changes followed this PASS; final handoff changes only synchronize completion evidence in the backlog index, story and these notes. No Markdown formatter is configured; checked repository Markdown conventions and git diff --check. The what-next assessment recommends human code review and explicit acceptance; open a PR if none exists, otherwise continue that review (current external PR state was not checked). All three tasks remain done, story In review and plan active. PostgreSQL execution remains unverified; see T001 and review-02 for provider limits and preserved pre-existing snapshot drift. Nothing was pushed and no containers ran. Resume with the same authorized reservation attempt aa94e8f5-208c-4204-a53b-50dac3e54bd0 and its existing local Git metadata record; after explicit human approval follow Record human acceptance rather than inferring completion from PASS.
 - 2026-11-10: Developer confirmed proportionate hobby-project engineering after grilling and explicitly authorized AGENTS.md updates plus targeted US-002 cleanup (Guard reuse and fewer DTO-validation API cases). The current test agreement now includes direct DTO Validate unit tests and representative HTTP workflows, superseding older expansive matrices while preserving API behavior and the existing independent review process. NoteInput was removed; eight Validate unit cases replace exhaustive field checks, and note API cases fall from 285 to 24. Final verification: 81 non-PostgreSQL API tests and 179 unit tests pass, along with scoped formatter verification and diff checks. See T001/T002 Progress. Review-02 PASS covers the earlier implementation only; request fresh follow-up review of this cleanup before human acceptance. F001/F002/F003 remain previously resolved after attempt 1 with zero unsuccessful fixes. All tasks remain done, story In review and plan active. The same confirmed reservation aa94e8f5-208c-4204-a53b-50dac3e54bd0 was verified/reused; no pushes or containers occurred.
 - 2026-11-10: Targeted cleanup committed as c2aba518d67930059c199ba5462bdd523b209976. Independent review-03 (8c994d139e68093ebd6febdf1eb24223c7067b57) returned PASS with complete focused follow-up coverage; independently passed 81 SQLite API tests, 179 unit tests and scoped formatter verification. Eight direct Validate unit cases and 24 note API cases satisfy the newly agreed proportional test strategy. F001-F003 remain resolved after their first correction with zero unsuccessful fixes. No implementation changes follow this PASS; handoff metadata now points to review-03. The read-only what-next assessment recommends human review and explicit acceptance; open a PR if none exists, otherwise continue review (external PR state was not checked). Tasks remain done, story In review and plan active. No Markdown formatter is configured; handoff checked with git diff --check. Nothing pushed or run in Testcontainers; reuse the existing confirmed reservation for any further implementation.
+- 2026-11-10: Developer explicitly directed no string trimming and no zero/negative ID validation. Current note requirements now preserve exact supplied text (including optional blanks), count surrounding whitespace toward length limits and let all RecipientId values reach normal lookup (absent resources return 404). No recipient creation, parser, migration or numbering changes. Reused direct Validate and existing HTTP workflows with a few representative cases; final checks passed 83 non-PostgreSQL API tests, 182 unit tests, scoped formatter verification and diff checks. See T001/T002 Progress for red/green and refactoring evidence. Review-03 PASS covers the prior implementation; fresh independent follow-up review is next. F001-F003 remain previously resolved after attempt 1 with zero unsuccessful fixes; this authorized requirement change is not another correction attempt. Tasks remain done, story In review and plan active. Confirmed reservation aa94e8f5-208c-4204-a53b-50dac3e54bd0 and origin marker aafe717307555d4d8dc865b2dd4240ddeaee091d were verified/reused. No pushes or containers occurred.

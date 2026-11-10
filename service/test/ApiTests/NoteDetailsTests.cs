@@ -38,10 +38,10 @@ public class NoteDetailsTests : DeliveryNoteServiceApiTestBase
         saved.Should().BeEquivalentTo(
             new
             {
-                EkaerNbr = "EK123",
-                TakeoverPlace = "Warehouse",
-                Category = "Goods",
-                Comments = "Handle  carefully",
+                EkaerNbr = " EK123 ",
+                TakeoverPlace = " Warehouse ",
+                Category = " Goods ",
+                Comments = " Handle  carefully ",
                 IsUrgent = true,
                 IsCrackable = true,
                 IsDangerous = true,
@@ -49,13 +49,13 @@ public class NoteDetailsTests : DeliveryNoteServiceApiTestBase
                 CreatedDate = createdAt,
                 RecipientId = recipient.Id,
                 Recipient = recipient,
-                ContactInfo = new { AssignTo = "Driver", AssignToPhone = "123", Contact = "Receiver", ContactPhone = "456" },
-                PackageDetail = new { TareWgt = 0.1234567890123456789012345678m, TareWgtUm = "kg", PkgQty = 1.25m, PkgScale = "pallet", PkgSizeX = 0m, PkgSizeY = 2.5m, PkgSizeZ = 3m, PkgSizeUm = "m" },
+                ContactInfo = new { AssignTo = " Driver ", AssignToPhone = " 123 ", Contact = " Receiver ", ContactPhone = " 456 " },
+                PackageDetail = new { TareWgt = 0.1234567890123456789012345678m, TareWgtUm = " kg ", PkgQty = 1.25m, PkgScale = " pallet ", PkgSizeX = 0m, PkgSizeY = 2.5m, PkgSizeZ = 3m, PkgSizeUm = " m " },
                 Deadline = new { TakeoverDate = new DateOnly(2020, 1, 1), ShipDate = new DateOnly(2020, 1, 1), EstimatedArrivalDate = new DateOnly(2020, 1, 2) },
                 NoteLines = new[]
                 {
-                    new { PartCode = "A", PartDesc = "Part  A", PartCmt = (string?)"First  line", PartQty = 2.25m, PartQtyUm = "pcs", PartWgt = 0m, PartWgtUm = "kg" },
-                    new { PartCode = "A", PartDesc = "Second part", PartCmt = (string?)null, PartQty = 0.125m, PartQtyUm = "box", PartWgt = 3.75m, PartWgtUm = "lb" }
+                    new { PartCode = " A ", PartDesc = " Part  A ", PartCmt = (string?)" First  line ", PartQty = 2.25m, PartQtyUm = " pcs ", PartWgt = 0m, PartWgtUm = " kg " },
+                    new { PartCode = " A ", PartDesc = " Second part ", PartCmt = (string?)"  ", PartQty = 0.125m, PartQtyUm = " box ", PartWgt = 3.75m, PartWgtUm = " lb " }
                 }
             },
             options => options.WithStrictOrdering()
@@ -108,6 +108,8 @@ public class NoteDetailsTests : DeliveryNoteServiceApiTestBase
     [Theory]
     [InlineData("takeoverPlace", null, HttpStatusCode.BadRequest, "Note.InvalidInput")]
     [InlineData("recipientId", "123456", HttpStatusCode.NotFound, "Recipient.NotFound")]
+    [InlineData("recipientId", "0", HttpStatusCode.NotFound, "Recipient.NotFound")]
+    [InlineData("recipientId", "-1", HttpStatusCode.NotFound, "Recipient.NotFound")]
     [InlineData("contactInfo.id", "99", HttpStatusCode.BadRequest, CommonWebErrorCodes.InvalidHttpRequest)]
     public async Task RejectedCreation_LeavesNoRetrievableNote(
         string path,

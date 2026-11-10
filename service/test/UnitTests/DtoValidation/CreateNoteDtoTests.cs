@@ -7,9 +7,9 @@ namespace UnitTests.DtoValidation;
 public class CreateNoteDtoTests
 {
     [Fact]
-    public void CompleteNote_WithTrimmedTextLimitsAndZeroWeights_IsValid()
+    public void CompleteNote_WithSuppliedTextAndZeroWeights_IsValid()
     {
-        var dto = ValidNote() with { TakeoverPlace = "  " + new string('x', 30) + "  ", Comments = "  " };
+        var dto = ValidNote() with { TakeoverPlace = " " + new string('x', 28) + " ", Comments = "  " };
 
         var validate = () => dto.Validate();
 
@@ -24,6 +24,28 @@ public class CreateNoteDtoTests
         var validate = () => dto.Validate();
 
         validate.Should().Throw<DataValidationException>();
+    }
+
+    [Fact]
+    public void SurroundingWhitespace_CountsTowardTextLengthLimit()
+    {
+        var dto = ValidNote() with { TakeoverPlace = " " + new string('x', 30) + " " };
+
+        var validate = () => dto.Validate();
+
+        validate.Should().Throw<FieldTooLongException>();
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public void RecipientIdSign_IsNotValidated(int recipientId)
+    {
+        var dto = ValidNote() with { RecipientId = recipientId };
+
+        var validate = () => dto.Validate();
+
+        validate.Should().NotThrow();
     }
 
     [Fact]
