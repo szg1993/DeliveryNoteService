@@ -1,0 +1,19 @@
+using DeliveryNoteService.Core.UseCases.Recipients;
+
+namespace ApiTests.DtoFactories;
+
+public static class DtoFactory
+{
+    public static CreateRecipientDto CreateRecipient()
+    {
+        return new CreateRecipientDto
+        {
+            Code = "DummyCode",
+            Name = "Dummy Name",
+            Country = "HU",
+            Zip = "1234",
+            City = "Dummy City",
+            Address = "Dummy Address"
+        };
+    }
+}

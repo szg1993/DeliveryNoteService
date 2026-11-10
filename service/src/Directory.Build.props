@@ -1,0 +1,7 @@
+<Project>
+	<PropertyGroup>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+		<AssemblyName>DeliveryNoteService.$(MSBuildProjectName)</AssemblyName>
+		<RootNamespace>DeliveryNoteService.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+	</PropertyGroup>
+</Project>
