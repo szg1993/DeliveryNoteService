@@ -1,5 +1,8 @@
 Read and follow [the shared agent instructions](../agentic-engineering/agent-harness/AGENTS.md).
 
+For test work and API test execution, read and follow
+[the testing instructions](service/test/AGENTS.md).
+
 ## Project scale and engineering tradeoffs
 
 This is a simple hobby project. Prioritize code the developer can understand and
@@ -20,20 +23,6 @@ shared guides and skills.
   Before committing to strict numeric representability or date-token rules,
   explain the maintenance cost of custom converters and recommend normal binding
   when its practical behavior is sufficient.
-- Write a few happy-path and unhappy-path tests. Choose representative cases
-  for meaningful behavior; do not test every possible scenario or multiply
-  shared validation checks across every field.
-- Test DTO validation with unit tests that call `.Validate()` directly. This is
-  an agreed public test seam. Keep API tests to the smallest useful set proving
-  complete workflows and essential HTTP behavior; do not repeat DTO-validation
-  matrices through HTTP. These preferences supersede broader testing advice in
-  shared skills and older plans, including HTTP-only validation test agreements.
-- Keep test helpers small and reuse the existing test host. Extract helpers when
-  they remove real duplication or make scenarios easier to understand.
-- Justify specialized parsing and generated-OpenAPI tests by a concrete consumer
-  need or material risk. Do not add exhaustive checks merely to mirror endpoint
-  metadata or enforce every framework edge case. Keep representative coverage
-  of meaningful application behavior.
 - Run checks appropriate to the change. Broaden or repeat verification when a
   meaningful edit, failure, or unresolved concern warrants it.
 - Review for correctness, clarity, and reuse. Avoid speculative refactoring and
@@ -95,9 +84,3 @@ shared guides and skills.
 ## GET endpoints
 
 - Never validate `PageRequest` or `Sorting` in use case classes for GET endpoints.
-
-## API test execution
-
-- Use SQLite API tests for routine verification; SQLite coverage is sufficient.
-- Do not run PostgreSQL API tests by default. Exclude tests tagged `Database=PostgreSQL` with `--filter "Database!=PostgreSQL"` when running API tests or a solution containing them.
-- Before running any Testcontainers tests, including PostgreSQL API tests, ask the user and wait for explicit approval. Do not start test containers without that approval.
