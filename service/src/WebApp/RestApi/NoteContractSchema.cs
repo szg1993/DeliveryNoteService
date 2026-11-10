@@ -44,6 +44,7 @@ public sealed class NoteContractSchema : ISchemaFilter
 
     public void Apply(OpenApiSchema schema, SchemaFilterContext context)
     {
+        DescribeDecimals(schema, context.Type);
         if (context.Type == typeof(NoteStatus))
         {
             schema.Type = "string";
@@ -89,6 +90,24 @@ public sealed class NoteContractSchema : ISchemaFilter
                 property.Items.Nullable = false;
                 property.Description = "Ordered nonempty lines; repeated part codes remain separate. No maximum count.";
             }
+        }
+    }
+
+    private static void DescribeDecimals(OpenApiSchema schema, Type type)
+    {
+        if (type != typeof(CreatePackageDetailDto) &&
+            type != typeof(CreateNoteLineDto) &&
+            type != typeof(PackageDetailDetailsDto) &&
+            type != typeof(NoteLineDetailsDto)
+        )
+        {
+            return;
+        }
+
+        foreach (var property in schema.Properties.Values.Where(property => property.Type == "number"))
+        {
+            property.Format = "decimal";
+            property.Description = "An exact base-10 decimal JSON number. Values must be representable as a .NET decimal without rounding; use a decimal-capable client. No business precision or scale cap applies.";
         }
     }
 }

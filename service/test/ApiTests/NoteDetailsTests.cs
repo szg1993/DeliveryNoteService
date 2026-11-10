@@ -32,11 +32,13 @@ public class NoteDetailsTests : DeliveryNoteServiceApiTestBase
         request["isOwnCost"] = true;
         NoteRequests.Set(request, "packageDetail.tareWgt", JsonValue.Create(0.1234567890123456789012345678m));
         NoteRequests.Set(request, "noteLines.0.partCmt", JsonValue.Create(" First  line "));
-        request["noteLines"]!.AsArray().Add(JsonNode.Parse(
-            """
-            { "partCode": " A ", "partDesc": " Second part ", "partCmt": "  ", "partQty": 0.125, "partQtyUm": " box ", "partWgt": 3.75, "partWgtUm": " lb " }
-            """
-        ));
+        request["noteLines"]!.AsArray().Add(
+            JsonNode.Parse(
+                """
+                { "partCode": " A ", "partDesc": " Second part ", "partCmt": "  ", "partQty": 0.125, "partQtyUm": " box ", "partWgt": 3.75, "partWgtUm": " lb " }
+                """
+            )
+        );
         var created = await Api.Notes().PostAsync(request);
         this.Time().SetDateTime(createdAt.AddDays(1));
 

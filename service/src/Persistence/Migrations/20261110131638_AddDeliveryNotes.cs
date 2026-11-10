@@ -42,8 +42,10 @@ namespace DeliveryNoteService.Persistence.Migrations
                         column: x => x.RecipientId,
                         principalTable: "Recipients",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
+                        onDelete: ReferentialAction.Restrict
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "NoteContactInfo",
@@ -65,8 +67,10 @@ namespace DeliveryNoteService.Persistence.Migrations
                         column: x => x.NoteId,
                         principalTable: "Notes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "NoteDeadline",
@@ -87,8 +91,10 @@ namespace DeliveryNoteService.Persistence.Migrations
                         column: x => x.NoteId,
                         principalTable: "Notes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "NoteLine",
@@ -114,8 +120,10 @@ namespace DeliveryNoteService.Persistence.Migrations
                         column: x => x.NoteId,
                         principalTable: "Notes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "NotePackageDetail",
@@ -141,56 +149,68 @@ namespace DeliveryNoteService.Persistence.Migrations
                         column: x => x.NoteId,
                         principalTable: "Notes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_NoteContactInfo_NoteId",
                 table: "NoteContactInfo",
                 column: "NoteId",
-                unique: true);
+                unique: true
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_NoteDeadline_NoteId",
                 table: "NoteDeadline",
                 column: "NoteId",
-                unique: true);
+                unique: true
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_NoteLine_NoteId_Position",
                 table: "NoteLine",
                 columns: new[] { "NoteId", "Position" },
-                unique: true);
+                unique: true
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_NotePackageDetail_NoteId",
                 table: "NotePackageDetail",
                 column: "NoteId",
-                unique: true);
+                unique: true
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notes_RecipientId",
                 table: "Notes",
-                column: "RecipientId");
+                column: "RecipientId"
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "NoteContactInfo");
+                name: "NoteContactInfo"
+            );
 
             migrationBuilder.DropTable(
-                name: "NoteDeadline");
+                name: "NoteDeadline"
+            );
 
             migrationBuilder.DropTable(
-                name: "NoteLine");
+                name: "NoteLine"
+            );
 
             migrationBuilder.DropTable(
-                name: "NotePackageDetail");
+                name: "NotePackageDetail"
+            );
 
             migrationBuilder.DropTable(
-                name: "Notes");
+                name: "Notes"
+            );
 
         }
     }

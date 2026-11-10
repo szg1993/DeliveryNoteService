@@ -18,7 +18,8 @@ public static class NoteDatabase
     {
         using var scope = test.Services.CreateScope();
         var database = scope.ServiceProvider.GetRequiredService<AppDbContext>().Database;
-        await database.ExecuteSqlRawAsync("""
+        await database.ExecuteSqlRawAsync(
+            """
             CREATE TABLE UnrelatedNoteGate (
                 Id INTEGER CONSTRAINT CK_Notes_NumberRange_Other CHECK (Id < 0)
             );
@@ -26,6 +27,7 @@ public static class NoteDatabase
             BEGIN
                 INSERT INTO UnrelatedNoteGate(Id) VALUES (1);
             END;
-            """);
+            """
+        );
     }
 }

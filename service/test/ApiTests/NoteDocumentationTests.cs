@@ -6,6 +6,31 @@ namespace ApiTests;
 
 public class NoteDocumentationTests : DeliveryNoteServiceApiTestBase
 {
+    [Fact]
+    public async Task GeneratedDocument_DescribesExactDecimalsInEveryNoteInputAndDetail()
+    {
+        var document = (await Api.Client.GetFromJsonAsync<JsonObject>("/swagger/v1/swagger.json"))!;
+        var schemas = document["components"]!["schemas"]!;
+        var numericFields = new Dictionary<string, string[]>
+        {
+            ["CreatePackageDetailDto"] = ["tareWgt", "pkgQty", "pkgSizeX", "pkgSizeY", "pkgSizeZ"],
+            ["PackageDetailDetailsDto"] = ["tareWgt", "pkgQty", "pkgSizeX", "pkgSizeY", "pkgSizeZ"],
+            ["CreateNoteLineDto"] = ["partQty", "partWgt"],
+            ["NoteLineDetailsDto"] = ["partQty", "partWgt"]
+        };
+
+        foreach (var (schema, fields) in numericFields)
+        {
+            foreach (var name in fields)
+            {
+                var property = schemas[schema]!["properties"]![name]!;
+                property["type"]!.GetValue<string>().Should().Be("number");
+                property["format"]!.GetValue<string>().Should().Be("decimal");
+                property["description"]!.GetValue<string>().Should().Contain("exact base-10 decimal");
+            }
+        }
+    }
+
     protected override void ConfigureTestHostConfiguration(IConfigurationBuilder configuration)
     {
         configuration.AddInMemoryCollection(new Dictionary<string, string?> { ["Swagger:Enabled"] = "true" });

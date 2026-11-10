@@ -6,18 +6,23 @@ namespace DeliveryNoteService.Core.UseCases.Notes;
 [JsonUnmappedMemberHandling(JsonUnmappedMemberHandling.Disallow)]
 public record CreatePackageDetailDto
 {
+    [JsonConverter(typeof(ExactNoteDecimalConverter))]
     public decimal? TareWgt { get; init; }
 
     public string TareWgtUm { get; init; } = null!;
 
+    [JsonConverter(typeof(ExactNoteDecimalConverter))]
     public decimal? PkgQty { get; init; }
 
     public string PkgScale { get; init; } = null!;
 
+    [JsonConverter(typeof(ExactNoteDecimalConverter))]
     public decimal? PkgSizeX { get; init; }
 
+    [JsonConverter(typeof(ExactNoteDecimalConverter))]
     public decimal? PkgSizeY { get; init; }
 
+    [JsonConverter(typeof(ExactNoteDecimalConverter))]
     public decimal? PkgSizeZ { get; init; }
 
     public string PkgSizeUm { get; init; } = null!;

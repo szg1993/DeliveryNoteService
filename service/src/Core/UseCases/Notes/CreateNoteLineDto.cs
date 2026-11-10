@@ -12,10 +12,12 @@ public record CreateNoteLineDto
 
     public string? PartCmt { get; init; }
 
+    [JsonConverter(typeof(ExactNoteDecimalConverter))]
     public decimal? PartQty { get; init; }
 
     public string PartQtyUm { get; init; } = null!;
 
+    [JsonConverter(typeof(ExactNoteDecimalConverter))]
     public decimal? PartWgt { get; init; }
 
     public string PartWgtUm { get; init; } = null!;

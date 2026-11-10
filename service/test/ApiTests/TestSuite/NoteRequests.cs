@@ -1,9 +1,23 @@
+using System.Text;
 using System.Text.Json.Nodes;
 
 namespace ApiTests.TestSuite;
 
 public static class NoteRequests
 {
+    public static async Task<HttpResponseMessage> PostRawNumberAsync(
+        this DeliveryNoteServiceApi api,
+        int recipientId,
+        string path,
+        string jsonNumber
+    )
+    {
+        var request = Valid(recipientId);
+        Set(request, path, JsonNode.Parse(jsonNumber));
+        using var content = new StringContent(request.ToJsonString(), Encoding.UTF8, "application/json");
+        return await api.Client.PostAsync("/api/delivery-notes", content);
+    }
+
     public static JsonNode? Get(JsonNode request, string path)
     {
         JsonNode? value = request;
@@ -35,7 +49,8 @@ public static class NoteRequests
 
     public static JsonObject Valid(int recipientId)
     {
-        var request = JsonNode.Parse("""
+        var request = JsonNode.Parse(
+            """
             {
               "takeoverPlace": " Warehouse ", "category": " Goods ",
               "contactInfo": { "assignTo": " Driver ", "assignToPhone": " 123 ", "contact": " Receiver ", "contactPhone": " 456 " },
@@ -43,7 +58,8 @@ public static class NoteRequests
               "deadline": { "takeoverDate": "2020-01-01", "shipDate": "2020-01-01", "estimatedArrivalDate": "2020-01-02" },
               "noteLines": [ { "partCode": " A ", "partDesc": " Part  A ", "partQty": 2.25, "partQtyUm": " pcs ", "partWgt": 0, "partWgtUm": " kg " } ]
             }
-            """)!.AsObject();
+            """
+        )!.AsObject();
         request["recipientId"] = recipientId;
         return request;
     }
