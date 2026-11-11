@@ -51,6 +51,14 @@ initialization result, response results, and any required external action.
 
 ## Progress
 
+2026-11-11, review-02 correction attempt 1 (F002, commit `fa3f912`): AC11 now
+requires HTTP 400 `Recipient.AlreadyExists` for both duplicate paths.
+`CreateRecipient` translates the database `UniqueKeyConflictException` to that
+error, and `RecipientConcurrencyTests` now expects exactly one 201 and one 400
+`Recipient.AlreadyExists`. The PostgreSQL scenario was not re-run: Testcontainers
+runs require explicit user approval. Task status is unchanged.
+
+
 2026-11-08: Started provider-specific HTTP verification. The parent confirmed the
 Docker engine and cached PostgreSQL 17 Alpine image are available. Reusing the
 existing application host with an instance-scoped database-fixture selection hook;

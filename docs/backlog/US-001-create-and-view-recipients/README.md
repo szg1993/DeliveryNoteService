@@ -120,6 +120,14 @@ difficulty that materially changes the task instead of redesigning it silently.
 
 ## Resume notes
 
+- 2026-11-11: Review-02 correction attempt 1 for F001, F002, F004, F005 and F006
+  (F003 needed no code change; tests and docs already express 404) is committed as
+  `fa3f912`. Evidence: red then green DTO and HTTP tests; non-PostgreSQL solution
+  tests passed (ApiTests 74/74, UnitTests 182/182); scoped `dotnet format`
+  verification passed for 50 formatted files and review-02 include scope. The
+  PostgreSQL concurrency test was updated to expect 400 `Recipient.AlreadyExists`
+  but not run (needs user approval). Details are in T002 and T004 progress. Next:
+  a complete-coverage follow-up review. Task statuses are unchanged.
 - 2026-11-11: The developer asked to close US-001. Review-02 (FAIL, incomplete
   coverage) remains the latest agent review. The developer revised AC11 (duplicate
   codes return 400 `Recipient.AlreadyExists`, including the database race),
