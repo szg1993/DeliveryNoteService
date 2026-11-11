@@ -4,7 +4,7 @@
 - Review date and time: 2026-11-10 15:00 Europe/Budapest (UTC+01:00)
 - Authoritative story: `docs/backlog/US-002-create-delivery-notes.md`
 - Plan: `docs/backlog/US-002-create-delivery-notes/README.md`
-- Harness repository and commit: `agentic-engineering`, `d19a8d75f1a6e59c2c5953d32aa0741e4fc0195f`
+- Harness repository and commit: `AgenticEngineering`, `d19a8d75f1a6e59c2c5953d32aa0741e4fc0195f`
 - Reviewed branch: `feature/US-002-create-delivery-notes`
 - Reviewed implementation head: `d74a1c4d9bc291a0475184b1365a3f2c443c94ca`
 - Comparison base: `master`, `025ec1cc157ab38b5cd4e5b8a133eec5f55839f9`
@@ -54,7 +54,7 @@ The last case is a negative weight accepted and persisted as a successful note. 
 - Severity: Blocking (explicit code-guideline requirement)
 - First reported in: review-01
 - Location examples: `service/src/Persistence/Migrations/20261110131638_AddDeliveryNotes.cs:147`, `service/test/ApiTests/TestSuite/NoteRequests.cs:38`, `service/test/ApiTests/TestSuite/NoteDatabase.cs:22`; the added migration designer and snapshot additions also retain the competing generated layout.
-- Violated rule: `agentic-engineering/agent-harness/technologies/dotnet/csharp-style.md`, Multiline parentheses, requires wrapped arguments below the opening parenthesis and the closing parenthesis on its own aligned line. It explicitly says Roslyn does not enforce this rule, so review must.
+- Violated rule: `AgenticEngineering/agent-harness/technologies/dotnet/csharp-style.md`, Multiline parentheses, requires wrapped arguments below the opening parenthesis and the closing parenthesis on its own aligned line. It explicitly says Roslyn does not enforce this rule, so review must.
 - Evidence: the new CreateIndex calls close as `unique: true);`; raw-string calls start as `JsonNode.Parse("""` / `ExecuteSqlRawAsync("""` and close beside the string delimiter. New generated multi-argument calls similarly close beside their final argument. Scoped `dotnet format --verify-no-changes` passes, which does not establish compliance with this separate manual rule. No repository instruction overrides the argument layout or exempts story-added generated migrations.
 - Required correction: normalize the covered wrapped argument/parameter lists in story-added/modified C# code, including the new migration and new/changed generated metadata, without touching unrelated baseline code. Preserve generated semantics and formatter compatibility, then rerun scoped formatter verification and relevant tests. No brace-style change is requested where repository configuration takes precedence.
 
@@ -127,7 +127,7 @@ Consumer consequences are material and approved: anonymous POST and GET expose f
 
 - No approved product-scope deviation was identified. F001 and F002 are unapproved deviations from the numeric contract, not accepted changes to it.
 - The scaffold attempted to drop pre-existing JobExecutions metadata because the runtime model had already removed it. T001 records retaining its prior snapshot/designer metadata and removing the unrelated DropTable operation. Review confirmed the migration remains additive and preserves the prior table; the runtime/snapshot drift predates this story and is not an additional blocking finding.
-- The existing version endpoint is retained under the approved central contract in `agentic-engineering/agent-harness/technologies/web-api/version-endpoint.md`; no version-contract retrofit was introduced.
+- The existing version endpoint is retained under the approved central contract in `AgenticEngineering/agent-harness/technologies/web-api/version-endpoint.md`; no version-contract retrofit was introduced.
 - No PostgreSQL execution was required or inferred from SQLite success. The component-testing skill's general higher-fidelity advice is subordinate to the explicit repository rule that SQLite coverage is sufficient and containers require approval.
 
 ## Unverified items and remaining risks

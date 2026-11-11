@@ -4,7 +4,7 @@
 - Review date and time: 2026-11-10 13:16 Europe/Budapest (UTC+01:00)
 - Authoritative story: `docs/backlog/US-001-create-and-view-recipients.md`
 - Plan: `docs/backlog/US-001-create-and-view-recipients/README.md`
-- Harness repository and commit: `agentic-engineering`, `d19a8d75f1a6e59c2c5953d32aa0741e4fc0195f`
+- Harness repository and commit: `AgenticEngineering`, `d19a8d75f1a6e59c2c5953d32aa0741e4fc0195f`
 - Reviewed branch: `feature/US-002-create-delivery-notes`
 - Reviewed head: `9a0ea7ba8bd4eed320a87e6a9295ab36f99a2405`
 - Merged US-001 implementation: `025ec1cc157ab38b5cd4e5b8a133eec5f55839f9`

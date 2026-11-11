@@ -1,4 +1,4 @@
-Read and follow [the shared agent instructions](../agentic-engineering/agent-harness/AGENTS.md).
+Read and follow [the shared agent instructions](../AgenticEngineering/agent-harness/AGENTS.md).
 
 For test work and API test execution, read and follow
 [the testing instructions](service/test/CLAUDE.md).

@@ -4,7 +4,7 @@
 - Review date and time: 2026-11-10 16:18 Europe/Budapest (UTC+01:00)
 - Authoritative story: `docs/backlog/US-002-create-delivery-notes.md`
 - Plan: `docs/backlog/US-002-create-delivery-notes/README.md`
-- Harness repository and commit: `agentic-engineering`, `d19a8d75f1a6e59c2c5953d32aa0741e4fc0195f`
+- Harness repository and commit: `AgenticEngineering`, `d19a8d75f1a6e59c2c5953d32aa0741e4fc0195f`
 - Reviewed branch: `feature/US-002-create-delivery-notes`
 - Frozen reviewed head: `c2aba518d67930059c199ba5462bdd523b209976`
 - Comparison base: `master`, `025ec1cc157ab38b5cd4e5b8a133eec5f55839f9`

@@ -4,7 +4,7 @@
 - Review date and time: 2026-11-08 22:31 Europe/Budapest (UTC+01:00)
 - Authoritative story: `docs/backlog/US-001-create-and-view-recipients.md`
 - Plan: `docs/backlog/US-001-create-and-view-recipients/README.md`
-- Harness repository and commit: `agentic-engineering`, `d19a8d75f1a6e59c2c5953d32aa0741e4fc0195f`
+- Harness repository and commit: `AgenticEngineering`, `d19a8d75f1a6e59c2c5953d32aa0741e4fc0195f`
 - Reviewed branch: `feature/US-001-create-and-view-recipients`
 - Reviewed implementation head: `5f5b513d23bf5a733b691dc8e1f7188a1f7c5226`
 - Comparison base: `master`, `17fa518f621fbe6a6c4fac138dbf3cfb76ce0c3d`

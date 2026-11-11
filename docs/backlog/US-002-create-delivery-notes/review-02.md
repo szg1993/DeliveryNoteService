@@ -4,7 +4,7 @@
 - Review date and time: 2026-11-10 15:20 Europe/Budapest (UTC+01:00)
 - Authoritative story: `docs/backlog/US-002-create-delivery-notes.md`
 - Plan: `docs/backlog/US-002-create-delivery-notes/README.md`
-- Harness repository and commit: `agentic-engineering`, `d19a8d75f1a6e59c2c5953d32aa0741e4fc0195f`
+- Harness repository and commit: `AgenticEngineering`, `d19a8d75f1a6e59c2c5953d32aa0741e4fc0195f`
 - Reviewed branch: `feature/US-002-create-delivery-notes`
 - Reviewed head before this report: `8be6fd675bceb150fa227b6c2399bdc085ca59f6`
 - Latest implementation correction: `a4ab5d0933b50c6e888207f737ef7513871a7904`
@@ -89,7 +89,7 @@ The additive migration must be applied before the new routes serve traffic. Its 
 
 - No outstanding unapproved product or architecture deviation remains from this correction; F001 and F002 now conform to the confirmed contract.
 - The pre-existing JobExecutions runtime/snapshot drift and preservation choice remain as recorded in review-01 and T001; this correction changes only covered layout, not that choice or table semantics.
-- The existing version contract remains approved by `agentic-engineering/agent-harness/technologies/web-api/version-endpoint.md`; its unchanged review conclusion is inherited.
+- The existing version contract remains approved by `AgenticEngineering/agent-harness/technologies/web-api/version-endpoint.md`; its unchanged review conclusion is inherited.
 - Repository instructions explicitly make SQLite sufficient and require approval before containers. That overrides the component-testing skill's general advice to add higher-fidelity infrastructure coverage; none was required or inferred here.
 
 ## Unverified items and remaining risks

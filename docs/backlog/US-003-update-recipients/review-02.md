@@ -4,7 +4,7 @@
 - Review date and time: 2026-11-11 14:58 (+01:00)
 - Authoritative story: `docs/backlog/US-003-update-recipients.md`
 - Plan: `docs/backlog/US-003-update-recipients/README.md`
-- `agentic-engineering` commit: `d19a8d75f1a6e59c2c5953d32aa0741e4fc0195f`
+- `AgenticEngineering` commit: `d19a8d75f1a6e59c2c5953d32aa0741e4fc0195f`
 - Reviewed head: `feature/US-003-update-recipients` at `43c22bedca5e192b2faaffd946de2a799fccde6a`
 - Comparison base: `master` at `2c80d390b49c26e26bf018425f949f469cc50ea5` (repository default branch; no pull request exists; merge base equals the base commit)
 - Review mode: follow-up review
