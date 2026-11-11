@@ -1,6 +1,8 @@
 # US-001: Create and view recipients
 
 - Status: In review
+- Merge: [PR #1](https://github.com/szg1993/DeliveryNoteService/pull/1), merged into
+  master on 2026-11-10 at `025ec1cc157ab38b5cd4e5b8a133eec5f55839f9`.
 - Epic: [Recipient management](epics/recipient-management.md)
 - Implementation repository: DeliveryNoteService
 - Implementation solution: `service/DeliveryNoteService.sln`
@@ -140,11 +142,18 @@ Refinement is complete and the developer confirmed the specification on
 2026-11-08: "Yes, we have the common understanding."
 
 The [implementation plan and tasks](US-001-create-and-view-recipients/README.md)
-record the task breakdown. T001 through T004 are complete: the baseline is
-versioned, recipient creation/detail/listing endpoints are implemented, and the
-PostgreSQL concurrency scenario is verified. The complete API suite passed
-115/115 with explicit sequential execution. The
+record the task breakdown. T001 through T004 are done. The
 [independent agent review](US-001-create-and-view-recipients/review-01.md) returned
-PASS with complete coverage and no findings. The story remains In review pending
-human review and acceptance. Specification approval does not record acceptance of
-the implementation.
+PASS for implementation head `5f5b513d23bf5a733b691dc8e1f7188a1f7c5226`, with
+115/115 API tests passing at that reviewed revision.
+
+On 2026-11-10 the developer confirmed: "I merged the first user story". Merge
+commit `025ec1cc157ab38b5cd4e5b8a133eec5f55839f9` contains the recipient work in
+master. The implementation is available as the dependency for US-002.
+
+Commits `fa1a3ba` (Story implemented.) and `99ae0fd` (Cleanup) changed implementation
+and tests after the recorded agent review, including recipient validation and
+error behavior. The existing PASS does not cover those changes. Formal completion
+remains In review with the plan active until a follow-up review covers the merged
+implementation and the human acceptance prerequisites are satisfied. This update
+records the merge; it does not claim a new review or test execution.

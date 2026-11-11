@@ -28,7 +28,7 @@ builder.Services
     .AddJsonOptions()
     .AddHealthProbes()
     .AddVersioning(builder.Configuration.GetSection("Versioning"))
-    .AddSwaggerGen()
+    .AddDeliveryNoteServiceWebApp()
     .AddLogging(moduleName, builder.Configuration.GetSection("Logging"))
     .AddCorrelationId()
     .AddInfrastructure()
@@ -52,7 +52,8 @@ app
 
 app
     .MapVersionsEndpoint(moduleName)
-    .MapRecipientRoutes();
+    .MapRecipientRoutes()
+    .MapNoteRoutes();
 
 await app.RunAsync(
     initServices: async app =>

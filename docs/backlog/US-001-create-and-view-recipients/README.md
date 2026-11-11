@@ -3,8 +3,10 @@
 - Source: DeliveryNoteService/docs/backlog/US-001-create-and-view-recipients.md
 - Lifecycle: active
 - Created: 2026-11-08
-- Updated: 2026-11-08
+- Updated: 2026-11-10
 - Branch: feature/US-001-create-and-view-recipients
+- Merge: [PR #1](https://github.com/szg1993/DeliveryNoteService/pull/1), master,
+  `025ec1cc157ab38b5cd4e5b8a133eec5f55839f9`, 2026-11-10.
 
 ## Approach
 
@@ -118,6 +120,15 @@ difficulty that materially changes the task instead of redesigning it silently.
 
 ## Resume notes
 
+- 2026-11-10: The developer confirmed the story was merged. PR #1 is present in
+  master at `025ec1cc157ab38b5cd4e5b8a133eec5f55839f9`; all four task statuses remain
+  done. US-002 can use the merged recipient implementation. The latest committed
+  agent review remains review-01, covering `5f5b513d23bf5a733b691dc8e1f7188a1f7c5226`.
+  Later commits `fa1a3ba` and `99ae0fd` changed implementation and tests, so the
+  closure workflow requires a follow-up review before recording Done/complete.
+  No new acceptance record, agent verdict, or test execution is claimed. The
+  earlier notes below describe historical checkpoints, including their then
+  outstanding merge and review actions.
 - 2026-11-08: Independent [agent review 01](review-01.md) returned PASS with
   complete coverage and no findings, committed as `347e49b`. It covers
   implementation head `5f5b513d23bf5a733b691dc8e1f7188a1f7c5226` and independently
