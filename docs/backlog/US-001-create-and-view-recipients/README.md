@@ -1,7 +1,7 @@
 # US-001: Create and view recipients
 
 - Source: DeliveryNoteService/docs/backlog/US-001-create-and-view-recipients.md
-- Lifecycle: active
+- Lifecycle: complete
 - Created: 2026-11-08
 - Updated: 2026-11-11
 - Branch: feature/US-001-create-and-view-recipients
@@ -120,6 +120,11 @@ difficulty that materially changes the task instead of redesigning it silently.
 
 ## Resume notes
 
+- 2026-11-11: Complete. Review-05 passed with complete coverage at
+  `bbc5c93`; the developer approved human review and
+  [human acceptance 06](review-06.md) records completion. The correction commits
+  on `feature/US-001-create-and-view-recipients` still need to be pushed and
+  merged by the developer; the reservation holds until merge.
 - 2026-11-11: Review-04 F007 correction attempt 1 (narrowed dead code) is committed
   as `1cb679d`: deleted the unregistered `CreateRecipientDtoSchema.cs`. Evidence:
   no remaining references in `service`/`src`; solution build 0 warnings/0 errors;

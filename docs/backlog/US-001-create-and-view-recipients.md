@@ -1,6 +1,6 @@
 # US-001: Create and view recipients
 
-- Status: In review
+- Status: Done
 - Merge: [PR #1](https://github.com/szg1993/DeliveryNoteService/pull/1), merged into
   master on 2026-11-10 at `025ec1cc157ab38b5cd4e5b8a133eec5f55839f9`.
 - Epic: [Recipient management](epics/recipient-management.md)
@@ -192,3 +192,9 @@ name as title), and `CreateRecipientDtoSchema` is unregistered. On 2026-11-11 th
 developer accepted this reduced contract ("Accept reduced contract"). AC9 requires
 that all three operations, their status codes, and the Location header are
 described; detailed schema annotations are not required for US-001.
+
+[Agent review 05](US-001-create-and-view-recipients/review-05.md) returned PASS
+with complete coverage after the unused schema filter was removed. On 2026-11-11
+the developer approved human review ("Human review approved");
+[human acceptance 06](US-001-create-and-view-recipients/review-06.md) records
+completion. The correction commits are on the story branch and are not yet merged.

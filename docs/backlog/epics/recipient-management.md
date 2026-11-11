@@ -13,7 +13,7 @@ backend, preserving agreed business rules from the legacy implementation.
 - [US-001: Create and view recipients](../US-001-create-and-view-recipients.md):
   create recipients, list them, and retrieve a recipient's details by ID. Merged
   into master in [PR #1](https://github.com/szg1993/DeliveryNoteService/pull/1) on
-  2026-11-10; formal closure is pending the follow-up review recorded in the story.
+  2026-11-10; Done on 2026-11-11 after review 05 and human acceptance 06.
 
 ## Candidate stories to refine
 

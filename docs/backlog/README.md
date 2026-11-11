@@ -18,7 +18,7 @@ redesign. Stories and their progress are maintained in repository Markdown files
 
 | Epic | Story | Status | Next step |
 | --- | --- | --- | --- |
-| [Recipient management](epics/recipient-management.md) | [US-001: Create and view recipients](US-001-create-and-view-recipients.md) | In review | Merged in [PR #1](https://github.com/szg1993/DeliveryNoteService/pull/1); follow-up review of changes after the recorded PASS is required before formal completion. |
+| [Recipient management](epics/recipient-management.md) | [US-001: Create and view recipients](US-001-create-and-view-recipients.md) | Done | [Human acceptance 06](US-001-create-and-view-recipients/review-06.md) records approval of review 05 and completion; correction branch awaits merge. |
 | Delivery notes | [US-002: Create delivery notes](US-002-create-delivery-notes.md) | Done | [Human acceptance 05](US-002-create-delivery-notes/review-05.md) records approval of review 04 and completion. |
 
 Recipient management is the first migration area; delivery-note creation is the
