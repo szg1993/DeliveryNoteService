@@ -1,4 +1,3 @@
-using Common.Core.Exceptions;
 using Common.Core.Messaging;
 using DeliveryNoteService.Core.UseCases.Recipients.Data;
 using System.Net;
@@ -21,11 +20,8 @@ public class RecipientConcurrencyTests : PostgresDeliveryNoteServiceApiTestBase
         using var createdResponse = responses.Single(response => response.StatusCode == HttpStatusCode.Created);
         using var rejectedResponse = responses.Single(response => response.StatusCode != HttpStatusCode.Created);
         var created = (await createdResponse.ReadAsync<Envelope<RecipientDetailsDto>>()).Content;
-        var error = await rejectedResponse.AssertErrorAsync();
-        (rejectedResponse.StatusCode, error.ErrorCode).Should().BeOneOf(
-            (HttpStatusCode.BadRequest, "Recipient.InvalidCode"),
-            (HttpStatusCode.Conflict, CommonErrorCodes.UniqueKeyConflict)
-        );
+        var error = await rejectedResponse.AssertErrorAsync(HttpStatusCode.BadRequest);
+        error.ErrorCode.Should().Be("Recipient.AlreadyExists");
         var listed = await Api.Recipients().GetAsync(new QueryString("?page=1&limit=0"));
         listed.Content.Should().ContainSingle().Which.Should().BeEquivalentTo(created);
         created.Code.Should().Be("ACME-01");

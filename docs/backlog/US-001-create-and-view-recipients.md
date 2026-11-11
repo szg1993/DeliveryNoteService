@@ -72,6 +72,11 @@ delivery note.
     Any well-formed ID that does not identify a recipient, including zero or a
     negative number, returns HTTP 404. Errors use the demo's response format with
     stable error codes. (Nonpositive IDs changed from 400 to 404 on 2026-11-11.)
+    (Narrowed by the developer on 2026-11-11: the recipient list no longer has
+    its own paging or sorting validation. Invalid page or limit values return
+    400 only when recipients exist; on an empty list they return 200. Unknown
+    numeric `SortBy` or `SortDir` values return 200, and the order is then not
+    guaranteed.)
 17. After trimming and uppercase normalization, codes are non-empty and contain
     only ASCII letters, digits, hyphens, and underscores. Embedded spaces and other
     characters are rejected with HTTP 400.

@@ -41,4 +41,60 @@ public class RecipientUpdateTests : DeliveryNoteServiceApiTestBase
         (await Api.Recipients(original.Id).GetAsync()).Should().BeEquivalentTo(expected);
         (await Api.Recipients().GetAsync()).Content.Should().BeEquivalentTo([expected]);
     }
+
+    [Fact]
+    public async Task UpdateRecipient_IsShownOnExistingDeliveryNote()
+    {
+        var recipient = await Api.Recipients().PostAsync(RecipientRequests.Valid());
+        var note = await Api.Notes().PostAsync(NoteRequests.Valid(recipient.Id));
+
+        var updated = await Api.Recipients(recipient.Id).PutAsync(RecipientRequests.ValidUpdate());
+
+        (await Api.Notes(note.Id).GetAsync()).Recipient.Should().BeEquivalentTo(updated);
+    }
+
+    [Fact]
+    public async Task UpdateRecipient_IgnoresSuppliedCode()
+    {
+        var original = await Api.Recipients().PostAsync(RecipientRequests.Valid(code: "ACME"));
+        var request = new UpdateWithCodeDto
+        {
+            Name = "Globex Kft",
+            Country = "HU",
+            Zip = "6720",
+            City = "Szeged",
+            Address = "Kossuth street 2",
+            Code = "GLOBEX"
+        };
+
+        var updated = await Api.Recipients(original.Id).PutAsync(request);
+
+        updated.Should().BeEquivalentTo(original with { Name = "Globex Kft", Zip = "6720", City = "Szeged", Address = "Kossuth street 2" });
+    }
+
+    [Fact]
+    public async Task UpdateRecipient_RejectsInvalidDetailsWithoutChangingRecipient()
+    {
+        var original = await Api.Recipients().PostAsync(RecipientRequests.Valid());
+        var request = RecipientRequests.ValidUpdate() with { Country = "ZZ" };
+
+        var error = await Api.Recipients(original.Id).PutRawAsync(request)
+            .AssertErrorAsync(HttpStatusCode.BadRequest);
+
+        error.ErrorCode.Should().Be("Recipient.InvalidCountry");
+        (await Api.Recipients(original.Id).GetAsync()).Should().BeEquivalentTo(original);
+    }
+
+    [Theory]
+    [InlineData(-1)]
+    [InlineData(0)]
+    [InlineData(123456)]
+    public Task UpdateRecipient_UnknownId_ReturnsNotFound(int id)
+        => Api.Recipients(id).PutRawAsync(RecipientRequests.ValidUpdate())
+            .AssertNotFoundAsync("Recipient.NotFound");
+
+    private sealed record UpdateWithCodeDto : UpdateRecipientDto
+    {
+        public string Code { get; init; } = null!;
+    }
 }
