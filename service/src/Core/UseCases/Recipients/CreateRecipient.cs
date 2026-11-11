@@ -35,15 +35,7 @@ public class CreateRecipient(
 
             repository.Add(recipient);
 
-            try
-            {
-                await unitOfWork.SaveChangesAsync(ct);
-            }
-            catch (UniqueKeyConflictException ex)
-            {
-                // A concurrent request created the same code after the check above.
-                throw new DataValidationException(ErrorCodes.Recipient.AlreadyExists, inner: ex);
-            }
+            await unitOfWork.SaveChangesAsync(ct);
 
             return RecipientDetailsDto.FromModel(recipient).Envelop();
         });
