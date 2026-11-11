@@ -41,7 +41,10 @@ delivery note.
 7. Given an existing recipient identifier, retrieving it returns HTTP 200 and its
    agreed details.
 8. Given a valid but unknown recipient identifier, retrieving it returns HTTP 404.
-9. All three operations are described in the generated OpenAPI document.
+9. All three operations are described in the generated OpenAPI document,
+   including their status codes and the creation Location header. Detailed
+   schema annotations (required fields, descriptions, named sort enums) are not
+   required (accepted by the developer on 2026-11-11 after review 03, F007).
 10. Creating recipients with the same name and different unique codes succeeds.
 11. Creating a recipient with an existing normalized code is rejected and does not
     create a second recipient, including concurrent creation requests. Trim code
@@ -180,3 +183,12 @@ requirements: duplicate codes return 400 (AC11); nonpositive IDs return 404
 country remain normalized identifiers (AC14, AC17); and DTO validation unit tests
 replace the HTTP validation matrix (agreed test boundary). Corrections for the
 remaining findings and a complete follow-up review are next.
+
+[Agent review 03](US-001-create-and-view-recipients/review-03.md) returned FAIL
+with complete coverage on F007 only: the generated OpenAPI document no longer
+details the recipient schemas (no required fields or descriptions on
+`CreateRecipientDto`, numeric sort enums, undescribed paging parameters, assembly
+name as title), and `CreateRecipientDtoSchema` is unregistered. On 2026-11-11 the
+developer accepted this reduced contract ("Accept reduced contract"). AC9 requires
+that all three operations, their status codes, and the Location header are
+described; detailed schema annotations are not required for US-001.
