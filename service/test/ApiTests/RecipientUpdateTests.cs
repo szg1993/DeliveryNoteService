@@ -45,6 +45,17 @@ public class RecipientUpdateTests : DeliveryNoteServiceApiTestBase
     }
 
     [Fact]
+    public async Task UpdateRecipient_IsShownOnExistingDeliveryNote()
+    {
+        var recipient = await Api.Recipients().PostAsync(RecipientRequests.Valid());
+        var note = await Api.Notes().PostAsync(NoteRequests.Valid(recipient.Id));
+
+        var updated = await Api.Recipients(recipient.Id).PutAsync(RecipientRequests.ValidUpdate());
+
+        (await Api.Notes(note.Id).GetAsync()).Recipient.Should().BeEquivalentTo(updated);
+    }
+
+    [Fact]
     public async Task UpdateRecipient_IgnoresSuppliedCode()
     {
         var original = await Api.Recipients().PostAsync(RecipientRequests.Valid(code: "ACME"));

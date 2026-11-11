@@ -27,7 +27,7 @@ immediately, record that it characterizes existing behavior.
 | Order | Task | Status | Depends on | Increment |
 | --- | --- | --- | --- | --- |
 | 1 | [T001: Update an existing recipient](tasks/T001-update-existing-recipient.md) | done | None | Skeleton |
-| 2 | [T002: Show updated recipient on delivery notes](tasks/T002-show-updated-recipient-on-notes.md) | todo | T001 | Extension |
+| 2 | [T002: Show updated recipient on delivery notes](tasks/T002-show-updated-recipient-on-notes.md) | done | T001 | Extension |
 
 The task file owns its status and progress. Keep the status above synchronized
 with the task file. T002 cannot proceed in parallel with T001.

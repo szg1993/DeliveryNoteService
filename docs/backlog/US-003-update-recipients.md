@@ -1,6 +1,6 @@
 # US-003: Update recipients
 
-- Status: In progress
+- Status: In review
 - Breakdown: [Implementation plan and tasks](US-003-update-recipients/README.md).
 - Epic: [Recipient management](epics/recipient-management.md)
 - Implementation repository: DeliveryNoteService
@@ -121,7 +121,9 @@ Refinement is complete. On 2026-11-11 the developer confirmed the complete
 story ("Yes, confirmed"). The same day the developer requested task breakdown;
 the story is reserved on `feature/US-003-update-recipients` and the
 [implementation plan](US-003-update-recipients/README.md) defines two tasks
-(T001 and T002), both todo.
+(T001 and T002). Both tasks were implemented and verified on 2026-11-11, and the
+story is In review. An independent agent story review and human acceptance are
+still required before Done.
 
 ## Excluded scope
 

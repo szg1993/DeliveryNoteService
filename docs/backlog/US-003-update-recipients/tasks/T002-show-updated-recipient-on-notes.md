@@ -1,7 +1,7 @@
 # T002: Show updated recipient on delivery notes
 
 - Parent: [US-003](../README.md)
-- Status: todo
+- Status: done
 - Depends on: T001
 - Increment: Extension
 
@@ -26,7 +26,7 @@ in US-002.
 
 ## Acceptance criteria
 
-- [ ] After a recipient update, retrieving a delivery note that references it
+- [x] After a recipient update, retrieving a delivery note that references it
       returns the updated recipient details.
 
 ## Verification
@@ -38,4 +38,28 @@ files and verify formatting.
 
 ## Progress
 
-No implementation started. Record dated work, verification evidence and remaining work here during implementation.
+### 2026-11-11
+
+Added `UpdateRecipient_IsShownOnExistingDeliveryNote` to
+`service/test/ApiTests/RecipientUpdateTests.cs`: create a recipient, create a
+note for it, update the recipient through PUT, then read the note through
+GET-by-ID and assert its `Recipient` equals the PUT response. It reuses
+`RecipientRequests.Valid()`, `RecipientRequests.ValidUpdate()`, and
+`NoteRequests.Valid(recipientId)`; no new helpers were needed.
+
+The test passed on its first run without production changes. It characterizes
+the existing US-002 live recipient relationship rather than driving new code.
+It would fail on stale data, because the updated name, city, ZIP, and address
+differ from the originals.
+
+Refactoring assessment (clean-code): one short test that uses existing helpers;
+no refactoring justified.
+
+Verification:
+
+- `dotnet format DeliveryNoteService.sln --include test/ApiTests/RecipientUpdateTests.cs`
+  followed by `--verify-no-changes`: exit 0.
+- `dotnet test DeliveryNoteService.sln --filter "Database!=PostgreSQL"`: ApiTests
+  81/81 passed, UnitTests 190/190 passed.
+
+Remaining work: none for T002.
