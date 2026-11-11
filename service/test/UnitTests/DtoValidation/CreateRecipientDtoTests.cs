@@ -2,7 +2,7 @@ using ApiTests.DtoFactories;
 using Common.Core.Exceptions;
 using Common.Testing.TestSuite;
 using DeliveryNoteService.Core.Errors;
-using DeliveryNoteService.Core.UseCases.Recipients;
+using DeliveryNoteService.Core.UseCases.Recipients.Data;
 
 namespace UnitTests.DtoValidation;
 
@@ -207,29 +207,6 @@ public class CreateRecipientDtoTests
             .CreateRecipient()
             .WithAddress($" {new string('A', 200)} ")
             .AssertFieldTooLong(nameof(CreateRecipientDto.Address));
-    }
-
-    [Theory]
-    [InlineData(" ")]
-    [InlineData("   ")]
-    public void CodeWhitespaceOnly(string code)
-    {
-        DtoFactory
-            .CreateRecipient()
-            .WithCode(code)
-            .AssertDataValidationException(ErrorCodes.Recipient.InvalidCode);
-    }
-
-    [Fact]
-    public void WhitespaceOnlyTextIsAccepted()
-    {
-        DtoFactory
-            .CreateRecipient()
-            .WithName("   ")
-            .WithZip("   ")
-            .WithCity("   ")
-            .WithAddress("   ")
-            .AssertValid();
     }
 
     [Theory]

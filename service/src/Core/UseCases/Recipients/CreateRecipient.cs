@@ -6,6 +6,7 @@ using Common.Core.Messaging;
 using Common.Core.Persistence;
 using DeliveryNoteService.Core.Errors;
 using DeliveryNoteService.Core.Models;
+using DeliveryNoteService.Core.UseCases.Recipients.Data;
 
 namespace DeliveryNoteService.Core.UseCases.Recipients;
 
@@ -28,25 +29,15 @@ public class CreateRecipient(
             var code = dto.Code.Trim().ToUpperInvariant();
 
             if (await repository.AnyAsync(recipient => recipient.Code == code, ct))
-                throw RecipientAlreadyExists();
+                throw new DataValidationException(ErrorCodes.Recipient.AlreadyExists);
 
             var recipient = dto.ToModel(timeService);
 
             repository.Add(recipient);
 
-            try
-            {
-                await unitOfWork.SaveChangesAsync(ct);
-            }
-            catch (UniqueKeyConflictException ex)
-            {
-                throw RecipientAlreadyExists(ex);
-            }
+            await unitOfWork.SaveChangesAsync(ct);
 
             return RecipientDetailsDto.FromModel(recipient).Envelop();
         });
     }
-
-    private static DataValidationException RecipientAlreadyExists(Exception? inner = null)
-        => new(ErrorCodes.Recipient.AlreadyExists, "A recipient with this code already exists.", inner);
 }

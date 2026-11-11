@@ -1,6 +1,7 @@
 using Common.AspNetCore.ErrorHandling;
 using Common.Core.Messaging;
 using DeliveryNoteService.Core.UseCases.Recipients;
+using DeliveryNoteService.Core.UseCases.Recipients.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 

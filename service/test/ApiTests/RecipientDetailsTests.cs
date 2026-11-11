@@ -1,6 +1,6 @@
 using Common.AspNetCore;
 using Common.Core.Messaging;
-using DeliveryNoteService.Core.UseCases.Recipients;
+using DeliveryNoteService.Core.UseCases.Recipients.Data;
 using System.Net;
 
 namespace ApiTests;

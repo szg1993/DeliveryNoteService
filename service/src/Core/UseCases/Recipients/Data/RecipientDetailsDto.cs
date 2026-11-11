@@ -1,6 +1,6 @@
 using DeliveryNoteService.Core.Models;
 
-namespace DeliveryNoteService.Core.UseCases.Recipients;
+namespace DeliveryNoteService.Core.UseCases.Recipients.Data;
 
 public record RecipientDetailsDto
 {

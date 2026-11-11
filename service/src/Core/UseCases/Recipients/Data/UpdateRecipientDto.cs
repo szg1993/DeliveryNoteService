@@ -2,7 +2,7 @@ using Common.Core.UseCases;
 using DeliveryNoteService.Core.Models;
 using System.ComponentModel;
 
-namespace DeliveryNoteService.Core.UseCases.Recipients;
+namespace DeliveryNoteService.Core.UseCases.Recipients.Data;
 
 public record UpdateRecipientDto : IValidatable
 {
@@ -21,7 +21,7 @@ public record UpdateRecipientDto : IValidatable
     [Description("Destination address, up to 200 characters, stored exactly as supplied. Address existence is not verified.")]
     public string Address { get; init; } = null!;
 
-    public void Validate()
+    public virtual void Validate()
     {
         Guard.ThrowIfMissing(Name);
         Guard.ThrowIfTooLong(Name, RecipientLimits.Name);

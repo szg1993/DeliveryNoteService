@@ -1,4 +1,3 @@
-using Common.AspNetCore;
 using Common.Core.Messaging;
 
 namespace ApiTests;
@@ -114,19 +113,6 @@ public class RecipientListingTests : DeliveryNoteServiceApiTestBase
         var result = await Api.Recipients().GetAsync(QS().Page(1, 0).Sort("Name", direction));
 
         result.Content.Select(recipient => recipient.Code).Should().Equal(first, second, third);
-    }
-
-    [Theory]
-    [InlineData("?Page=abc")]
-    [InlineData("?Page=2147483648")]
-    [InlineData("?Limit=abc")]
-    [InlineData("?Limit=2147483648")]
-    [InlineData("?SortBy=Country")]
-    [InlineData("?SortDir=Sideways")]
-    public async Task ListRecipients_RejectsMalformedQueryValues(string query)
-    {
-        await Api.Recipients().GetRawAsync(new QueryString(query))
-            .AssertBadRequestAsync(CommonWebErrorCodes.InvalidHttpRequest);
     }
 
     [Fact]

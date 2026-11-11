@@ -2,7 +2,7 @@ using ApiTests.DtoFactories;
 using Common.Core.Exceptions;
 using Common.Testing.TestSuite;
 using DeliveryNoteService.Core.Errors;
-using DeliveryNoteService.Core.UseCases.Recipients;
+using DeliveryNoteService.Core.UseCases.Recipients.Data;
 
 namespace UnitTests.DtoValidation;
 
