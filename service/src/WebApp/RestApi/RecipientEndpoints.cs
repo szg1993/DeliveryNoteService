@@ -80,6 +80,25 @@ public static class RecipientEndpoints
                 return operation;
             });
 
+        app.MapPut(
+            "/api/recipients/{id}",
+            async (
+                [FromRoute] int id,
+                [FromBody] UpdateRecipientDto dto,
+                [FromServices] UpdateRecipient updateRecipient,
+                CancellationToken ct
+            ) => await updateRecipient.RunAsync(id, dto, ct)
+        )
+            .WithTags("Recipients")
+            .WithName("UpdateRecipient")
+            .WithSummary("Update a recipient")
+            .WithDescription("Replaces a recipient's name, country, ZIP, city, and address; all five fields are required. Country is trimmed and uppercased, foreign status is re-derived from it, and the other text is stored exactly as supplied with the same limits as creation. The code, ID, and creation time never change; a supplied code or other unknown property is ignored. Concurrent updates are not checked: the last update wins. Invalid input or a malformed ID returns 400; an ID with no matching recipient, including zero or negative values, returns 404. The 200 response contains the updated recipient. Authentication is not required.")
+            .AllowAnonymous()
+            .Accepts<UpdateRecipientDto>("application/json")
+            .Produces<Envelope<RecipientDetailsDto>>(StatusCodes.Status200OK)
+            .Produces<MedusaErrorResponse>(StatusCodes.Status400BadRequest)
+            .Produces<MedusaErrorResponse>(StatusCodes.Status404NotFound);
+
         return app;
     }
 

@@ -14,4 +14,14 @@ public static class RecipientRequests
             City = "Budapest",
             Address = "Main street 1"
         };
+
+    public static UpdateRecipientDto ValidUpdate()
+        => new()
+        {
+            Name = "Globex Kft",
+            Country = "HU",
+            Zip = "6720",
+            City = "Szeged",
+            Address = "Kossuth street 2"
+        };
 }

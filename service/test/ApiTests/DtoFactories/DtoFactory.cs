@@ -16,4 +16,16 @@ public static class DtoFactory
             Address = "Dummy Address"
         };
     }
+
+    public static UpdateRecipientDto UpdateRecipient()
+    {
+        return new UpdateRecipientDto
+        {
+            Name = "Dummy Name",
+            Country = "HU",
+            Zip = "1234",
+            City = "Dummy City",
+            Address = "Dummy Address"
+        };
+    }
 }

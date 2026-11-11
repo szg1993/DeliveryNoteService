@@ -1,7 +1,7 @@
 # T001: Update an existing recipient
 
 - Parent: [US-003](../README.md)
-- Status: todo
+- Status: done
 - Depends on: None (US-001 merged)
 - Increment: Skeleton
 
@@ -44,18 +44,18 @@ delivery-note assertions (T002).
 
 ## Acceptance criteria
 
-- [ ] A valid update of an existing recipient returns 200 with the updated
+- [x] A valid update of an existing recipient returns 200 with the updated
       `Envelope<RecipientDetailsDto>`; GET-by-ID and the list return the new details.
-- [ ] Name, ZIP, city, and address are stored exactly as supplied; country is
+- [x] Name, ZIP, city, and address are stored exactly as supplied; country is
       trimmed and uppercased; foreign status follows the new country.
-- [ ] Code, ID, and `CreatedAt` are unchanged, including when the request body
+- [x] Code, ID, and `CreatedAt` are unchanged, including when the request body
       contains a `Code` property (ignored by normal binding).
-- [ ] Missing, empty, or too-long fields and an unrecognized country are rejected
+- [x] Missing, empty, or too-long fields and an unrecognized country are rejected
       with 400 using the existing validation error codes, and the stored recipient
       is unchanged.
-- [ ] A well-formed unknown ID, including zero or negative, returns 404 with
+- [x] A well-formed unknown ID, including zero or negative, returns 404 with
       `Recipient.NotFound`; a malformed ID returns 400.
-- [ ] The generated OpenAPI document lists the PUT operation with 200, 400, and 404.
+- [x] The generated OpenAPI document lists the PUT operation with 200, 400, and 404.
 
 ## Verification
 
@@ -74,4 +74,52 @@ Follow TDD and `service/test/CLAUDE.md`:
 
 ## Progress
 
-No implementation started. Record dated work, verification evidence and remaining work here during implementation.
+### 2026-11-11
+
+Implemented `PUT /api/recipients/{id}` on `feature/US-003-update-recipients`.
+
+- Added `UpdateRecipientDto` (five `init` properties, `Validate()`, block-bodied
+  `MapTo(Recipient)` that leaves code, ID, and `CreatedAt` untouched),
+  `UpdateRecipient` use case (`TechnicalUseCaseLogger` + `logger.RunAsync`,
+  validation → lookup → mapping → save → response), and the endpoint with
+  summary, description, `Accepts`, and 200/400/404 `Produces` metadata.
+- Reuse: country recognition and normalization moved into
+  `RecipientCountries.ThrowIfUnrecognized` / `Normalize`, now used by both
+  `CreateRecipientDto` and `UpdateRecipientDto` (the error code and message are
+  unchanged; `RecipientCountries.Contains` had no other consumer and was
+  replaced). The per-field `Guard` calls stay in each DTO and share
+  `RecipientLimits`: `Guard` derives the reported field name from the caller's
+  argument expression, so a parameter-based helper would change the error data.
+- TDD: the first HTTP test (successful update visible through PUT, GET-by-ID, and
+  list, code and creation time preserved, country normalized, `IsForeign`
+  re-derived) failed to compile without the DTO, then passed after the DTO, use
+  case, and endpoint. Six of the eight `UpdateRecipientDtoTests` cases failed
+  against an empty `Validate()`, then passed. The ignored-`Code`, rejected-update,
+  unknown-ID, and malformed-ID HTTP tests passed when written, because the
+  earlier slices already implemented that behavior; each one would fail if its
+  rule regressed.
+- Tests: `test/UnitTests/DtoValidation/UpdateRecipientDtoTests.cs` (8 cases) and
+  `test/ApiTests/RecipientUpdateTests.cs` (6 cases). Added
+  `DtoFactory.UpdateRecipient()` and `RecipientRequests.ValidUpdate()` next to
+  the existing creation factories. The existing host, `Api.Recipients(id)`
+  resource endpoint (`PutAsync`/`PutRawAsync`), and error assertions were reused
+  without changes; no new shared infrastructure was needed.
+
+Refactoring assessment (clean-code): the shared country rule was the only
+justified extraction. The use case mirrors `CreateRecipient`/`GetRecipient`.
+Unit tests use `with` expressions instead of adding `With*` extension methods for
+a second DTO type; the existing test instructions allow this, and new
+extensions would duplicate the creation helpers for six call sites. No further
+refactoring was justified.
+
+Verification:
+
+- `dotnet format DeliveryNoteService.sln --include <changed files>` followed by
+  `--verify-no-changes`: exit 0.
+- `dotnet test DeliveryNoteService.sln --filter "Database!=PostgreSQL"`: ApiTests
+  80/80 passed, UnitTests 190/190 passed.
+- Generated OpenAPI (`dotnet swagger tofile`, v1): `PUT /api/recipients/{id}`
+  has operationId `UpdateRecipient`, an `application/json` request body, and
+  responses 200, 400, 404.
+
+Remaining work: none for T001. T002 (delivery-note test) is next.

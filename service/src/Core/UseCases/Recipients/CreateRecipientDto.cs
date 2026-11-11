@@ -46,10 +46,7 @@ public record CreateRecipientDto : IValidatable
         if (code.Length == 0 || !code.All(character => character is >= 'A' and <= 'Z' or >= '0' and <= '9' or '-' or '_'))
             throw new DataValidationException(ErrorCodes.Recipient.InvalidCode, "Recipient code must be non-empty and contain only ASCII letters, digits, hyphens, or underscores.");
 
-        var country = Country.Trim().ToUpperInvariant();
-
-        if (!RecipientCountries.Contains(country))
-            throw new DataValidationException(ErrorCodes.Recipient.InvalidCountry, "Country must be a recognized two-letter code.");
+        RecipientCountries.ThrowIfUnrecognized(Country);
     }
 
     public Recipient ToModel(ITimeService timeService)
@@ -59,7 +56,7 @@ public record CreateRecipientDto : IValidatable
     {
         model.Code = Code.Trim().ToUpperInvariant();
         model.Name = Name;
-        model.Country = Country.Trim().ToUpperInvariant();
+        model.Country = RecipientCountries.Normalize(Country);
         model.Zip = Zip;
         model.City = City;
         model.Address = Address;
