@@ -52,6 +52,11 @@ delivery note.
     response is HTTP 400 in the demo's error format with the stable error code
     `Recipient.AlreadyExists`, for both the sequential check and a concurrent
     database uniqueness conflict. (Changed from 409 on 2026-11-11.)
+    (Narrowed by the developer on 2026-11-11, commit `f8de9b2`: only the
+    sequential check returns 400 `Recipient.AlreadyExists`. A concurrent
+    request that reaches the database uniqueness constraint returns 409 with
+    the common `UniqueKeyConflict` error code and still creates no second
+    recipient. Concurrent creation is no longer covered by an automated test.)
 12. Listing defaults to page 1 with 10 results, ordered by ID ascending. Callers
     can sort by ID or name; name sorting uses ID as a deterministic tie-breaker.
 13. Foreign-recipient status is derived from country: destinations in Hungary are

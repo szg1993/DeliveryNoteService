@@ -2,7 +2,7 @@
 
 - Source: DeliveryNoteService/docs/backlog/US-003-update-recipients.md
 - Refinement source: conversation: US-003 refinement, 2026-11-11
-- Lifecycle: active
+- Lifecycle: complete
 - Created: 2026-11-11
 - Updated: 2026-11-11
 - Branch: feature/US-003-update-recipients
@@ -65,3 +65,7 @@ recipient lookup, no `UpdatedAt` timestamp, anonymous access, no caching.
   `bd3a0644e92f9a6b55f5cc3d0298597b1557b3eb`.
 - Routine API verification uses SQLite with `--filter "Database!=PostgreSQL"`;
   Testcontainers runs need explicit developer approval.
+- Completed 2026-11-11: the developer accepted the story
+  ([human acceptance 04](review-04.md)) on the basis of
+  [agent review 03](review-03.md). The developer's later commit `f8de9b2` was
+  accepted without a further agent review.
