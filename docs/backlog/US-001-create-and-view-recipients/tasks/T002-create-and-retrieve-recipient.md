@@ -71,6 +71,22 @@ commands, red/green evidence, and any environmental blockers.
 
 ## Progress
 
+### Review-04 F007 correction attempt 1 (2026-11-11)
+
+Deleted the unregistered dead `service/src/WebApp/RestApi/CreateRecipientDtoSchema.cs`
+(review-04 F007, narrowed) in commit `1cb679d`. No other file depended on it: its
+usings were file-local, the Swashbuckle package is still used by
+`NoteContractSchema` and `Common.AspNetCore`, and `WebAppInit` registers only
+`NoteContractSchema`. Evidence: `git grep -n CreateRecipientDtoSchema -- service src`
+returns no matches; `dotnet build service/DeliveryNoteService.sln` succeeded with
+0 warnings and 0 errors; `dotnet format service/DeliveryNoteService.sln
+--verify-no-changes --include service/src/WebApp/` exited 0; `dotnet test
+service/DeliveryNoteService.sln --filter "Database!=PostgreSQL" --
+xUnit.ParallelizeTestCollections=false` passed ApiTests 74/74 and UnitTests
+182/182 (0 failed, 0 skipped). PostgreSQL/Testcontainers tests were not run.
+Refactoring assessment (`clean-code`): pure dead-code removal, no further
+refactoring warranted. Task status is unchanged; a follow-up review is required.
+
 ### Review-02 correction attempt 1 (2026-11-11)
 
 Corrected review-02 findings F001, F002, F004 (remainder), F005 and F006 against

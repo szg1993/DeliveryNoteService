@@ -120,6 +120,12 @@ difficulty that materially changes the task instead of redesigning it silently.
 
 ## Resume notes
 
+- 2026-11-11: Review-04 F007 correction attempt 1 (narrowed dead code) is committed
+  as `1cb679d`: deleted the unregistered `CreateRecipientDtoSchema.cs`. Evidence:
+  no remaining references in `service`/`src`; solution build 0 warnings/0 errors;
+  non-PostgreSQL solution tests passed (ApiTests 74/74, UnitTests 182/182). Details
+  are in T002 progress. Next: a follow-up review, then explicit human acceptance.
+  Task statuses are unchanged.
 - 2026-11-11: Review-03 (complete coverage) returned FAIL on F007 only; F001-F006
   resolved or no longer applicable. The developer accepted the reduced generated
   OpenAPI contract ("Accept reduced contract"); AC9 was revised in `8324535`. No
