@@ -2,7 +2,6 @@ using Common.AspNetCore;
 using Common.Core.Messaging;
 using DeliveryNoteService.Core.UseCases.Notes;
 using System.Net;
-using System.Text.Json.Nodes;
 
 namespace ApiTests;
 
@@ -14,22 +13,31 @@ public class NoteDetailsTests : DeliveryNoteServiceApiTestBase
         var recipient = await Api.Recipients().PostAsync(RecipientRequests.Valid());
         var createdAt = new DateTimeOffset(2026, 11, 10, 12, 0, 0, TimeSpan.Zero);
         this.Time().SetDateTime(createdAt);
-        var request = NoteRequests.Valid(recipient.Id);
-        request["ekaerNbr"] = " EK123 ";
-        request["comments"] = " Handle  carefully ";
-        request["isUrgent"] = true;
-        request["isCrackable"] = true;
-        request["isDangerous"] = true;
-        request["isOwnCost"] = true;
-        NoteRequests.Set(request, "packageDetail.tareWgt", JsonValue.Create(0.1234567890123456789012345678m));
-        NoteRequests.Set(request, "noteLines.0.partCmt", JsonValue.Create(" First  line "));
-        request["noteLines"]!.AsArray().Add(
-            JsonNode.Parse(
-                """
-                { "partCode": " A ", "partDesc": " Second part ", "partCmt": "  ", "partQty": 0.125, "partQtyUm": " box ", "partWgt": 3.75, "partWgtUm": " lb " }
-                """
-            )
-        );
+        var defaults = NoteRequests.Valid(recipient.Id);
+        var request = defaults with
+        {
+            EkaerNbr = " EK123 ",
+            Comments = " Handle  carefully ",
+            IsUrgent = true,
+            IsCrackable = true,
+            IsDangerous = true,
+            IsOwnCost = true,
+            PackageDetail = defaults.PackageDetail with { TareWgt = 0.1234567890123456789012345678m },
+            NoteLines =
+            [
+                defaults.NoteLines[0] with { PartCmt = " First  line " },
+                new CreateDeliveryNoteLineDto
+                {
+                    PartCode = " A ",
+                    PartDesc = " Second part ",
+                    PartCmt = "  ",
+                    PartQty = 0.125m,
+                    PartQtyUm = " box ",
+                    PartWgt = 3.75m,
+                    PartWgtUm = " lb "
+                }
+            ]
+        };
         using var createdResponse = await Api.Notes().PostRawAsync(request);
         this.Time().SetDateTime(createdAt.AddDays(1));
 
@@ -106,27 +114,59 @@ public class NoteDetailsTests : DeliveryNoteServiceApiTestBase
             .AssertBadRequestAsync(CommonWebErrorCodes.InvalidHttpRequest);
 
     [Theory]
-    [InlineData("recipientId", "123456", HttpStatusCode.NotFound, "Recipient.NotFound")]
-    [InlineData("recipientId", "0", HttpStatusCode.NotFound, "Recipient.NotFound")]
-    [InlineData("recipientId", "-1", HttpStatusCode.NotFound, "Recipient.NotFound")]
-    [InlineData("contactInfo.id", "99", HttpStatusCode.BadRequest, CommonWebErrorCodes.InvalidHttpRequest)]
-    public async Task RejectedCreation_LeavesNoRetrievableNote(
-        string path,
-        string? json,
-        HttpStatusCode expectedStatus,
-        string expectedCode
-    )
+    [InlineData(123456)]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public async Task RejectedCreation_LeavesNoRetrievableNote(int recipientId)
     {
         await this.SetNoteIdentity(0);
-        var recipient = await Api.Recipients().PostAsync(RecipientRequests.Valid());
-        var request = NoteRequests.Valid(recipient.Id);
-        NoteRequests.Set(request, path, json is null ? null : JsonNode.Parse(json));
+        var request = NoteRequests.Valid(recipientId);
 
         using var rejected = await Api.Notes().PostRawAsync(request);
 
-        var error = await rejected.AssertErrorAsync(expectedStatus);
-        error.ErrorCode.Should().Be(expectedCode);
+        await rejected.AssertNotFoundAsync("Recipient.NotFound");
         using var absent = await Api.Notes(1).GetRawAsync();
         await absent.AssertNotFoundAsync("Note.NotFound");
+    }
+
+    [Fact]
+    public async Task ClientAssignedContactId_IsRejectedWithoutSavingNote()
+    {
+        await this.SetNoteIdentity(0);
+        var recipient = await Api.Recipients().PostAsync(RecipientRequests.Valid());
+        var defaults = NoteRequests.Valid(recipient.Id);
+        var request = new NoteWithClientContactIdDto
+        {
+            RecipientId = recipient.Id,
+            TakeoverPlace = defaults.TakeoverPlace,
+            Category = defaults.Category,
+            PackageDetail = defaults.PackageDetail,
+            Deadline = defaults.Deadline,
+            NoteLines = defaults.NoteLines,
+            ContactInfo = new ContactInfoWithClientIdDto
+            {
+                Id = 99,
+                AssignTo = defaults.ContactInfo.AssignTo,
+                AssignToPhone = defaults.ContactInfo.AssignToPhone,
+                Contact = defaults.ContactInfo.Contact,
+                ContactPhone = defaults.ContactInfo.ContactPhone
+            }
+        };
+
+        using var rejected = await Api.Notes().PostRawAsync(request);
+
+        await rejected.AssertBadRequestAsync(CommonWebErrorCodes.InvalidHttpRequest);
+        using var absent = await Api.Notes(1).GetRawAsync();
+        await absent.AssertNotFoundAsync("Note.NotFound");
+    }
+
+    private sealed record NoteWithClientContactIdDto : CreateDeliveryNoteDto
+    {
+        public new ContactInfoWithClientIdDto ContactInfo { get; init; } = null!;
+    }
+
+    private sealed record ContactInfoWithClientIdDto : CreateContactInfoDto
+    {
+        public int Id { get; init; }
     }
 }

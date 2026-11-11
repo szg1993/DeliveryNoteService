@@ -1,4 +1,5 @@
 using Common.AspNetCore;
+using DeliveryNoteService.Core.UseCases.Recipients;
 using System.Net;
 using System.Text;
 
@@ -76,7 +77,7 @@ public class RecipientCreationTests : DeliveryNoteServiceApiTestBase
     {
         var createdAt = new DateTimeOffset(2026, 11, 8, 13, 0, 0, TimeSpan.Zero);
         this.Time().SetDateTime(createdAt);
-        var request = new
+        var request = new RecipientWithServerFieldsDto
         {
             Code = "ACME",
             Name = "Acme Ltd",
@@ -85,7 +86,7 @@ public class RecipientCreationTests : DeliveryNoteServiceApiTestBase
             City = "Budapest",
             Address = "Main street 1",
             Id = -99,
-            CreatedAt = "2000-01-01T00:00:00Z",
+            CreatedAt = new DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero),
             IsForeign = true
         };
 
@@ -102,4 +103,13 @@ public class RecipientCreationTests : DeliveryNoteServiceApiTestBase
     public Task CreateRecipient_RejectsMissingOrMalformedJsonBody(string json)
         => Api.Client.PostAsync("/api/recipients", new StringContent(json, Encoding.UTF8, "application/json"))
             .AssertBadRequestAsync(CommonWebErrorCodes.InvalidHttpRequest);
+
+    private sealed record RecipientWithServerFieldsDto : CreateRecipientDto
+    {
+        public int Id { get; init; }
+
+        public DateTimeOffset CreatedAt { get; init; }
+
+        public bool IsForeign { get; init; }
+    }
 }

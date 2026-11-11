@@ -10,10 +10,8 @@ public class NoteNumberingTests : DeliveryNoteServiceApiTestBase
         await this.SetNoteIdentity(0);
         this.Time().SetDateTime(new DateTimeOffset(2026, 11, 10, 12, 0, 0, TimeSpan.Zero));
         var recipient = await Api.Recipients().PostAsync(RecipientRequests.Valid());
-        var firstRequest = NoteRequests.Valid(recipient.Id);
-        firstRequest["comments"] = "First concurrent note";
-        var secondRequest = NoteRequests.Valid(recipient.Id);
-        secondRequest["comments"] = "Second concurrent note";
+        var firstRequest = NoteRequests.Valid(recipient.Id) with { Comments = "First concurrent note" };
+        var secondRequest = NoteRequests.Valid(recipient.Id) with { Comments = "Second concurrent note" };
 
         var responses = await Api.CreateNotesConcurrently(firstRequest, secondRequest);
 
@@ -33,11 +31,9 @@ public class NoteNumberingTests : DeliveryNoteServiceApiTestBase
         await this.SetNoteIdentity(99998);
         this.Time().SetDateTime(new DateTimeOffset(2026, 11, 10, 12, 0, 0, TimeSpan.Zero));
         var recipient = await Api.Recipients().PostAsync(RecipientRequests.Valid());
-        var request = NoteRequests.Valid(recipient.Id);
-        request["comments"] = "Last available number";
+        var request = NoteRequests.Valid(recipient.Id) with { Comments = "Last available number" };
         var created = await Api.Notes().PostAsync(request);
-        var rejectedRequest = NoteRequests.Valid(recipient.Id);
-        rejectedRequest["comments"] = "Must not replace the last note";
+        var rejectedRequest = NoteRequests.Valid(recipient.Id) with { Comments = "Must not replace the last note" };
 
         using var firstRejection = await Api.Notes().PostRawAsync(rejectedRequest);
         using var secondRejection = await Api.Notes().PostRawAsync(rejectedRequest);
@@ -59,10 +55,8 @@ public class NoteNumberingTests : DeliveryNoteServiceApiTestBase
         await this.SetNoteIdentity(99998);
         this.Time().SetDateTime(new DateTimeOffset(2026, 11, 10, 12, 0, 0, TimeSpan.Zero));
         var recipient = await Api.Recipients().PostAsync(RecipientRequests.Valid());
-        var firstRequest = NoteRequests.Valid(recipient.Id);
-        firstRequest["comments"] = "First contender";
-        var secondRequest = NoteRequests.Valid(recipient.Id);
-        secondRequest["comments"] = "Second contender";
+        var firstRequest = NoteRequests.Valid(recipient.Id) with { Comments = "First contender" };
+        var secondRequest = NoteRequests.Valid(recipient.Id) with { Comments = "Second contender" };
 
         var responses = await Api.CreateNotesConcurrently(firstRequest, secondRequest);
 

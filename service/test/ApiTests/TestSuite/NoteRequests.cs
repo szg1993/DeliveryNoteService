@@ -1,57 +1,50 @@
-using System.Text;
-using System.Text.Json.Nodes;
+using DeliveryNoteService.Core.UseCases.Notes;
 
 namespace ApiTests.TestSuite;
 
 public static class NoteRequests
 {
-    public static async Task<HttpResponseMessage> PostRawNumberAsync(
-        this DeliveryNoteServiceApi api,
-        int recipientId,
-        string path,
-        string jsonNumber
-    )
-    {
-        var request = Valid(recipientId);
-        Set(request, path, JsonNode.Parse(jsonNumber));
-        using var content = new StringContent(request.ToJsonString(), Encoding.UTF8, "application/json");
-        return await api.Client.PostAsync("/api/delivery-notes", content);
-    }
-
-    public static JsonNode? Get(JsonNode request, string path)
-    {
-        JsonNode? value = request;
-        foreach (var part in path.Split('.'))
-            value = value is JsonArray array ? array[int.Parse(part)] : value![part];
-        return value;
-    }
-
-    public static void Set(JsonObject request, string path, JsonNode? value)
-    {
-        var parts = path.Split('.');
-        JsonNode parent = request;
-        foreach (var part in parts[..^1])
-            parent = parent is JsonArray array ? array[int.Parse(part)]! : parent[part]!;
-        if (parent is JsonArray items)
-            items[int.Parse(parts[^1])] = value;
-        else
-            parent[parts[^1]] = value;
-    }
-
-    public static JsonObject Valid(int recipientId)
-    {
-        var request = JsonNode.Parse(
-            """
+    public static CreateDeliveryNoteDto Valid(int recipientId)
+        => new()
+        {
+            RecipientId = recipientId,
+            TakeoverPlace = " Warehouse ",
+            Category = " Goods ",
+            ContactInfo = new CreateContactInfoDto
             {
-              "takeoverPlace": " Warehouse ", "category": " Goods ",
-              "contactInfo": { "assignTo": " Driver ", "assignToPhone": " 123 ", "contact": " Receiver ", "contactPhone": " 456 " },
-              "packageDetail": { "tareWgt": 0, "tareWgtUm": " kg ", "pkgQty": 1.25, "pkgScale": " pallet ", "pkgSizeX": 0, "pkgSizeY": 2.5, "pkgSizeZ": 3, "pkgSizeUm": " m " },
-              "deadline": { "takeoverDate": "2020-01-01", "shipDate": "2020-01-01", "estimatedArrivalDate": "2020-01-02" },
-              "noteLines": [ { "partCode": " A ", "partDesc": " Part  A ", "partQty": 2.25, "partQtyUm": " pcs ", "partWgt": 0, "partWgtUm": " kg " } ]
-            }
-            """
-        )!.AsObject();
-        request["recipientId"] = recipientId;
-        return request;
-    }
+                AssignTo = " Driver ",
+                AssignToPhone = " 123 ",
+                Contact = " Receiver ",
+                ContactPhone = " 456 "
+            },
+            PackageDetail = new CreatePackageDetailDto
+            {
+                TareWgt = 0m,
+                TareWgtUm = " kg ",
+                PkgQty = 1.25m,
+                PkgScale = " pallet ",
+                PkgSizeX = 0m,
+                PkgSizeY = 2.5m,
+                PkgSizeZ = 3m,
+                PkgSizeUm = " m "
+            },
+            Deadline = new CreateDeadlineDto
+            {
+                TakeoverDate = new DateOnly(2020, 1, 1),
+                ShipDate = new DateOnly(2020, 1, 1),
+                EstimatedArrivalDate = new DateOnly(2020, 1, 2)
+            },
+            NoteLines =
+            [
+                new CreateDeliveryNoteLineDto
+                {
+                    PartCode = " A ",
+                    PartDesc = " Part  A ",
+                    PartQty = 2.25m,
+                    PartQtyUm = " pcs ",
+                    PartWgt = 0m,
+                    PartWgtUm = " kg "
+                }
+            ]
+        };
 }

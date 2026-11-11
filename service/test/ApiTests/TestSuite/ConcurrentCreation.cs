@@ -1,6 +1,6 @@
+using DeliveryNoteService.Core.UseCases.Notes;
 using DeliveryNoteService.Core.UseCases.Recipients;
 using System.Net.Http.Json;
-using System.Text.Json.Nodes;
 
 namespace ApiTests.TestSuite;
 
@@ -14,8 +14,8 @@ public static class ConcurrentCreation
 
     public static Task<HttpResponseMessage[]> CreateNotesConcurrently(
         this DeliveryNoteServiceApi api,
-        JsonObject first,
-        JsonObject second
+        CreateDeliveryNoteDto first,
+        CreateDeliveryNoteDto second
     ) => PostConcurrently(api, "api/delivery-notes", first, second);
 
     private static async Task<HttpResponseMessage[]> PostConcurrently<TRequest>(

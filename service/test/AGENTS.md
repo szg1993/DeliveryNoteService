@@ -5,6 +5,11 @@ subdirectories, in addition to the inherited repository instructions.
 
 ## Test design
 
+- Always arrange API input data by instantiating DTOs, including nested DTOs,
+  using object initializers or `with` expressions. Do not build or mutate JSON
+  trees or JSON strings to set request values. Use raw text only for tests of
+  missing or malformed JSON bodies.
+
 - Write a few happy-path and unhappy-path tests. Choose representative cases
   for meaningful behavior; do not test every possible scenario or multiply
   shared validation checks across every field.
