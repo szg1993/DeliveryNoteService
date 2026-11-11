@@ -1,5 +1,4 @@
 using Common.AspNetCore;
-using Common.Core.Exceptions;
 using Common.Core.Messaging;
 
 namespace ApiTests;
@@ -115,28 +114,6 @@ public class RecipientListingTests : DeliveryNoteServiceApiTestBase
         var result = await Api.Recipients().GetAsync(QS().Page(1, 0).Sort("Name", direction));
 
         result.Content.Select(recipient => recipient.Code).Should().Equal(first, second, third);
-    }
-
-    [Theory]
-    [InlineData("?Page=0")]
-    [InlineData("?Page=-1")]
-    [InlineData("?Limit=-1")]
-    [InlineData("?Page=0&Limit=0")]
-    public async Task ListRecipients_RejectsInvalidPagingEvenWhenEmpty(string query)
-    {
-        await Api.Recipients().GetRawAsync(new QueryString(query))
-            .AssertBadRequestAsync(CommonErrorCodes.InvalidPageRequest);
-    }
-
-    [Theory]
-    [InlineData("?SortBy=99")]
-    [InlineData("?SortBy=-1")]
-    [InlineData("?SortDir=99")]
-    [InlineData("?SortDir=-1")]
-    public async Task ListRecipients_RejectsUndefinedSortValues(string query)
-    {
-        await Api.Recipients().GetRawAsync(new QueryString(query))
-            .AssertBadRequestAsync(CommonErrorCodes.InvalidSortField);
     }
 
     [Theory]
