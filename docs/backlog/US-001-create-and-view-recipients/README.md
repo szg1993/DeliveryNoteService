@@ -120,6 +120,11 @@ difficulty that materially changes the task instead of redesigning it silently.
 
 ## Resume notes
 
+- 2026-11-11: Review-03 (complete coverage) returned FAIL on F007 only; F001-F006
+  resolved or no longer applicable. The developer accepted the reduced generated
+  OpenAPI contract ("Accept reduced contract"); AC9 was revised in `8324535`. No
+  implementation change for F007. A follow-up review against the revised AC9 is
+  next, then explicit human acceptance.
 - 2026-11-11: Review-02 correction attempt 1 for F001, F002, F004, F005 and F006
   (F003 needed no code change; tests and docs already express 404) is committed as
   `fa3f912`. Evidence: red then green DTO and HTTP tests; non-PostgreSQL solution
