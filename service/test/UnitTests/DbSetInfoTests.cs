@@ -1,6 +1,6 @@
-using FluentAssertions;
 using Common.Core.Model;
 using Common.Infrastructure.Persistence;
+using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 
 namespace UnitTests;

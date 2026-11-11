@@ -1,5 +1,5 @@
-using FluentAssertions;
 using Common.Core.Integration;
+using FluentAssertions;
 
 namespace UnitTests;
 

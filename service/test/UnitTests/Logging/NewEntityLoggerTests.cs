@@ -1,9 +1,9 @@
-using FluentAssertions;
 using Common.AspNetCore.Logging;
 using Common.Core.Logging;
 using Common.Core.Model;
 using Common.Infrastructure.Persistence;
 using Common.Testing.Logging;
+using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Serilog;

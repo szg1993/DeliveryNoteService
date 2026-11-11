@@ -210,6 +210,29 @@ public class CreateRecipientDtoTests
     }
 
     [Theory]
+    [InlineData(" ")]
+    [InlineData("   ")]
+    public void CodeWhitespaceOnly(string code)
+    {
+        DtoFactory
+            .CreateRecipient()
+            .WithCode(code)
+            .AssertDataValidationException(ErrorCodes.Recipient.InvalidCode);
+    }
+
+    [Fact]
+    public void WhitespaceOnlyTextIsAccepted()
+    {
+        DtoFactory
+            .CreateRecipient()
+            .WithName("   ")
+            .WithZip("   ")
+            .WithCity("   ")
+            .WithAddress("   ")
+            .AssertValid();
+    }
+
+    [Theory]
     [InlineData("AC ME")]
     [InlineData("ACME!")]
     [InlineData("ÁCME")]

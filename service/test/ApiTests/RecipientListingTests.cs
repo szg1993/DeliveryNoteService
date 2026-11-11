@@ -30,6 +30,18 @@ public class RecipientListingTests : DeliveryNoteServiceApiTestBase
     }
 
     [Fact]
+    public async Task ListRecipients_RejectedCreationDoesNotChangeList()
+    {
+        var created = await Api.Recipients().PostAsync(RecipientRequests.Valid());
+
+        await Api.Recipients().PostRawAsync(RecipientRequests.Valid(code: "   "))
+            .AssertBadRequestAsync("Recipient.InvalidCode");
+
+        var result = await Api.Recipients().GetAsync();
+        result.Content.Should().BeEquivalentTo([created]);
+    }
+
+    [Fact]
     public async Task ListRecipients_DefaultsToFirstTenInIdOrder()
     {
         for (var number = 1; number <= 11; number++)

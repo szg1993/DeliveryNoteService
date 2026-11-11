@@ -1,6 +1,6 @@
-using FluentAssertions;
 using Common.Core.Messaging;
 using Common.Testing;
+using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 
 namespace UnitTests.AspnetCore;

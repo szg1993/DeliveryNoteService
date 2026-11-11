@@ -1,8 +1,8 @@
-using FluentAssertions;
 using Common.AspNetCore.ErrorHandling;
 using Common.Core;
 using Common.Core.Exceptions;
 using Common.Core.Utils;
+using FluentAssertions;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;

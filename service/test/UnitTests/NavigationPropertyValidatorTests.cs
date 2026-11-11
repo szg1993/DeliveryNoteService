@@ -1,7 +1,7 @@
-using FluentAssertions;
 using Common.Core.Model;
 using Common.Core.Persistence;
 using Common.Infrastructure.Persistence;
+using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using System.Linq.Expressions;

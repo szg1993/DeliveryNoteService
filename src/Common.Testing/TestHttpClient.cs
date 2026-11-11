@@ -1,6 +1,6 @@
-using FluentAssertions;
 using Common.AspNetCore.ErrorHandling;
 using Common.Core;
+using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using RichardSzalay.MockHttp;
 using System.Net;

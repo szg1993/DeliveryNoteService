@@ -21,7 +21,7 @@ public class RecipientCreationTests : DeliveryNoteServiceApiTestBase
     [Theory]
     [InlineData(" hu ", "HU", false)]
     [InlineData(" us ", "US", true)]
-    public async Task CreateRecipient_NormalizesDetailsAndDerivesForeignStatus(string country, string expectedCountry, bool isForeign)
+    public async Task CreateRecipient_NormalizesIdentifiersPreservesTextAndDerivesForeignStatus(string country, string expectedCountry, bool isForeign)
     {
         var request = RecipientRequests.Valid() with
         {
@@ -36,11 +36,11 @@ public class RecipientCreationTests : DeliveryNoteServiceApiTestBase
         var created = await Api.Recipients().PostAsync(request);
 
         created.Code.Should().Be("ACME-01");
-        created.Name.Should().Be("Acme  Ltd");
+        created.Name.Should().Be(" Acme  Ltd ");
         created.Country.Should().Be(expectedCountry);
-        created.Zip.Should().Be("001AB");
-        created.City.Should().Be("New  York");
-        created.Address.Should().Be("Main  street 1");
+        created.Zip.Should().Be(" 001AB ");
+        created.City.Should().Be(" New  York ");
+        created.Address.Should().Be(" Main  street 1 ");
         created.IsForeign.Should().Be(isForeign);
         (await Api.Recipients(created.Id).GetAsync()).Should().BeEquivalentTo(created);
     }
@@ -56,7 +56,7 @@ public class RecipientCreationTests : DeliveryNoteServiceApiTestBase
         var error = await Api.Recipients().PostRawAsync(RecipientRequests.Valid(code: code))
             .AssertErrorAsync(HttpStatusCode.BadRequest);
 
-        error.ErrorCode.Should().Be("Recipient.InvalidCode");
+        error.ErrorCode.Should().Be("Recipient.AlreadyExists");
         (await Api.Recipients(original.Id).GetAsync()).Should().BeEquivalentTo(original);
     }
 

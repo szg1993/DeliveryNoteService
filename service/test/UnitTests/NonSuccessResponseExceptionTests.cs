@@ -1,7 +1,7 @@
-using FluentAssertions;
 using Common.Core.Exceptions;
 using Common.Core.Integration;
 using Common.Core.Utils;
+using FluentAssertions;
 using System.Net;
 
 namespace UnitTests;

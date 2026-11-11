@@ -28,7 +28,7 @@ public static class RecipientEndpoints
             .WithTags("Recipients")
             .WithName("GetRecipients")
             .WithSummary("List recipients")
-            .WithDescription("Lists normalized recipient details immediately after creation. Defaults to page 1, limit 10, and ID ascending. SortBy accepts Id or Name; SortDir accepts Asc or Desc. Equal names are ordered by ID ascending in either direction. Limit 0 returns all recipients with page 1 metadata. Page must be positive and limit cannot be negative, including empty and unpaged requests. Invalid paging or sorting returns 400 in the standard error format. Authentication is not required.")
+            .WithDescription("Lists recipient details, with normalized code and country, immediately after creation. Defaults to page 1, limit 10, and ID ascending. SortBy accepts Id or Name; SortDir accepts Asc or Desc. Equal names are ordered by ID ascending in either direction. Limit 0 returns all recipients with page 1 metadata. Page must be positive and limit cannot be negative, including empty and unpaged requests. Invalid paging or sorting returns 400 in the standard error format. Authentication is not required.")
             .AllowAnonymous()
             .Produces<PagedEnvelope<RecipientDetailsDto>>(StatusCodes.Status200OK)
             .Produces<MedusaErrorResponse>(StatusCodes.Status400BadRequest);
@@ -44,7 +44,7 @@ public static class RecipientEndpoints
             .WithTags("Recipients")
             .WithName("GetRecipient")
             .WithSummary("Retrieve a recipient")
-            .WithDescription("Retrieves normalized recipient details, including the server-generated ID, UTC creation time, and derived foreign status. ID must be an integer. An ID with no matching recipient, including zero or negative values, returns 404. Malformed or out-of-range integer input returns 400. Authentication is not required.")
+            .WithDescription("Retrieves recipient details, with normalized code and country, including the server-generated ID, UTC creation time, and derived foreign status. ID must be an integer. An ID with no matching recipient, including zero or negative values, returns 404. Malformed or out-of-range integer input returns 400. Authentication is not required.")
             .AllowAnonymous()
             .Produces<Envelope<RecipientDetailsDto>>(StatusCodes.Status200OK)
             .Produces<MedusaErrorResponse>(StatusCodes.Status400BadRequest)
@@ -65,12 +65,11 @@ public static class RecipientEndpoints
             .WithTags("Recipients")
             .WithName("CreateRecipient")
             .WithSummary("Create a recipient")
-            .WithDescription("Creates a delivery destination from six required fields. Surrounding whitespace is removed; code and country are uppercased. Duplicate names are allowed; duplicate normalized codes return 409. Invalid input returns 400. The 201 response contains the created recipient and a Location header pointing to its detail endpoint. Authentication is not required.")
+            .WithDescription("Creates a delivery destination from six required fields. Code and country are trimmed and uppercased; name, ZIP, city, and address are stored exactly as supplied, and length limits apply to the supplied values. Duplicate names are allowed; a duplicate normalized code returns 400 with error code Recipient.AlreadyExists. Invalid input returns 400. The 201 response contains the created recipient and a Location header pointing to its detail endpoint. Authentication is not required.")
             .AllowAnonymous()
             .Accepts<CreateRecipientDto>("application/json")
             .Produces<Envelope<RecipientDetailsDto>>(StatusCodes.Status201Created)
             .Produces<MedusaErrorResponse>(StatusCodes.Status400BadRequest)
-            .Produces<MedusaErrorResponse>(StatusCodes.Status409Conflict)
             .WithOpenApi(operation =>
             {
                 operation.Responses["201"].Headers["Location"] = new OpenApiHeader

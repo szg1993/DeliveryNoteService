@@ -1,7 +1,7 @@
-using FluentAssertions;
 using Common.Core.Exceptions;
 using Common.Core.UseCases;
 using Common.Testing.Errors;
+using FluentAssertions;
 using Xunit;
 
 namespace Common.Testing.TestSuite;

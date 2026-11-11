@@ -1,6 +1,6 @@
-using FluentAssertions;
 using Common.AspNetCore.Logging;
 using Common.Core.Logging;
+using FluentAssertions;
 using Serilog.Core;
 using Serilog.Events;
 using System.Collections.Concurrent;
