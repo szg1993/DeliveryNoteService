@@ -1,6 +1,6 @@
 using Common.Testing.ApiWrappers;
 using DeliveryNoteService.Core.UseCases.Notes;
-using DeliveryNoteService.Core.UseCases.Recipients;
+using DeliveryNoteService.Core.UseCases.Recipients.Data;
 
 namespace ApiTests.TestSuite;
 

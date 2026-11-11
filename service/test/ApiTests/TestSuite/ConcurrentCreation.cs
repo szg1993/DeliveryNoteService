@@ -1,5 +1,5 @@
 using DeliveryNoteService.Core.UseCases.Notes;
-using DeliveryNoteService.Core.UseCases.Recipients;
+using DeliveryNoteService.Core.UseCases.Recipients.Data;
 using System.Net.Http.Json;
 
 namespace ApiTests.TestSuite;

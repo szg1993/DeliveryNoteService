@@ -1,5 +1,5 @@
 using Common.AspNetCore;
-using DeliveryNoteService.Core.UseCases.Recipients;
+using DeliveryNoteService.Core.UseCases.Recipients.Data;
 using System.Net;
 using System.Text;
 

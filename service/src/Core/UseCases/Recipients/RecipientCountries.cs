@@ -1,3 +1,5 @@
+using Common.Core.Exceptions;
+using DeliveryNoteService.Core.Errors;
 using System.Collections.Frozen;
 
 namespace DeliveryNoteService.Core.UseCases.Recipients;
@@ -15,5 +17,11 @@ internal static class RecipientCountries
         "UA UG UM US UY UZ VA VC VE VG VI VN VU WF WS YE YT ZA ZM ZW"
     ).Split(' ').ToFrozenSet(StringComparer.Ordinal);
 
-    public static bool Contains(string country) => _codes.Contains(country);
+    public static string Normalize(string country) => country.Trim().ToUpperInvariant();
+
+    public static void ThrowIfUnrecognized(string country)
+    {
+        if (!_codes.Contains(Normalize(country)))
+            throw new DataValidationException(ErrorCodes.Recipient.InvalidCountry, "Country must be a recognized two-letter code.");
+    }
 }

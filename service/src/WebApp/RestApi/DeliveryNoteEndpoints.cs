@@ -6,7 +6,7 @@ using Microsoft.OpenApi.Models;
 
 namespace DeliveryNoteService.WebApp.RestApi;
 
-public static class NoteEndpoints
+public static class DeliveryNoteEndpoints
 {
     public static IEndpointRouteBuilder MapNoteRoutes(this IEndpointRouteBuilder app)
     {

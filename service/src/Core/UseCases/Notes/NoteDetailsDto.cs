@@ -1,5 +1,5 @@
 using DeliveryNoteService.Core.Models;
-using DeliveryNoteService.Core.UseCases.Recipients;
+using DeliveryNoteService.Core.UseCases.Recipients.Data;
 
 namespace DeliveryNoteService.Core.UseCases.Notes;
 

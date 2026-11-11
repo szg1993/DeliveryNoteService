@@ -1,7 +1,7 @@
 using Common.AspNetCore.ErrorHandling;
-using Common.Core.Exceptions;
 using Common.Core.Messaging;
 using DeliveryNoteService.Core.UseCases.Recipients;
+using DeliveryNoteService.Core.UseCases.Recipients.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 
@@ -11,20 +11,20 @@ public static class RecipientEndpoints
 {
     public static IEndpointRouteBuilder MapRecipientRoutes(this IEndpointRouteBuilder app)
     {
-        app.MapGet(
-            "/api/recipients",
-            async (
-                [AsParameters] PageRequestQueryParam pageRequest,
-                [AsParameters] Sorting<RecipientsSortBy> sorting,
-                [FromServices] GetRecipients getRecipients,
-                CancellationToken ct
-            ) =>
-            {
-                var pagination = pageRequest.ToUseCaseObject();
-                ValidateListQuery(pagination, sorting);
-                return await getRecipients.RunAsync(pagination, sorting, ct);
-            }
-        )
+        app
+            .MapGet(
+                "/api/recipients",
+                async (
+                    [AsParameters] PageRequestQueryParam pageRequest,
+                    [AsParameters] Sorting<RecipientsSortBy> sorting,
+                    [FromServices] GetRecipients getRecipients,
+                    CancellationToken ct
+                ) =>
+                {
+                    var pagination = pageRequest.ToUseCaseObject();
+                    return await getRecipients.RunAsync(pagination, sorting, ct);
+                }
+            )
             .WithTags("Recipients")
             .WithName("GetRecipients")
             .WithSummary("List recipients")
@@ -33,14 +33,15 @@ public static class RecipientEndpoints
             .Produces<PagedEnvelope<RecipientDetailsDto>>(StatusCodes.Status200OK)
             .Produces<MedusaErrorResponse>(StatusCodes.Status400BadRequest);
 
-        app.MapGet(
-            "/api/recipients/{id}",
-            async (
-                [FromRoute] int id,
-                [FromServices] GetRecipient getRecipient,
-                CancellationToken ct
-            ) => await getRecipient.RunAsync(id, ct)
-        )
+        app
+            .MapGet(
+                "/api/recipients/{id}",
+                (
+                    [FromRoute] int id,
+                    [FromServices] GetRecipient getRecipient,
+                    CancellationToken ct
+                ) => getRecipient.RunAsync(id, ct)
+            )
             .WithTags("Recipients")
             .WithName("GetRecipient")
             .WithSummary("Retrieve a recipient")
@@ -50,18 +51,19 @@ public static class RecipientEndpoints
             .Produces<MedusaErrorResponse>(StatusCodes.Status400BadRequest)
             .Produces<MedusaErrorResponse>(StatusCodes.Status404NotFound);
 
-        app.MapPost(
-            "/api/recipients",
-            async (
-                [FromBody] CreateRecipientDto dto,
-                [FromServices] CreateRecipient createRecipient,
-                CancellationToken ct
-            ) =>
-            {
-                var result = await createRecipient.RunAsync(dto, ct);
-                return Results.Created($"/api/recipients/{result.Content.Id}", result);
-            }
-        )
+        app
+            .MapPost(
+                "/api/recipients",
+                async (
+                    [FromBody] CreateRecipientDto dto,
+                    [FromServices] CreateRecipient createRecipient,
+                    CancellationToken ct
+                ) =>
+                {
+                    var result = await createRecipient.RunAsync(dto, ct);
+                    return Results.Created($"/api/recipients/{result.Content.Id}", result);
+                }
+            )
             .WithTags("Recipients")
             .WithName("CreateRecipient")
             .WithSummary("Create a recipient")
@@ -80,18 +82,26 @@ public static class RecipientEndpoints
                 return operation;
             });
 
+        app
+            .MapPut(
+                "/api/recipients/{id}",
+                async (
+                    [FromRoute] int id,
+                    [FromBody] UpdateRecipientDto dto,
+                    [FromServices] UpdateRecipient updateRecipient,
+                    CancellationToken ct
+                ) => await updateRecipient.RunAsync(id, dto, ct)
+            )
+            .WithTags("Recipients")
+            .WithName("UpdateRecipient")
+            .WithSummary("Update a recipient")
+            .WithDescription("Replaces a recipient's name, country, ZIP, city, and address; all five fields are required. Country is trimmed and uppercased, foreign status is re-derived from it, and the other text is stored exactly as supplied with the same limits as creation. The code, ID, and creation time never change; a supplied code or other unknown property is ignored. Concurrent updates are not checked: the last update wins. Invalid input or a malformed ID returns 400; an ID with no matching recipient, including zero or negative values, returns 404. The 200 response contains the updated recipient. Authentication is not required.")
+            .AllowAnonymous()
+            .Accepts<UpdateRecipientDto>("application/json")
+            .Produces<Envelope<RecipientDetailsDto>>(StatusCodes.Status200OK)
+            .Produces<MedusaErrorResponse>(StatusCodes.Status400BadRequest)
+            .Produces<MedusaErrorResponse>(StatusCodes.Status404NotFound);
+
         return app;
-    }
-
-    private static void ValidateListQuery(PageRequest pageRequest, Sorting<RecipientsSortBy> sorting)
-    {
-        if (pageRequest.Page < 1 || pageRequest.Limit < 0)
-            throw new DataValidationException(CommonErrorCodes.InvalidPageRequest);
-
-        if (sorting.SortBy is { } sortBy && !Enum.IsDefined(sortBy))
-            throw new DataValidationException(CommonErrorCodes.InvalidSortField);
-
-        if (sorting.SortDir is { } sortDirection && !Enum.IsDefined(sortDirection))
-            throw new DataValidationException(CommonErrorCodes.InvalidSortField);
     }
 }

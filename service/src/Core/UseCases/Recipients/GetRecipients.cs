@@ -4,6 +4,7 @@ using Common.Core.Messaging;
 using Common.Core.Persistence;
 using Common.Core.UseCases;
 using DeliveryNoteService.Core.Models;
+using DeliveryNoteService.Core.UseCases.Recipients.Data;
 
 namespace DeliveryNoteService.Core.UseCases.Recipients;
 

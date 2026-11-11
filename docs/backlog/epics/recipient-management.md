@@ -18,6 +18,7 @@ backend, preserving agreed business rules from the legacy implementation.
 ## Candidate stories to refine
 
 - Update a recipient, including validation and missing-recipient behavior.
+  Drafted as [US-003: Update recipients](../US-003-update-recipients.md).
 - Delete a recipient, including the existing restriction on recipients with
   delivery notes.
 - View recipient dashboard information, including total count and newest
