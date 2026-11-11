@@ -1,6 +1,6 @@
-using FluentAssertions;
 using Common.Core.Messaging;
 using Common.Core.UseCases.BatchOperations;
+using FluentAssertions;
 
 namespace Common.Testing.ApiWrappers;
 

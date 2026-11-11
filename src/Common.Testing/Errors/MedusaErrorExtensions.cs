@@ -1,6 +1,6 @@
-using FluentAssertions;
 using Common.Core.Exceptions;
 using Common.Core.Utils;
+using FluentAssertions;
 
 namespace Common.Testing.Errors;
 

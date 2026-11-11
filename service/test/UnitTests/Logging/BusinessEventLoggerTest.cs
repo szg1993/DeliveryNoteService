@@ -1,8 +1,8 @@
-using FluentAssertions;
 using Common.AspNetCore.Logging;
 using Common.Core.Exceptions;
 using Common.Core.Logging;
 using Common.Testing.Logging;
+using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Serilog;

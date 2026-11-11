@@ -1,6 +1,6 @@
-using FluentAssertions;
 using Common.Core.Exceptions;
 using Common.Core.UseCases;
+using FluentAssertions;
 using System.Text.RegularExpressions;
 
 namespace UnitTests;

@@ -1,9 +1,9 @@
 # US-001: Create and view recipients
 
 - Source: DeliveryNoteService/docs/backlog/US-001-create-and-view-recipients.md
-- Lifecycle: active
+- Lifecycle: complete
 - Created: 2026-11-08
-- Updated: 2026-11-10
+- Updated: 2026-11-11
 - Branch: feature/US-001-create-and-view-recipients
 - Merge: [PR #1](https://github.com/szg1993/DeliveryNoteService/pull/1), master,
   `025ec1cc157ab38b5cd4e5b8a133eec5f55839f9`, 2026-11-10.
@@ -120,6 +120,42 @@ difficulty that materially changes the task instead of redesigning it silently.
 
 ## Resume notes
 
+- 2026-11-11: Complete. Review-05 passed with complete coverage at
+  `bbc5c93`; the developer approved human review and
+  [human acceptance 06](review-06.md) records completion. The correction commits
+  on `feature/US-001-create-and-view-recipients` still need to be pushed and
+  merged by the developer; the reservation holds until merge.
+- 2026-11-11: Review-04 F007 correction attempt 1 (narrowed dead code) is committed
+  as `1cb679d`: deleted the unregistered `CreateRecipientDtoSchema.cs`. Evidence:
+  no remaining references in `service`/`src`; solution build 0 warnings/0 errors;
+  non-PostgreSQL solution tests passed (ApiTests 74/74, UnitTests 182/182). Details
+  are in T002 progress. Next: a follow-up review, then explicit human acceptance.
+  Task statuses are unchanged.
+- 2026-11-11: Review-03 (complete coverage) returned FAIL on F007 only; F001-F006
+  resolved or no longer applicable. The developer accepted the reduced generated
+  OpenAPI contract ("Accept reduced contract"); AC9 was revised in `8324535`. No
+  implementation change for F007. A follow-up review against the revised AC9 is
+  next, then explicit human acceptance.
+- 2026-11-11: Review-02 correction attempt 1 for F001, F002, F004, F005 and F006
+  (F003 needed no code change; tests and docs already express 404) is committed as
+  `fa3f912`. Evidence: red then green DTO and HTTP tests; non-PostgreSQL solution
+  tests passed (ApiTests 74/74, UnitTests 182/182); scoped `dotnet format`
+  verification passed for 50 formatted files and review-02 include scope. The
+  PostgreSQL concurrency test was updated to expect 400 `Recipient.AlreadyExists`
+  but not run (needs user approval). Details are in T002 and T004 progress. Next:
+  a complete-coverage follow-up review. Task statuses are unchanged.
+- 2026-11-11: The developer asked to close US-001. Review-02 (FAIL, incomplete
+  coverage) remains the latest agent review. The developer revised AC11 (duplicate
+  codes return 400 `Recipient.AlreadyExists`, including the database race),
+  AC14/AC17 (only code and country normalized; other text preserved; empty
+  trimmed code rejected), AC16 (nonpositive IDs return 404), and the test boundary
+  (DTO `Validate()` unit tests). F003 and most of F004 become no longer applicable
+  under these revisions. Required corrections: F001 (empty trimmed code, preserved
+  text), F002 (400 for both duplicate paths, OpenAPI), F004 remainder (one HTTP
+  rejected-create/no-save check), F005, F006. Then a complete-coverage follow-up
+  review. New reservation: attempt `a0122952-a1e5-4968-8e9f-28d32ff010f4`, remote
+  `origin`, branch `feature/US-001-create-and-view-recipients`, marker
+  `63dc447b36ed367be9b898bd3d0eb162863ea9db` on master `7720314`.
 - 2026-11-10: The developer confirmed the story was merged. PR #1 is present in
   master at `025ec1cc157ab38b5cd4e5b8a133eec5f55839f9`; all four task statuses remain
   done. US-002 can use the merged recipient implementation. The latest committed

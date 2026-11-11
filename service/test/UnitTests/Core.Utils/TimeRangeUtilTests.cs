@@ -1,6 +1,6 @@
-using FluentAssertions;
 using Common.Core.Utils;
 using Common.Testing.TestSuite;
+using FluentAssertions;
 
 namespace UnitTests.Core.Utils;
 

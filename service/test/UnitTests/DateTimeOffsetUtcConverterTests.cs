@@ -1,5 +1,5 @@
-using FluentAssertions;
 using Common.Infrastructure.Persistence;
+using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using UnitTests.TestSuite;
 

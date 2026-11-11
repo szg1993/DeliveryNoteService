@@ -1,5 +1,5 @@
-using FluentAssertions;
 using Common.Core.Messaging;
+using FluentAssertions;
 
 namespace UnitTests;
 

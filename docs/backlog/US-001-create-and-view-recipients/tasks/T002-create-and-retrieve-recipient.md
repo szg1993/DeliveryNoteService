@@ -71,6 +71,71 @@ commands, red/green evidence, and any environmental blockers.
 
 ## Progress
 
+### Review-04 F007 correction attempt 1 (2026-11-11)
+
+Deleted the unregistered dead `service/src/WebApp/RestApi/CreateRecipientDtoSchema.cs`
+(review-04 F007, narrowed) in commit `1cb679d`. No other file depended on it: its
+usings were file-local, the Swashbuckle package is still used by
+`NoteContractSchema` and `Common.AspNetCore`, and `WebAppInit` registers only
+`NoteContractSchema`. Evidence: `git grep -n CreateRecipientDtoSchema -- service src`
+returns no matches; `dotnet build service/DeliveryNoteService.sln` succeeded with
+0 warnings and 0 errors; `dotnet format service/DeliveryNoteService.sln
+--verify-no-changes --include service/src/WebApp/` exited 0; `dotnet test
+service/DeliveryNoteService.sln --filter "Database!=PostgreSQL" --
+xUnit.ParallelizeTestCollections=false` passed ApiTests 74/74 and UnitTests
+182/182 (0 failed, 0 skipped). PostgreSQL/Testcontainers tests were not run.
+Refactoring assessment (`clean-code`): pure dead-code removal, no further
+refactoring warranted. Task status is unchanged; a follow-up review is required.
+
+### Review-02 correction attempt 1 (2026-11-11)
+
+Corrected review-02 findings F001, F002, F004 (remainder), F005 and F006 against
+the story revised on 2026-11-11 (AC11, AC14, AC16, AC17, agreed test boundary) in
+commit `fa3f912`. Task status is unchanged; no unfinished gate is marked complete.
+A complete-coverage follow-up review is still required.
+
+- F001: `CreateRecipientDto.MapTo` stores name, ZIP, city and address exactly as
+  supplied; `Guard.ThrowIfMissing` semantics (null/empty rejected, whitespace
+  accepted) and length limits apply to the supplied values. Code and country stay
+  trimmed and uppercased; a code empty after trimming is rejected with
+  `Recipient.InvalidCode` (400). DTO and endpoint descriptions updated.
+- F002: Both the duplicate pre-check and the database `UniqueKeyConflictException`
+  race in `CreateRecipient` return 400 `Recipient.AlreadyExists`; the shared
+  middleware is unchanged. The 409 `Produces` metadata was removed. The PostgreSQL
+  concurrency test now expects exactly 400 + `Recipient.AlreadyExists`; no SQLite
+  recipient concurrency variant exists, so the race translation is not exercised
+  by routine SQLite tests.
+- F003: No code change. `RecipientDetailsTests` and the endpoint description
+  already express 404 for zero and negative IDs.
+- F004: Added DTO `Validate()` unit tests for whitespace-only codes (rejected) and
+  whitespace-only name/ZIP/city/address (accepted); existing supplied-length tests
+  retained. HTTP tests now expect preserved text and `Recipient.AlreadyExists`, and
+  `ListRecipients_RejectedCreationDoesNotChangeList` restores the rejected-create
+  no-save check.
+- F005: `ErrorCodes.Recipient.AlreadyExists` is `_prefix + "AlreadyExists"`;
+  unused `InvalidId` removed.
+- F006: `dotnet format` applied to the 42 files with diagnostics in review-02's
+  include scope plus every modified file (50 files).
+
+TDD evidence: the new unit tests failed first (`CodeWhitespaceOnly`, 2 failures,
+38 passed); the updated HTTP tests failed first (6 failures, 30 passed: preserved
+text, `Recipient.InvalidCode` instead of `Recipient.AlreadyExists`, whitespace
+code accepted). After implementation all passed.
+
+Verification:
+`dotnet test service/DeliveryNoteService.sln --filter "Database!=PostgreSQL" -v
+minimal -- xUnit.ParallelizeTestCollections=false`: ApiTests 74/74 and UnitTests
+182/182 passed, after formatting. `dotnet format service/DeliveryNoteService.sln
+--no-restore --include-generated --verify-no-changes` exited 0 for both the
+formatted set and review-02's full include scope (393 existing files). PostgreSQL
+tests were not run (Testcontainers require explicit user approval).
+
+Refactoring assessment (`clean-code`): duplicate-code exception creation is
+extracted into one private factory used by both paths; the use case keeps its
+validation, lookup, mapping, persistence and response sequence. Tests reuse the
+existing `DtoFactory`, `RecipientRequests` and HTTP assertion helpers; no new
+helpers were justified.
+
 ### Completed 2026-11-08
 
 Implemented anonymous POST /api/recipients and GET /api/recipients/{id} using

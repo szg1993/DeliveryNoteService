@@ -28,15 +28,25 @@ public class CreateRecipient(
             var code = dto.Code.Trim().ToUpperInvariant();
 
             if (await repository.AnyAsync(recipient => recipient.Code == code, ct))
-                throw new DataValidationException(ErrorCodes.Recipient.InvalidCode);
+                throw RecipientAlreadyExists();
 
             var recipient = dto.ToModel(timeService);
 
             repository.Add(recipient);
 
-            await unitOfWork.SaveChangesAsync(ct);
+            try
+            {
+                await unitOfWork.SaveChangesAsync(ct);
+            }
+            catch (UniqueKeyConflictException ex)
+            {
+                throw RecipientAlreadyExists(ex);
+            }
 
             return RecipientDetailsDto.FromModel(recipient).Envelop();
         });
     }
+
+    private static DataValidationException RecipientAlreadyExists(Exception? inner = null)
+        => new(ErrorCodes.Recipient.AlreadyExists, "A recipient with this code already exists.", inner);
 }

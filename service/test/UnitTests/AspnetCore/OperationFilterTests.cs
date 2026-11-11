@@ -1,5 +1,5 @@
-using FluentAssertions;
 using Common.AspNetCore.Swagger.Annotations;
+using FluentAssertions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
