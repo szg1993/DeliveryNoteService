@@ -27,7 +27,7 @@ workspace exists.
 
 | Order | Task | Status | Depends on | Increment |
 | --- | --- | --- | --- | --- |
-| 1 | [T001: Scaffold the Angular workspace](tasks/T001-scaffold-angular-workspace.md) | todo | None | Prerequisite |
+| 1 | [T001: Scaffold the Angular workspace](tasks/T001-scaffold-angular-workspace.md) | done | None | Prerequisite |
 | 2 | [T002: List recipients newest first](tasks/T002-list-recipients.md) | todo | T001 | Skeleton |
 | 3 | [T003: Page through recipients](tasks/T003-page-through-recipients.md) | todo | T002 | Extension |
 | 4 | [T004: Handle list loading and errors](tasks/T004-handle-list-loading-and-errors.md) | todo | T002 | Extension |
