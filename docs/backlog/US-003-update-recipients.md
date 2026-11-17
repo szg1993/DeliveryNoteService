@@ -1,6 +1,7 @@
 # US-003: Update recipients
 
 - Status: Done
+- Type: Backend
 - Breakdown: [Implementation plan and tasks](US-003-update-recipients/README.md).
 - Epic: [Recipient management](epics/recipient-management.md)
 - Implementation repository: DeliveryNoteService

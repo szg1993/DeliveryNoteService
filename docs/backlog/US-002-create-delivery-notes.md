@@ -1,6 +1,7 @@
 # US-002: Create delivery notes
 
 - Status: Done
+- Type: Backend
 - Area: Delivery notes
 - Implementation repository: DeliveryNoteService
 - Implementation solution: `service/DeliveryNoteService.sln`

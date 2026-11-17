@@ -19,6 +19,8 @@ backend, preserving agreed business rules from the legacy implementation.
 
 - Update a recipient, including validation and missing-recipient behavior.
   Drafted as [US-003: Update recipients](../US-003-update-recipients.md).
+- Create and list recipients on a web page, the first frontend story. Drafted as
+  [US-004: Recipient page](../US-004-recipient-page.md).
 - Delete a recipient, including the existing restriction on recipients with
   delivery notes.
 - View recipient dashboard information, including total count and newest
