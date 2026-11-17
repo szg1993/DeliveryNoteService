@@ -19,9 +19,9 @@ T002 is the first working increment: the page lists recipients from
 `GET /api/recipients`, newest first, with an empty state. Paging controls (T003)
 and loading/error handling with the shared error dialog (T004) extend the list.
 Creation follows as its own slice (T005), with backend creation errors routed
-through the dialog afterwards (T006). CI (T007) and moving the project-specific
-Angular defaults into repository instructions (T008) are independent once the
-workspace exists.
+through the dialog afterwards (T006). Moving the project-specific Angular
+defaults into repository instructions (T008) is independent once the workspace
+exists. CI (T007) was cancelled on 2026-11-17 by the developer's decision.
 
 ## Ordered tasks
 
@@ -33,13 +33,13 @@ workspace exists.
 | 4 | [T004: Handle list loading and errors](tasks/T004-handle-list-loading-and-errors.md) | done | T002 | Extension |
 | 5 | [T005: Create a recipient](tasks/T005-create-recipient.md) | done | T002 | Extension |
 | 6 | [T006: Show creation errors in the dialog](tasks/T006-show-creation-errors.md) | done | T004, T005 | Edge case |
-| 7 | [T007: Add frontend CI workflow](tasks/T007-add-frontend-ci.md) | todo | T001 | Prerequisite |
+| 7 | [T007: Add frontend CI workflow](tasks/T007-add-frontend-ci.md) | cancelled | T001 | Prerequisite |
 | 8 | [T008: Move Angular defaults into repository instructions](tasks/T008-move-angular-defaults.md) | todo | T001 | Prerequisite |
 
 The task file owns its status and progress. Keep the status above synchronized
 with the task file.
 
-T007 and T008 can proceed in parallel with T002–T006. T003, T004, and T005 depend
+T008 can proceed in parallel with T002–T006. T003, T004, and T005 depend
 only on T002, but all three change the recipient page component, so run them one
 after another to avoid conflicting edits.
 
@@ -61,7 +61,6 @@ after another to avoid conflicting edits.
 | AC12: same dialog for list-loading failures | T004 |
 | AC13: relative `/api` path and dev-server proxy | T001, T002 |
 | AC14: `web/` README commands succeed | T001 |
-| AC15: GitHub Actions workflow for `web/` changes | T007 |
 | Scope: Angular defaults moved into repository instructions | T008 |
 | Test boundary tests 1–2 | T002 |
 | Test boundary test 3, 5 | T005 |

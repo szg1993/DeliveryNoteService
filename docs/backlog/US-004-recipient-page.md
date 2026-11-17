@@ -28,7 +28,6 @@ without calling the API directly.
 - Add one recipient page with a creation form above a recipient list.
 - Create recipients through `POST /api/recipients` and list them through
   `GET /api/recipients`.
-- Add a GitHub Actions workflow for the frontend.
 
 ## Acceptance criteria
 
@@ -84,8 +83,6 @@ without calling the API directly.
     development forwards `/api` to the backend through the Angular dev-server proxy.
 14. The `web/` README lists the commands to install, run, test, lint, and format the
     application, and these commands succeed.
-15. A GitHub Actions workflow runs lint, tests, and build for pull requests that
-    change files under `web/`.
 
 ## Agreed decisions
 
@@ -139,6 +136,8 @@ None. The developer confirmed shared understanding on 2026-11-17.
 - End-to-end tests and tests against the real backend.
 - Authentication, CORS, deployment, and production hosting.
 - Backend changes.
+- A GitHub Actions workflow for the frontend. The developer removed it from
+  scope on 2026-11-17 and cancelled T007.
 
 ## Progress
 
