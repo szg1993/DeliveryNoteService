@@ -91,5 +91,10 @@ is running; otherwise confirm the proxy configuration is referenced by `ng serve
   path `/api/recipients?page=1`, proving the proxy forwards to 5211.
 - npm 11 reported unapproved install scripts (esbuild, lmdb, msgpackr-extract);
   lint, test, build and serve work without them.
+- A fresh clone with `core.autocrlf=true` checked `web/` out with CRLF, and
+  `npm run format:check` failed on 10 files. Added `web/.gitattributes`
+  (`* text=auto eol=lf`). Re-verified in a fresh clone of the branch: `npm ci`,
+  `npm run format:check`, `npm run lint`, `npm test` (1 passed) and
+  `npm run build` all succeed.
 
 Remaining work: none.
