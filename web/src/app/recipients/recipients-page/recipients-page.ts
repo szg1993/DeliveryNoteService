@@ -1,10 +1,11 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { RecipientsApi } from '../recipients-api';
 
 @Component({
-  imports: [MatTableModule],
+  imports: [MatButtonModule, MatTableModule],
   selector: 'app-recipients-page',
   templateUrl: './recipients-page.html',
 })
@@ -21,5 +22,14 @@ export class RecipientsPage {
   protected readonly noRecipients = computed(
     () => this.recipientsPage.value()?.content.length === 0,
   );
+  protected readonly paging = computed(() => this.recipientsPage.value()?.paging);
   protected readonly columns = ['code', 'name', 'country', 'zip', 'city', 'address', 'isForeign'];
+
+  protected showPreviousPage(): void {
+    this.page.update((page) => page - 1);
+  }
+
+  protected showNextPage(): void {
+    this.page.update((page) => page + 1);
+  }
 }

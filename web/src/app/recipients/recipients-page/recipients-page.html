@@ -36,4 +36,21 @@
     <tr mat-header-row *matHeaderRowDef="columns"></tr>
     <tr mat-row *matRowDef="let row; columns: columns"></tr>
   </table>
+
+  @if (paging(); as paging) {
+    <nav aria-label="Recipient pages">
+      <button mat-button type="button" [disabled]="paging.page <= 1" (click)="showPreviousPage()">
+        Previous page
+      </button>
+      <span>Page {{ paging.page }} of {{ paging.totalPages }}</span>
+      <button
+        mat-button
+        type="button"
+        [disabled]="paging.page >= paging.totalPages"
+        (click)="showNextPage()"
+      >
+        Next page
+      </button>
+    </nav>
+  }
 }
