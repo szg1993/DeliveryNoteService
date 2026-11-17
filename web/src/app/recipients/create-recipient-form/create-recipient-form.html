@@ -1,0 +1,15 @@
+<form [formRoot]="recipientForm" aria-label="New recipient">
+  @for (field of fields; track field.key) {
+    <mat-form-field>
+      <mat-label>{{ field.label }}</mat-label>
+      <input matInput [formField]="recipientForm[field.key]" />
+      @for (error of recipientForm[field.key]().errors(); track error.kind) {
+        <mat-error>{{ error.message }}</mat-error>
+      }
+    </mat-form-field>
+  }
+
+  <button mat-flat-button type="submit" [disabled]="recipientForm().submitting()">
+    Create recipient
+  </button>
+</form>

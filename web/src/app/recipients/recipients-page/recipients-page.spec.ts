@@ -2,8 +2,8 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ApplicationRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { fireEvent, render, screen, within } from '@testing-library/angular';
-import { RecipientDetails } from '../recipients-api';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/angular';
+import { NewRecipient, RecipientDetails } from '../recipients-api';
 import { RecipientsPage } from './recipients-page';
 
 describe('RecipientsPage', () => {
@@ -99,6 +99,56 @@ describe('RecipientsPage', () => {
     expect(pagingButton('Previous page').disabled).toBe(false);
     expect(pagingButton('Next page').disabled).toBe(true);
   });
+
+  it('creates a recipient with the values as entered and reloads the first page', async () => {
+    await renderRecipientsPage();
+    await answerRecipientsRequest({ page: 1 }, [recipientWithCode('OLDER1')]);
+    const details = { ...validRecipient, code: 'BUDA01', name: ' Buda Logistics ' };
+
+    fillRecipientForm(details);
+    fireEvent.click(createButton());
+    answerCreateRequest(details);
+    await answerRecipientsRequest({ page: 1 }, [recipientWithCode('BUDA01')]);
+
+    expect(await screen.findByText('Recipient BUDA01 created')).toBeTruthy();
+    expect(recipientFormValues()).toEqual(emptyRecipientForm);
+    expect(listedCodes()).toEqual(['BUDA01']);
+  });
+
+  it('disables create and ignores another submit while the request is pending', async () => {
+    await renderRecipientsPage();
+    await answerRecipientsRequest({ page: 1 }, []);
+    fillRecipientForm(validRecipient);
+
+    fireEvent.click(createButton());
+    fireEvent.click(createButton());
+
+    await waitFor(() => expect(createButton().disabled).toBe(true));
+    answerCreateRequest(validRecipient);
+    await answerRecipientsRequest({ page: 1 }, [recipientWithCode('BUDA01')]);
+  });
+
+  it('shows an inline error and sends nothing when a required value is missing', async () => {
+    await renderRecipientsPage();
+    await answerRecipientsRequest({ page: 1 }, []);
+    fillRecipientForm({ ...validRecipient, code: '' });
+
+    fireEvent.click(createButton());
+
+    expect(await screen.findByText('Code is required.')).toBeTruthy();
+    expectNoCreateRequest();
+  });
+
+  it('shows an inline error and sends nothing when a value is too long', async () => {
+    await renderRecipientsPage();
+    await answerRecipientsRequest({ page: 1 }, []);
+    fillRecipientForm({ ...validRecipient, country: 'HUN' });
+
+    fireEvent.click(createButton());
+
+    expect(await screen.findByText('Country must be at most 2 characters.')).toBeTruthy();
+    expectNoCreateRequest();
+  });
 });
 
 async function renderRecipientsPage(): Promise<void> {
@@ -112,18 +162,92 @@ async function answerRecipientsRequest(
   { page, totalPages }: { page: number; totalPages?: number },
   recipients: RecipientDetails[],
 ): Promise<void> {
-  TestBed.inject(HttpTestingController)
-    .expectOne(`/api/recipients?page=${page}&limit=10&sortBy=Id&sortDir=Desc`)
-    .flush({
-      content: recipients,
-      paging: {
-        page,
-        limit: 10,
-        totalCount: recipients.length,
-        totalPages: totalPages ?? (recipients.length > 0 ? 1 : 0),
-      },
-    });
+  const request = await waitFor(() =>
+    TestBed.inject(HttpTestingController).expectOne(
+      `/api/recipients?page=${page}&limit=10&sortBy=Id&sortDir=Desc`,
+    ),
+  );
+  request.flush({
+    content: recipients,
+    paging: {
+      page,
+      limit: 10,
+      totalCount: recipients.length,
+      totalPages: totalPages ?? (recipients.length > 0 ? 1 : 0),
+    },
+  });
   await TestBed.inject(ApplicationRef).whenStable();
+}
+
+/** Expects one POST with exactly the entered details and answers it with 201. */
+function answerCreateRequest(details: NewRecipient): void {
+  const request = TestBed.inject(HttpTestingController).expectOne({
+    method: 'POST',
+    url: '/api/recipients',
+  });
+  expect(request.request.body).toEqual(details);
+  request.flush(
+    { content: recipient({ ...details, isForeign: false }) },
+    { status: 201, statusText: 'Created' },
+  );
+}
+
+function expectNoCreateRequest(): void {
+  TestBed.inject(HttpTestingController).expectNone({ method: 'POST', url: '/api/recipients' });
+}
+
+/** Details that pass every client-side rule. */
+const validRecipient: NewRecipient = {
+  code: 'BUDA01',
+  name: 'Buda Logistics',
+  country: 'HU',
+  zip: '1011',
+  city: 'Budapest',
+  address: 'Fő utca 1.',
+};
+
+const recipientFormLabels: Record<keyof NewRecipient, string> = {
+  code: 'Code',
+  name: 'Name',
+  country: 'Country',
+  zip: 'ZIP',
+  city: 'City',
+  address: 'Address',
+};
+
+const emptyRecipientForm: NewRecipient = {
+  code: '',
+  name: '',
+  country: '',
+  zip: '',
+  city: '',
+  address: '',
+};
+
+function recipientInput(field: keyof NewRecipient): HTMLInputElement {
+  return screen.getByLabelText<HTMLInputElement>(recipientFormLabels[field], { exact: false });
+}
+
+/** Types the given values into the creation form; omitted fields stay as they are. */
+function fillRecipientForm(details: Partial<NewRecipient>): void {
+  for (const [field, value] of Object.entries(details) as [keyof NewRecipient, string][]) {
+    fireEvent.input(recipientInput(field), { target: { value } });
+  }
+}
+
+function recipientFormValues(): NewRecipient {
+  return {
+    code: recipientInput('code').value,
+    name: recipientInput('name').value,
+    country: recipientInput('country').value,
+    zip: recipientInput('zip').value,
+    city: recipientInput('city').value,
+    address: recipientInput('address').value,
+  };
+}
+
+function createButton(): HTMLButtonElement {
+  return screen.getByRole<HTMLButtonElement>('button', { name: 'Create recipient' });
 }
 
 let nextRecipientId = 1;
@@ -134,15 +258,7 @@ function recipient(details: Omit<RecipientDetails, 'id' | 'createdAt'>): Recipie
 
 /** A recipient for scenarios where only its code identifies the row. */
 function recipientWithCode(code: string): RecipientDetails {
-  return recipient({
-    code,
-    name: 'Buda Logistics',
-    country: 'HU',
-    zip: '1011',
-    city: 'Budapest',
-    address: 'Fő utca 1.',
-    isForeign: false,
-  });
+  return recipient({ ...validRecipient, code, isForeign: false });
 }
 
 /** Codes of the listed recipients, from the first table column. */

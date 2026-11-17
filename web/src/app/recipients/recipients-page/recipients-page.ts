@@ -7,10 +7,11 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTableModule } from '@angular/material/table';
 import { catchError, Observable, switchMap, throwError } from 'rxjs';
 import { openErrorDialog } from '../../shared/error-dialog/error-dialog';
+import { CreateRecipientForm } from '../create-recipient-form/create-recipient-form';
 import { PagedResponse, RecipientDetails, RecipientsApi } from '../recipients-api';
 
 @Component({
-  imports: [MatButtonModule, MatProgressBarModule, MatTableModule],
+  imports: [CreateRecipientForm, MatButtonModule, MatProgressBarModule, MatTableModule],
   selector: 'app-recipients-page',
   templateUrl: './recipients-page.html',
 })
@@ -30,6 +31,14 @@ export class RecipientsPage {
     this.recipientsPage.hasValue() ? this.recipientsPage.value() : undefined,
   );
   protected readonly columns = ['code', 'name', 'country', 'zip', 'city', 'address', 'isForeign'];
+
+  protected showFirstPage(): void {
+    if (this.page() === 1) {
+      this.recipientsPage.reload();
+    } else {
+      this.page.set(1);
+    }
+  }
 
   protected showPreviousPage(): void {
     this.page.update((page) => page - 1);

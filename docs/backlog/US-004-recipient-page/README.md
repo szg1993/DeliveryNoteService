@@ -31,7 +31,7 @@ workspace exists.
 | 2 | [T002: List recipients newest first](tasks/T002-list-recipients.md) | done | T001 | Skeleton |
 | 3 | [T003: Page through recipients](tasks/T003-page-through-recipients.md) | done | T002 | Extension |
 | 4 | [T004: Handle list loading and errors](tasks/T004-handle-list-loading-and-errors.md) | done | T002 | Extension |
-| 5 | [T005: Create a recipient](tasks/T005-create-recipient.md) | todo | T002 | Extension |
+| 5 | [T005: Create a recipient](tasks/T005-create-recipient.md) | done | T002 | Extension |
 | 6 | [T006: Show creation errors in the dialog](tasks/T006-show-creation-errors.md) | todo | T004, T005 | Edge case |
 | 7 | [T007: Add frontend CI workflow](tasks/T007-add-frontend-ci.md) | todo | T001 | Prerequisite |
 | 8 | [T008: Move Angular defaults into repository instructions](tasks/T008-move-angular-defaults.md) | todo | T001 | Prerequisite |

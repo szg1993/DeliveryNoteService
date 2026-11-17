@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 export interface RecipientDetails {
   id: number;
@@ -12,6 +12,16 @@ export interface RecipientDetails {
   address: string;
   createdAt: string;
   isForeign: boolean;
+}
+
+/** The details a user enters to register a recipient. */
+export interface NewRecipient {
+  code: string;
+  name: string;
+  country: string;
+  zip: string;
+  city: string;
+  address: string;
 }
 
 export interface Paging {
@@ -37,5 +47,11 @@ export class RecipientsApi {
     return this.http.get<PagedResponse<RecipientDetails>>('/api/recipients', {
       params: { page, limit: pageSize, sortBy: 'Id', sortDir: 'Desc' },
     });
+  }
+
+  createRecipient(details: NewRecipient): Observable<RecipientDetails> {
+    return this.http
+      .post<{ content: RecipientDetails }>('/api/recipients', details)
+      .pipe(map((response) => response.content));
   }
 }

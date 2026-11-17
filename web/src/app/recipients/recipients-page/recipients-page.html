@@ -1,5 +1,7 @@
 <h1>Recipients</h1>
 
+<app-create-recipient-form (created)="showFirstPage()" />
+
 @if (loading()) {
   <mat-progress-bar mode="indeterminate" aria-label="Loading recipients" />
 }
