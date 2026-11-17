@@ -1,7 +1,7 @@
 # T002: List recipients newest first
 
 - Parent: [US-004](../README.md)
-- Status: todo
+- Status: done
 - Depends on: T001
 - Increment: Skeleton
 
@@ -27,10 +27,10 @@ Paging controls, loading indicator, and error handling are later tasks.
 
 ## Acceptance criteria
 
-- [ ] Opening the page sends one request for page 1, limit 10, sorted by ID
+- [x] Opening the page sends one request for page 1, limit 10, sorted by ID
       descending, through the relative `/api` path.
-- [ ] The table shows every column for each returned recipient.
-- [ ] An empty response shows the empty-state message and no table rows.
+- [x] The table shows every column for each returned recipient.
+- [x] An empty response shows the empty-state message and no table rows.
 
 ## Verification
 
@@ -44,4 +44,44 @@ Each test asserts the request URL and query. `npm run lint`, `npm test`, and
 
 ## Progress
 
-No implementation started. Record dated work, verification evidence and remaining work here during implementation.
+### 2026-11-17
+
+- Added `RecipientsApi` (`src/app/recipients/recipients-api.ts`), an Angular 22
+  `@Service()` with `getRecipients(page)` calling
+  `GET /api/recipients?page={page}&limit=10&sortBy=Id&sortDir=Desc` through the
+  relative `/api` path, plus the `RecipientDetails`, `Paging`, and `PagedResponse`
+  contract types.
+- `RecipientsPage` keeps the page number in a signal and loads it with `rxResource`
+  (stable in Angular 22). It renders an Angular Material table (Code, Name, Country,
+  ZIP, City, Address, Foreign as Yes/No), or "No recipients yet." when `content` is
+  empty. Before the first response the table shows only its header; the loading
+  indicator is T004.
+- TDD: each test was seen failing first (no request sent; empty-state text missing),
+  then passing. Mutation check: changing `sortDir` to `Asc` fails both page tests.
+- Component tests in `recipients-page.spec.ts` (story test boundary tests 1 and 2):
+  two recipients render as rows with every column; an empty response shows the
+  empty-state message and no rows. Each matches the exact request URL and query
+  through `HttpTestingController.expectOne`, and `afterEach` verifies no
+  unexpected requests.
+- `app.routes.spec.ts` now provides `provideHttpClient()` and
+  `provideHttpClientTesting()`, because the routed page now sends a request. This
+  keeps that test away from the network.
+- Refactoring assessment (`clean-code`): production code is small and has a single
+  responsibility. The table columns are kept explicit in the template rather than
+  generated, so they stay readable. In the tests, the repeated render providers,
+  request matching, response envelope, stabilization, and row-text extraction
+  moved into helpers: `renderRecipientsPage`, `answerRecipientsRequest`,
+  `recipient`, and `tableRowTexts`. Recipient field values, the requested page, and
+  the expected rows stay visible in each test.
+- Test-infrastructure scope: the helpers are local to `recipients-page.spec.ts`.
+  The only other spec, `app.routes.spec.ts`, exercises routing and shares only the
+  HTTP providers, so a shared suite module would add no useful reuse yet.
+  Configuration happens in `render` per test, through a fresh TestBed. Each test is
+  isolated, and TestBed owns teardown. T003–T006 extend the same spec file and can
+  reuse these helpers; promote them to a shared module only if another spec needs
+  them.
+- Verification: `npm run lint` passed, `npm test` passed (3 tests in 2 files),
+  `npm run format:check` passed, and `npm run build` succeeded.
+
+Remaining work: none for T002. Paging controls (T003) and loading/error handling
+(T004) are separate tasks.
