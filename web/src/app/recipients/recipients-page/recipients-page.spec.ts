@@ -128,6 +128,21 @@ describe('RecipientsPage', () => {
     await answerRecipientsRequest({ page: 1 }, [recipientWithCode('BUDA01')]);
   });
 
+  it('explains a duplicate code in the error dialog and keeps the entered values', async () => {
+    await renderRecipientsPage();
+    await answerRecipientsRequest({ page: 1 }, []);
+    fillRecipientForm(validRecipient);
+
+    fireEvent.click(createButton());
+    rejectCreateRequest({ errorCode: 'Recipient.AlreadyExists' });
+
+    const dialog = await screen.findByRole('dialog', { name: 'Error' });
+    expect(within(dialog).getByText('A recipient with code BUDA01 already exists.')).toBeTruthy();
+    expect(within(dialog).getByText('Recipient.AlreadyExists')).toBeTruthy();
+    expect(recipientFormValues()).toEqual(validRecipient);
+    expect(createButton().disabled).toBe(false);
+  });
+
   it('shows an inline error and sends nothing when a required value is missing', async () => {
     await renderRecipientsPage();
     await answerRecipientsRequest({ page: 1 }, []);
@@ -190,6 +205,13 @@ function answerCreateRequest(details: NewRecipient): void {
     { content: recipient({ ...details, isForeign: false }) },
     { status: 201, statusText: 'Created' },
   );
+}
+
+/** Expects one POST and answers it with 400 and the backend error body. */
+function rejectCreateRequest(errorBody: { errorCode: string }): void {
+  TestBed.inject(HttpTestingController)
+    .expectOne({ method: 'POST', url: '/api/recipients' })
+    .flush(errorBody, { status: 400, statusText: 'Bad Request' });
 }
 
 function expectNoCreateRequest(): void {

@@ -1,10 +1,13 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, output, signal } from '@angular/core';
 import { form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { firstValueFrom } from 'rxjs';
+import { openErrorDialog } from '../../shared/error-dialog/error-dialog';
 import { NewRecipient, RecipientDetails, RecipientsApi } from '../recipients-api';
 
 interface RecipientField {
@@ -40,6 +43,7 @@ const emptyRecipient: NewRecipient = {
 export class CreateRecipientForm {
   private readonly api = inject(RecipientsApi);
   private readonly snackBar = inject(MatSnackBar);
+  private readonly dialog = inject(MatDialog);
 
   readonly created = output<RecipientDetails>();
 
@@ -58,9 +62,20 @@ export class CreateRecipientForm {
     { submission: { action: () => this.createRecipient() } },
   );
 
+  /** On failure, explains the error in the dialog and keeps the entered values for correction. */
   private async createRecipient(): Promise<void> {
-    const created = await firstValueFrom(this.api.createRecipient(this.recipient()));
+    const details = this.recipient();
+    try {
+      this.confirmCreated(await firstValueFrom(this.api.createRecipient(details)));
+    } catch (error) {
+      if (!(error instanceof HttpErrorResponse)) {
+        throw error;
+      }
+      openErrorDialog(this.dialog, error, details.code);
+    }
+  }
 
+  private confirmCreated(created: RecipientDetails): void {
     this.snackBar.open(`Recipient ${created.code} created`, undefined, { duration: 5000 });
     this.recipientForm().reset(emptyRecipient);
     this.created.emit(created);
