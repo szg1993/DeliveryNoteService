@@ -39,6 +39,7 @@ const emptyRecipient: NewRecipient = {
   imports: [FormField, FormRoot, MatButtonModule, MatFormFieldModule, MatInputModule],
   selector: 'app-create-recipient-form',
   templateUrl: './create-recipient-form.html',
+  styleUrl: './create-recipient-form.scss',
 })
 export class CreateRecipientForm {
   private readonly api = inject(RecipientsApi);

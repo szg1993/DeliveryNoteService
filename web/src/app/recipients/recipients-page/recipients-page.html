@@ -1,70 +1,88 @@
-<h1>Recipients</h1>
+<h1 class="page-title">Recipients</h1>
 
-<app-create-recipient-form (created)="showFirstPage()" />
+<mat-card appearance="outlined" class="section">
+  <mat-card-header>
+    <mat-card-title><h2>New recipient</h2></mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <app-create-recipient-form (created)="showFirstPage()" />
+  </mat-card-content>
+</mat-card>
 
-@if (loading()) {
-  <mat-progress-bar mode="indeterminate" aria-label="Loading recipients" />
-}
+<mat-card appearance="outlined" class="section">
+  <mat-card-header>
+    <mat-card-title><h2>Recipient list</h2></mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    @if (loading()) {
+      <mat-progress-bar mode="indeterminate" aria-label="Loading recipients" />
+    }
 
-@if (loadFailed()) {
-  <p>Recipients could not be loaded.</p>
-  <button mat-button type="button" (click)="retry()">Retry</button>
-} @else if (loadedPage(); as page) {
-  @if (page.content.length === 0) {
-    <p>No recipients yet.</p>
-  } @else {
-    <table mat-table [dataSource]="page.content">
-      <ng-container matColumnDef="code">
-        <th mat-header-cell *matHeaderCellDef>Code</th>
-        <td mat-cell *matCellDef="let recipient">{{ recipient.code }}</td>
-      </ng-container>
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>Name</th>
-        <td mat-cell *matCellDef="let recipient">{{ recipient.name }}</td>
-      </ng-container>
-      <ng-container matColumnDef="country">
-        <th mat-header-cell *matHeaderCellDef>Country</th>
-        <td mat-cell *matCellDef="let recipient">{{ recipient.country }}</td>
-      </ng-container>
-      <ng-container matColumnDef="zip">
-        <th mat-header-cell *matHeaderCellDef>ZIP</th>
-        <td mat-cell *matCellDef="let recipient">{{ recipient.zip }}</td>
-      </ng-container>
-      <ng-container matColumnDef="city">
-        <th mat-header-cell *matHeaderCellDef>City</th>
-        <td mat-cell *matCellDef="let recipient">{{ recipient.city }}</td>
-      </ng-container>
-      <ng-container matColumnDef="address">
-        <th mat-header-cell *matHeaderCellDef>Address</th>
-        <td mat-cell *matCellDef="let recipient">{{ recipient.address }}</td>
-      </ng-container>
-      <ng-container matColumnDef="isForeign">
-        <th mat-header-cell *matHeaderCellDef>Foreign</th>
-        <td mat-cell *matCellDef="let recipient">{{ recipient.isForeign ? 'Yes' : 'No' }}</td>
-      </ng-container>
+    @if (loadFailed()) {
+      <div class="message">
+        <p>Recipients could not be loaded.</p>
+        <button mat-stroked-button type="button" (click)="retry()">Retry</button>
+      </div>
+    } @else if (loadedPage(); as page) {
+      @if (page.content.length === 0) {
+        <p class="message">No recipients yet.</p>
+      } @else {
+        <div class="table-container">
+          <table mat-table [dataSource]="page.content">
+            <ng-container matColumnDef="code">
+              <th mat-header-cell *matHeaderCellDef>Code</th>
+              <td mat-cell *matCellDef="let recipient">{{ recipient.code }}</td>
+            </ng-container>
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Name</th>
+              <td mat-cell *matCellDef="let recipient">{{ recipient.name }}</td>
+            </ng-container>
+            <ng-container matColumnDef="country">
+              <th mat-header-cell *matHeaderCellDef>Country</th>
+              <td mat-cell *matCellDef="let recipient">{{ recipient.country }}</td>
+            </ng-container>
+            <ng-container matColumnDef="zip">
+              <th mat-header-cell *matHeaderCellDef>ZIP</th>
+              <td mat-cell *matCellDef="let recipient">{{ recipient.zip }}</td>
+            </ng-container>
+            <ng-container matColumnDef="city">
+              <th mat-header-cell *matHeaderCellDef>City</th>
+              <td mat-cell *matCellDef="let recipient">{{ recipient.city }}</td>
+            </ng-container>
+            <ng-container matColumnDef="address">
+              <th mat-header-cell *matHeaderCellDef>Address</th>
+              <td mat-cell *matCellDef="let recipient">{{ recipient.address }}</td>
+            </ng-container>
+            <ng-container matColumnDef="isForeign">
+              <th mat-header-cell *matHeaderCellDef>Foreign</th>
+              <td mat-cell *matCellDef="let recipient">{{ recipient.isForeign ? 'Yes' : 'No' }}</td>
+            </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="columns"></tr>
-      <tr mat-row *matRowDef="let row; columns: columns"></tr>
-    </table>
+            <tr mat-header-row *matHeaderRowDef="columns"></tr>
+            <tr mat-row *matRowDef="let row; columns: columns"></tr>
+          </table>
+        </div>
 
-    <nav aria-label="Recipient pages">
-      <button
-        mat-button
-        type="button"
-        [disabled]="page.paging.page <= 1"
-        (click)="showPreviousPage()"
-      >
-        Previous page
-      </button>
-      <span>Page {{ page.paging.page }} of {{ page.paging.totalPages }}</span>
-      <button
-        mat-button
-        type="button"
-        [disabled]="page.paging.page >= page.paging.totalPages"
-        (click)="showNextPage()"
-      >
-        Next page
-      </button>
-    </nav>
-  }
-}
+        <nav class="paging" aria-label="Recipient pages">
+          <button
+            mat-button
+            type="button"
+            [disabled]="page.paging.page <= 1"
+            (click)="showPreviousPage()"
+          >
+            Previous page
+          </button>
+          <span>Page {{ page.paging.page }} of {{ page.paging.totalPages }}</span>
+          <button
+            mat-button
+            type="button"
+            [disabled]="page.paging.page >= page.paging.totalPages"
+            (click)="showNextPage()"
+          >
+            Next page
+          </button>
+        </nav>
+      }
+    }
+  </mat-card-content>
+</mat-card>

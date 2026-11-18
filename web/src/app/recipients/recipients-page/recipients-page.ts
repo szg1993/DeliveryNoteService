@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTableModule } from '@angular/material/table';
@@ -11,9 +12,16 @@ import { CreateRecipientForm } from '../create-recipient-form/create-recipient-f
 import { PagedResponse, RecipientDetails, RecipientsApi } from '../recipients-api';
 
 @Component({
-  imports: [CreateRecipientForm, MatButtonModule, MatProgressBarModule, MatTableModule],
+  imports: [
+    CreateRecipientForm,
+    MatButtonModule,
+    MatCardModule,
+    MatProgressBarModule,
+    MatTableModule,
+  ],
   selector: 'app-recipients-page',
   templateUrl: './recipients-page.html',
+  styleUrl: './recipients-page.scss',
 })
 export class RecipientsPage {
   private readonly api = inject(RecipientsApi);
