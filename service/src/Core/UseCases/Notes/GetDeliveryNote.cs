@@ -19,11 +19,7 @@ public class GetDeliveryNote(
         return logger.RunAsync(async () =>
         {
             var note = await repository.NoTracking()
-                .Include(value => value.Recipient)
-                .Include(value => value.ContactInfo)
-                .Include(value => value.PackageDetail)
-                .Include(value => value.Deadline)
-                .Include(value => value.NoteLines)
+                .IncludeDetails()
                 .GetAsync(id, ct)
                 ?? throw new NotFoundException(ErrorCodes.Note.NotFound);
 
