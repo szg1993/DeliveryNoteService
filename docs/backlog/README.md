@@ -1,13 +1,16 @@
-# Backend migration backlog
+# DeliveryNoteService backlog
 
-This directory is the authoritative backlog for the DeliveryNoteService backend
-redesign. Stories and their progress are maintained in repository Markdown files.
+This directory is the authoritative backlog for DeliveryNoteService: the backend
+redesign and its web frontend. Stories and their progress are maintained in
+repository Markdown files. Each story declares `Type: Backend` or `Type: Frontend`;
+backend and frontend work are separate stories.
 
 ## Project scope
 
 - Use `CustomDeliveryNote/Backend` as the reference for existing functionality and
   business rules.
 - Implement the redesigned backend in `DeliveryNoteService/service`.
+- Implement the Angular frontend in `DeliveryNoteService/web`.
 - Use Minimal APIs following `service/src/WebApp/RestApi/DemoEndpoints.cs` and the
   target solution's application and persistence patterns.
 - Existing client compatibility is not required. Routes, DTOs, responses, and
@@ -21,6 +24,7 @@ redesign. Stories and their progress are maintained in repository Markdown files
 | [Recipient management](epics/recipient-management.md) | [US-001: Create and view recipients](US-001-create-and-view-recipients.md) | Done | [Human acceptance 06](US-001-create-and-view-recipients/review-06.md) records approval of review 05 and completion; correction branch awaits merge. |
 | Delivery notes | [US-002: Create delivery notes](US-002-create-delivery-notes.md) | Done | [Human acceptance 05](US-002-create-delivery-notes/review-05.md) records approval of review 04 and completion. |
 | [Recipient management](epics/recipient-management.md) | [US-003: Update recipients](US-003-update-recipients.md) | Done | Accepted 2026-11-11 ([human acceptance 04](US-003-update-recipients/review-04.md)). |
+| [Recipient management](epics/recipient-management.md) | [US-004: Recipient page](US-004-recipient-page.md) | In review | T001–T006 and T008 done, T007 cancelled; agent review next ([plan](US-004-recipient-page/README.md)). |
 
 Recipient management is the first migration area; delivery-note creation is the
 selected next story, with refinement complete. The remaining backend capabilities still need
@@ -49,7 +53,12 @@ breakdown or implementation; drafting a story does not start either activity.
 
 Tests should verify observable behavior through agreed public interfaces. Before
 writing tests for each story, record the proposed boundaries in that story and
-confirm them with the developer. HTTP endpoints are the agreed boundary for the
-initial Recipient story, following the demo's API testing approach. Additional
-boundaries require an explicit agreement. Test names and expected results should
-express the acceptance criteria rather than internal implementation choices.
+confirm them with the developer. Additional boundaries require an explicit
+agreement. Test names and expected results should express the acceptance criteria
+rather than internal implementation choices.
+
+- Backend stories: HTTP endpoints are the agreed boundary, following the demo's API
+  testing approach and `service/test/CLAUDE.md`.
+- Frontend stories: component tests with every backend call mocked. Frontend tests
+  never call the real backend. Cover the major behaviors only, in proportion to
+  this hobby project.

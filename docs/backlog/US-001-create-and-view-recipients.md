@@ -1,6 +1,7 @@
 # US-001: Create and view recipients
 
 - Status: Done
+- Type: Backend
 - Merge: [PR #1](https://github.com/szg1993/DeliveryNoteService/pull/1), merged into
   master on 2026-11-10 at `025ec1cc157ab38b5cd4e5b8a133eec5f55839f9`.
 - Epic: [Recipient management](epics/recipient-management.md)
