@@ -97,4 +97,16 @@ is running; otherwise confirm the proxy configuration is referenced by `ng serve
   `npm run format:check`, `npm run lint`, `npm test` (1 passed) and
   `npm run build` all succeed.
 
+### 2026-11-18
+
+- Review correction for [review-01](../review-01.md) F001 (AC14,
+  `npm run format:check` failed on `web/angular.json`). Ran
+  `npx prettier --write angular.json` from `web/`: `schematicCollections` is back
+  on one line. Kept the developer's `"analytics": false` from `b9b9c16`.
+- Refactoring assessment (clean-code): formatting-only change, no refactoring
+  justified.
+- Verification from `web/`: `npm run format:check` all files formatted;
+  `npm run lint` all files pass; `npm test` 2 files, 13 tests passed;
+  `npm run build` complete. The real backend was not started or called.
+
 Remaining work: none.
