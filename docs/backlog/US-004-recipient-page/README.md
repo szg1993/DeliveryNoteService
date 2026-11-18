@@ -114,8 +114,18 @@ change is committed there on its own and is not part of this story branch.
   in an outlined Material card; the six form fields use a three-column grid
   (two columns below 900px, one below 600px) with the submit button on the
   right; the table scrolls horizontally when narrow and the paging controls are
-  right-aligned. Text, labels, and behavior are unchanged. Checked visually at
+  right-aligned. Behavior, form labels, and existing texts are unchanged. Checked visually at
   1280×900 and 375×812 against a throwaway fake backend (the real API was not
   run), including the validation-error state. `npm run format:check`,
-  `npm run lint`, `npm test` (13 tests) and `npm run build` pass. Review 02 does
-  not cover this change, so a follow-up review is next.
+  `npm run lint`, `npm test` (13 tests) and `npm run build` pass.
+- Review 03 (`5f9f41b`, 2026-11-18) returned PASS with complete coverage of
+  `36c5d4b`. F002 stays open as non-blocking. F003 (non-blocking, first reported
+  in review 03): the layout note above and the `36c5d4b` commit message claimed
+  that no text changed. Corrected here: the layout change added visible text
+  (the toolbar title and the card headings "New recipient" and "Recipient list")
+  and made the Retry button an outlined button. The commit message is not
+  rewritten.
+- Rename (2026-11-18, developer's edit): the toolbar text and the document
+  title change from "Delivery notes" to "Delivery Note Service"
+  (`web/src/app/app.html`, `web/src/index.html`). Committed together with the
+  F003 correction; review 03 does not cover it, so follow-up review 04 is next.
