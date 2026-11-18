@@ -2,7 +2,7 @@
 
 - Source: DeliveryNoteService/docs/backlog/US-005-list-delivery-notes.md
 - Refinement source: conversation: US-005 grilling session, 2026-11-18
-- Lifecycle: active
+- Lifecycle: complete
 - Created: 2026-11-18
 - Updated: 2026-11-18
 - Branch: feature/US-005-list-delivery-notes
@@ -80,3 +80,6 @@ approval.
   findings and no correction cycles. Story is `In review`; plan stays `active`.
   Next: developer human review and optional Swagger spot-check of `Limit=0` and
   `SortDir=Desc`, then explicit approval to record human acceptance.
+- 2026-11-18 developer change `cdfee85` passed follow-up [review-02](review-02.md).
+  Developer approved human review; recorded in [review-03](review-03.md). Story
+  `Done`, plan `complete`. Merge remains a separate developer action.
