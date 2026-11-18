@@ -126,3 +126,11 @@ the model. Prefer normal framework binding; record the outcome in T004's progres
   `ecf5276e9b26ba9f888df2cfc08505f171ff7f52`, confirmed 2026-11-18.
 - 2026-11-18: T001–T007 are done and the story is In review. Remaining: the human
   manual checks listed in the story's test boundary, then story review.
+- 2026-11-18: [Review 01](review-01.md) (head `5178e13`, commit `b3b8bda`) returned
+  `FAIL` with blocking F001 (lost `.app-content` layout rule) and F002 (test 4 and the
+  toolbar test exceed Vitest's 5 s timeout). Non-blocking N001–N003 not addressed.
+- 2026-11-18: Correction attempt 1 for F001 and F002 in `e724ea9`: restored
+  `.app-content` in `web/src/app/app.scss`; set `testTimeout: 15000` in
+  `web/vitest-base.config.ts`. Evidence: 5 consecutive `npm test` runs passed 20/20;
+  lint, build, format check pass; layout checked against an empty-proxy dev server.
+  Finding history: F001 1 attempt, F002 1 attempt. Next: follow-up review 02.
