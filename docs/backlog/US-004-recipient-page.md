@@ -1,6 +1,6 @@
 # US-004: Recipient page
 
-- Status: In review
+- Status: Done
 - Type: Frontend
 - Breakdown: [Implementation plan and tasks](US-004-recipient-page/README.md).
 - Branch: feature/US-004-recipient-page
