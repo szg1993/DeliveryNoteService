@@ -2,7 +2,7 @@
 
 - Source: DeliveryNoteService/docs/backlog/US-004-recipient-page.md
 - Refinement source: conversation: US-004 grilling session, 2026-11-17
-- Lifecycle: active
+- Lifecycle: complete
 - Created: 2026-11-17
 - Updated: 2026-11-18
 - Branch: feature/US-004-recipient-page
@@ -129,3 +129,6 @@ change is committed there on its own and is not part of this story branch.
   title change from "Delivery notes" to "Delivery Note Service"
   (`web/src/app/app.html`, `web/src/index.html`). Committed together with the
   F003 correction; review 03 does not cover it, so follow-up review 04 is next.
+- Completion (2026-11-18): the developer approved human review ("human review
+  completed and features merged."). [Human acceptance 05](review-05.md) accepts
+  review 04 (PASS, reviewed head `50bcef2`). Story Done, plan complete.
