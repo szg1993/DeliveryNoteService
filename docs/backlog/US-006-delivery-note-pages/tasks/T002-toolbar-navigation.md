@@ -69,3 +69,14 @@ backend data. Then run lint, test, build, and format check in `web/`.
   passed), `npm run build` (success), `npm run format:check` (pass).
 
 Remaining work: none.
+
+- 2026-11-18 (review 01 correction, attempt 1, F001): restored the `.app-content` rule
+  (`max-width: 1200px; margin: 0 auto; padding: 24px 16px 48px`) from base `25e44a1`
+  in `web/src/app/app.scss`, next to the toolbar and nav styles, which are unchanged.
+  Browser check with `ng serve --port 4321` and an empty proxy config (the real backend
+  was unreachable and never called): at a 1600 px viewport on `/delivery-notes/new`,
+  `main.app-content` computed `max-width: 1200px`, `padding: 24px 16px 48px` and started
+  at x = 184 (centred); on `/recipients` at 1024 px the `h1` started at x = 16 and the
+  "Recipients" link had `active-link`. The server was stopped afterwards. Refactoring
+  assessment: a restored stylesheet rule; nothing to refactor. F002 also affected the
+  agreed test 3 in `app.spec.ts`; see T004 for the shared timeout fix.

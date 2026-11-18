@@ -25,3 +25,9 @@
   background-color: var(--mat-sys-on-primary);
   color: var(--mat-sys-primary);
 }
+
+.app-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}

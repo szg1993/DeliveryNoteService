@@ -79,3 +79,17 @@ so local helpers suffice; the scenario's values stay visible through the existin
 wait timeout changed. No other refactoring was justified.
 
 Remaining: human manual checks of the remaining error mappings in the app.
+
+- 2026-11-18 (review 01 correction, attempt 1, F002): the slow tests were the first
+  routed test in each spec file (agreed test 4, the toolbar test 3, and the redirect test
+  in `app.routes.spec.ts`). The time goes to the first lazy page load and render while
+  the full suite runs in parallel; the form is already filled with `fireEvent`, not
+  per-keystroke typing. Before the fix, one `npm test` run here failed 3 of 20 tests at
+  the 5 s default. Fix: `web/vitest-base.config.ts` sets `testTimeout: 15000`, loaded
+  through `runnerConfig` in the `test` target of `web/angular.json`. The
+  `answerEmptyListRequest` wait in `web/src/testing/http.ts` stays at 5 s, below the
+  per-test timeout. No test, assertion or test seam changed. Evidence: five consecutive
+  full `npm test` runs passed 20/20; test 4 took 8141, 8154, 6845, 4479 and 3369 ms, the
+  toolbar test 5796, 4441, 4314, 2861 and 2014 ms, and the redirect test up to 4350 ms.
+  `npm run lint`, `npm run build` and `npm run format:check` passed. Refactoring
+  assessment: one configuration value with its reason in a comment; nothing to refactor.
