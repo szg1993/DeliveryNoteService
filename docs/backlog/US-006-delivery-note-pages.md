@@ -6,12 +6,12 @@
 - Implementation repository: DeliveryNoteService
 - Implementation workspace: `web/` Angular application
 - Dependencies: `GET /api/delivery-notes` from
-  [US-005](US-005-list-delivery-notes.md) (Ready, not yet implemented; tests mock it,
-  but the list page needs it against a real backend);
+  [US-005](US-005-list-delivery-notes.md) (Done; tests mock it);
   `POST /api/delivery-notes` from [US-002](US-002-create-delivery-notes.md);
   `GET /api/recipients` from [US-001](US-001-create-and-view-recipients.md) for the
   recipient picker. No backend changes in this story.
-- Refinement: Developer confirmed shared understanding after grilling on 2026-11-18.
+- Refinement: Developer confirmed shared understanding after two grilling sessions on
+  2026-11-18.
 
 ## User story
 
@@ -44,8 +44,10 @@ that I can manage delivery notes without calling the API directly.
    10 per page, with previous and next controls driven by the backend's paging
    metadata, as on the recipient page.
 4. The table shows note number, recipient (code and name), category, takeover place,
-   ship date, estimated arrival date, status as plain text (for example "Pending"),
-   and an urgent icon or chip. Dates are shown as `yyyy-MM-dd`, as returned by the API.
+   ship date, estimated arrival date, status as plain text (for example "Pending",
+   returned as a string in `noteStatusId`), and an "Urgent" column showing a plain
+   "Urgent" text chip only for urgent notes (no icon font). Dates are shown as
+   `yyyy-MM-dd`, as returned by the API.
 5. With no notes, an empty-state message is shown instead of an empty table.
 6. While the list is loading, a loading indicator is shown. A loading failure opens the
    error dialog; after it is closed the list area shows "Delivery notes could not be
@@ -65,8 +67,11 @@ that I can manage delivery notes without calling the API directly.
    - Lines: Part code, Description, Comment (optional), Quantity, Quantity unit,
      Weight, Weight unit.
 9. The recipient is chosen from a `mat-select` listing all recipients
-   (`GET /api/recipients?Limit=0`) as "CODE – Name". If recipients cannot be loaded,
-   the error dialog opens and the form cannot be submitted.
+   (`GET /api/recipients?Limit=0`) as "CODE – Name". With no recipients, a hint under
+   the select reads "No recipients yet. Create one on the Recipients page." and links
+   to `/recipients`. If recipients cannot be loaded, the error dialog opens and the
+   submit button stays disabled; there is no Retry on the form, and the user recovers
+   by reloading or leaving the page.
 10. Lines are rows of inputs. The form starts with one empty line; "Add line" appends
     an empty line; each line has a remove button that is disabled while only one line
     remains. Line order is preserved in the request.
@@ -78,8 +83,10 @@ that I can manage delivery notes without calling the API directly.
     - date order: takeover date ≤ ship date ≤ estimated arrival date.
     The backend remains authoritative for all rules.
 13. Numbers use `type="number"` inputs, allow decimals, and are sent as JSON numbers.
-    Dates use a Material datepicker with the native date adapter, start empty, and are
-    sent as the selected local calendar date in `yyyy-MM-dd`, without UTC conversion.
+    Dates use a Material datepicker with the native date adapter and its defaults: they
+    start empty, display in the browser locale, and accept typing; typed text that
+    cannot be parsed shows "Enter a valid date." inline. They are sent as the selected
+    local calendar date in `yyyy-MM-dd`, without UTC conversion.
 14. Text is sent as entered, without trimming. Optional text fields left empty (EKAER
     number, comments, line comment) are sent as `null`.
 15. Submitting valid details sends one `POST /api/delivery-notes`; the submit button is
@@ -94,7 +101,9 @@ that I can manage delivery notes without calling the API directly.
     recipients, opens the shared modal error dialog; entered form values are kept.
 19. The shared error-message mapping adds:
     - `error:DNC::FieldMissing` and `error:DNC::FieldTooLong`: the existing
-      "The {field} field is invalid."
+      "The {field} field is invalid.", where `{field}` is the backend's unqualified
+      property name as sent in `data.Field` (for example `PartQtyUm`), without a line
+      index or translation to form labels.
     - `Note.InvalidInput`: "Some delivery note values are invalid. Check quantities,
       weights, dimensions and date order."
     - `Note.NumberExhausted`: "No more delivery note numbers are available."
@@ -113,12 +122,18 @@ that I can manage delivery notes without calling the API directly.
 - Client-side numeric and date-order checks, because the backend reports them only as
   the field-less `Note.InvalidInput`.
 - English UI text without internationalization support.
+- Second grilling (2026-11-18): show backend field names as-is in field errors; add a
+  no-recipients hint with a link; no Retry for a failed recipient load; keep the native
+  date adapter defaults with an inline invalid-date message; show urgency as a text
+  chip rather than an icon.
 
 ## Agreed test boundary
 
 Frontend tests never call the real backend. Component tests use
 `@testing-library/angular`, interact through labels, roles, and visible text, and
-answer every HTTP request through `HttpTestingController`. Exactly these seven tests:
+answer every HTTP request through `HttpTestingController`. Exactly these seven new
+tests, plus the existing `app.routes.spec.ts` test updated to expect the empty path to
+redirect to `/delivery-notes`:
 
 1. The list shows notes from a mocked response, requested with `SortDir=Desc`.
 2. An empty mocked list shows the empty-state message.
@@ -133,11 +148,13 @@ answer every HTTP request through `HttpTestingController`. Exactly these seven t
    and keeps the entered values.
 
 Paging, loading indicators, Retry, adding and removing lines, the double-submit guard,
-numeric minimums, and the remaining error mappings are verified manually.
+numeric minimums, the no-recipients hint, the recipient loading failure, the
+invalid-date message, and the remaining error mappings are verified manually.
 
 ## Open questions
 
-None. The developer confirmed shared understanding on 2026-11-18.
+None. The developer confirmed shared understanding on 2026-11-18, after both grilling
+sessions.
 
 ## Excluded scope
 
@@ -152,5 +169,7 @@ None. The developer confirmed shared understanding on 2026-11-18.
 ## Progress
 
 Drafted on 2026-11-18 at the developer's request. Refined on 2026-11-18 through a
-grilling session; the developer confirmed the agreed specification ("Yes"). Task
-breakdown not yet requested.
+grilling session; the developer confirmed the agreed specification ("Yes"). A second
+grilling session on 2026-11-18 settled the redirect test, field-error names, recipient
+edge cases, date input behavior, and the urgent display; the developer confirmed it
+("Yes"). Task breakdown not yet requested.
