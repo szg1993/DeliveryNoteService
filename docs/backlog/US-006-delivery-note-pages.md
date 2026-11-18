@@ -12,6 +12,8 @@
   recipient picker. No backend changes in this story.
 - Refinement: Developer confirmed shared understanding after two grilling sessions on
   2026-11-18.
+- Breakdown: [Implementation plan and tasks](US-006-delivery-note-pages/README.md).
+- Branch: feature/US-006-delivery-note-pages
 
 ## User story
 
@@ -172,4 +174,5 @@ Drafted on 2026-11-18 at the developer's request. Refined on 2026-11-18 through 
 grilling session; the developer confirmed the agreed specification ("Yes"). A second
 grilling session on 2026-11-18 settled the redirect test, field-error names, recipient
 edge cases, date input behavior, and the urgent display; the developer confirmed it
-("Yes"). Task breakdown not yet requested.
+("Yes"). The [task breakdown](US-006-delivery-note-pages/README.md) was created on
+2026-11-18 (T001–T007, all todo).
