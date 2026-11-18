@@ -2,7 +2,16 @@
 
 <mat-card appearance="outlined">
   <mat-card-content>
-    @if (loadedPage(); as page) {
+    @if (loading()) {
+      <mat-progress-bar mode="indeterminate" aria-label="Loading delivery notes" />
+    }
+
+    @if (loadFailed()) {
+      <div class="message">
+        <p>Delivery notes could not be loaded.</p>
+        <button mat-stroked-button type="button" (click)="retry()">Retry</button>
+      </div>
+    } @else if (loadedPage(); as page) {
       @if (page.content.length === 0) {
         <p class="message">No delivery notes yet.</p>
       } @else {
@@ -51,6 +60,26 @@
             <tr mat-row *matRowDef="let row; columns: columns"></tr>
           </table>
         </div>
+
+        <nav class="paging" aria-label="Delivery note pages">
+          <button
+            mat-button
+            type="button"
+            [disabled]="page.paging.page <= 1"
+            (click)="showPreviousPage()"
+          >
+            Previous page
+          </button>
+          <span>Page {{ page.paging.page }} of {{ page.paging.totalPages }}</span>
+          <button
+            mat-button
+            type="button"
+            [disabled]="page.paging.page >= page.paging.totalPages"
+            (click)="showNextPage()"
+          >
+            Next page
+          </button>
+        </nav>
       }
     }
   </mat-card-content>
