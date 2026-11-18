@@ -29,4 +29,20 @@ public class NoteListingTests : DeliveryNoteServiceApiTestBase
         result.Paging.TotalCount.Should().Be(0);
         result.Paging.TotalPages.Should().Be(0);
     }
+
+    [Fact]
+    public async Task ListNotes_PagesThroughNotesNewestFirst()
+    {
+        var recipient = await Api.Recipients().PostAsync(RecipientRequests.Valid());
+        var oldest = await Api.Notes().PostAsync(NoteRequests.Valid(recipient.Id));
+        var middle = await Api.Notes().PostAsync(NoteRequests.Valid(recipient.Id));
+        var newest = await Api.Notes().PostAsync(NoteRequests.Valid(recipient.Id));
+
+        var firstPage = await Api.Notes().GetAsync(QS("sortDir", "Desc").Page(1, 2));
+        var secondPage = await Api.Notes().GetAsync(QS("sortDir", "Desc").Page(2, 2));
+
+        firstPage.Content.Select(note => note.Id).Should().Equal(newest.Id, middle.Id);
+        firstPage.Paging.TotalCount.Should().Be(3);
+        secondPage.Content.Select(note => note.Id).Should().Equal(oldest.Id);
+    }
 }
