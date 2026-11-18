@@ -134,3 +134,8 @@ the model. Prefer normal framework binding; record the outcome in T004's progres
   `web/vitest-base.config.ts`. Evidence: 5 consecutive `npm test` runs passed 20/20;
   lint, build, format check pass; layout checked against an empty-proxy dev server.
   Finding history: F001 1 attempt, F002 1 attempt. Next: follow-up review 02.
+- 2026-11-18: [Review 02](review-02.md) (head `a514fa5`, commit `87e67dd`) returned
+  `PASS`: F001 and F002 resolved after one attempt each. Non-blocking N001–N004 remain
+  optional. Stopping point: the agent implementation run is finished; the story stays
+  In review. Next: the developer performs the manual checks listed in review 02, then
+  records human acceptance explicitly.
