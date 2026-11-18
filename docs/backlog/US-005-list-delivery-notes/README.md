@@ -75,3 +75,8 @@ approval.
 - Reservation: attempt `26005bd4-61ed-4e47-944a-033eb2459788`, remote `origin`,
   branch `feature/US-005-list-delivery-notes`, marker
   `8f43afb2840fac266aa7c42acab189ab3571d3f2`, confirmed 2026-11-18.
+- 2026-11-18 implementation run stopped after agent review: T001 (`e2afcd4`) and
+  T002 (`bbc0840`) done; [review-01](review-01.md) `PASS` at `bbc0840` with no
+  findings and no correction cycles. Story is `In review`; plan stays `active`.
+  Next: developer human review and optional Swagger spot-check of `Limit=0` and
+  `SortDir=Desc`, then explicit approval to record human acceptance.
