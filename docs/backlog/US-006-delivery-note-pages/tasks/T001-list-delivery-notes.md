@@ -1,7 +1,7 @@
 # T001: List delivery notes newest first
 
 - Parent: [US-006](../README.md)
-- Status: todo
+- Status: done
 - Depends on: None (US-005 endpoint is merged; tests mock it)
 - Increment: Skeleton
 
@@ -31,12 +31,12 @@ clickable.
 
 ## Acceptance criteria
 
-- [ ] `/` redirects to `/delivery-notes`, which is lazy loaded and titled
+- [x] `/` redirects to `/delivery-notes`, which is lazy loaded and titled
       "Delivery notes".
-- [ ] The list request uses `sortDir=Desc` and a page size of 10.
-- [ ] The table shows the agreed columns, status text, the "Urgent" chip, and
+- [x] The list request uses `sortDir=Desc` and a page size of 10.
+- [x] The table shows the agreed columns, status text, the "Urgent" chip, and
       `yyyy-MM-dd` dates.
-- [ ] An empty response shows the empty-state message and no table.
+- [x] An empty response shows the empty-state message and no table.
 
 ## Verification
 
@@ -53,4 +53,35 @@ Then run `npm run lint`, `npm test`, `npm run build`, and `npm run format:check`
 
 ## Progress
 
-No implementation started. Record dated work, verification evidence and remaining work here during implementation.
+2026-11-18:
+
+- Started T001; moved US-006 from Ready to In progress.
+- Red/green slices: updated `app.routes.spec.ts` (failed on the missing "Delivery
+  notes" heading, then passed with the new `/delivery-notes` route and redirect);
+  agreed test 1 (failed with no `/api/delivery-notes?page=1&limit=10&sortBy=Id&sortDir=Desc`
+  request, then passed with `DeliveryNotesApi` and the table); agreed test 2 (the
+  empty-state branch was written with the table, so the test was checked by
+  temporarily removing that branch: it failed, then passed once restored).
+- Added `delivery-notes/delivery-notes-api.ts` (`DeliveryNoteDetails` types only the
+  listed fields; status as `'Pending' | 'Approved' | 'Rejected'`) and
+  `delivery-notes/delivery-notes-page/` (generated with `ng generate`; `rxResource`
+  for the first page, Material table, `mat-chip` "Urgent", "No delivery notes yet."
+  empty state). Recipient cell shows "CODE – Name". The route is lazy loaded with
+  title "Delivery notes"; the empty path redirects to it.
+- Moved `Paging` and `PagedResponse<T>` from `recipients-api.ts` to
+  `shared/paged-response.ts`; updated the recipient imports.
+- Refactoring assessment (clean-code): the spec's `tableRowTexts` was identical to the
+  one in `recipients-page.spec.ts`. Inspected both consumers and moved it to
+  `src/testing/table.ts` as a stateless DOM query helper (no configuration,
+  lifecycle, or shared state; each test still renders its own page and
+  `HttpTestingController`). Excluded `src/testing/**` from `tsconfig.app.json` so test
+  helpers stay out of the app compilation. Request-answering and render helpers stay
+  local because their URLs and components differ. The page SCSS repeats three small
+  rules from the recipients page (`.page-title`, `.message`, `.table-container`); kept
+  them component-scoped rather than adding global styles for two small consumers. No
+  other refactoring justified.
+- Verification in `web/`: `npm run lint` all files pass; `npm test` 3 files, 15
+  tests passed; `npm run build` succeeded (`delivery-notes-page` lazy chunk);
+  `npm run format:check` all files formatted. No real backend was called.
+
+Remaining: none for T001. Paging, loading, and errors are T003.

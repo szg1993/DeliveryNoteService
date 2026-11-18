@@ -7,7 +7,7 @@ import { screen } from '@testing-library/angular';
 import { routes } from './app.routes';
 
 describe('app routes', () => {
-  it('shows the Recipients page at /recipients when navigating to the start route', async () => {
+  it('shows the Delivery notes page at /delivery-notes when navigating to the start route', async () => {
     TestBed.configureTestingModule({
       providers: [provideRouter(routes), provideHttpClient(), provideHttpClientTesting()],
     });
@@ -15,7 +15,7 @@ describe('app routes', () => {
 
     await harness.navigateByUrl('/');
 
-    expect(await screen.findByRole('heading', { name: 'Recipients' })).toBeTruthy();
-    expect(TestBed.inject(Router).url).toBe('/recipients');
+    expect(await screen.findByRole('heading', { name: 'Delivery notes' })).toBeTruthy();
+    expect(TestBed.inject(Router).url).toBe('/delivery-notes');
   });
 });

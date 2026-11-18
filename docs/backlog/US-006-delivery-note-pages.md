@@ -1,6 +1,6 @@
 # US-006: Delivery note pages
 
-- Status: Ready
+- Status: In progress
 - Type: Frontend
 - Area: Delivery notes
 - Implementation repository: DeliveryNoteService

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { map, Observable } from 'rxjs';
+import { PagedResponse } from '../shared/paged-response';
 
 export interface RecipientDetails {
   id: number;
@@ -22,18 +23,6 @@ export interface NewRecipient {
   zip: string;
   city: string;
   address: string;
-}
-
-export interface Paging {
-  page: number;
-  limit: number;
-  totalCount: number;
-  totalPages: number;
-}
-
-export interface PagedResponse<T> {
-  content: T[];
-  paging: Paging;
 }
 
 const pageSize = 10;

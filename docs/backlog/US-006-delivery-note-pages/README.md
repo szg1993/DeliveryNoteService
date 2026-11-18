@@ -32,7 +32,7 @@ so parallel work would conflict.
 
 | Order | Task | Status | Depends on | Increment |
 | --- | --- | --- | --- | --- |
-| 1 | [T001: List delivery notes newest first](tasks/T001-list-delivery-notes.md) | todo | None | Skeleton |
+| 1 | [T001: List delivery notes newest first](tasks/T001-list-delivery-notes.md) | done | None | Skeleton |
 | 2 | [T002: Navigate with toolbar links](tasks/T002-toolbar-navigation.md) | todo | T001 | Extension |
 | 3 | [T003: Page through notes and recover from load failures](tasks/T003-list-paging-and-errors.md) | todo | T001 | Extension |
 | 4 | [T004: Create a delivery note](tasks/T004-create-delivery-note.md) | todo | T001 | Extension |
