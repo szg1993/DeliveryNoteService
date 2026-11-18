@@ -71,7 +71,7 @@ public sealed class SQLiteDatabaseFixture(Type dbContextType) : IDatabaseFixture
     {
         var conn = new SqliteConnection(SQLiteUtils.CreateConnectionString(dbFileName));
         conn.AddHungarianCollation();
-        var opts = new DbContextOptionsBuilder().UseSqlite(conn).Options;
+        var opts = new DbContextOptionsBuilder().UseSqlite(conn).IgnorePendingModelChanges().Options;
         await using var ctx = Activator.CreateInstance(dbContextType, opts) as DbContext;
 
         await ctx!.Database.MigrateAsync();
