@@ -25,8 +25,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterLink } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
-import { RecipientsApi } from '../../recipients/recipients-api';
+import { catchError, firstValueFrom, Observable, throwError } from 'rxjs';
+import { RecipientDetails, RecipientsApi } from '../../recipients/recipients-api';
 import { openErrorDialog } from '../../shared/error-dialog/error-dialog';
 import {
   DeliveryNoteDetails,
@@ -145,11 +145,15 @@ export class CreateDeliveryNotePage {
   private readonly router = inject(Router);
 
   private readonly allRecipients = rxResource({
-    stream: () => this.recipientsApi.getAllRecipients(),
+    stream: () => this.loadRecipients(),
   });
   protected readonly recipients = computed(() =>
     this.allRecipients.hasValue() ? this.allRecipients.value() : [],
   );
+  protected readonly noRecipients = computed(
+    () => this.allRecipients.hasValue() && this.allRecipients.value().length === 0,
+  );
+  protected readonly recipientsLoadFailed = computed(() => this.allRecipients.status() === 'error');
 
   private readonly note = signal(emptyNote());
   protected readonly noteForm = form(
@@ -217,6 +221,16 @@ export class CreateDeliveryNotePage {
       ...note,
       noteLines: note.noteLines.filter((_, lineIndex) => lineIndex !== index),
     }));
+  }
+
+  /** On failure, explains the error in the dialog; the page offers no Retry. */
+  private loadRecipients(): Observable<RecipientDetails[]> {
+    return this.recipientsApi.getAllRecipients().pipe(
+      catchError((error: HttpErrorResponse) => {
+        openErrorDialog(this.dialog, error);
+        return throwError(() => error);
+      }),
+    );
   }
 
   /** On failure, explains the error in the dialog and keeps the entered values for correction. */

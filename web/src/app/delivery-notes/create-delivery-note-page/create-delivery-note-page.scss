@@ -30,6 +30,16 @@ mat-card-content {
   column-gap: 16px;
 }
 
+.recipient-field mat-form-field {
+  width: 100%;
+}
+
+.recipient-hint {
+  margin: 0 0 16px;
+  color: var(--mat-sys-on-surface-variant);
+  font: var(--mat-sys-body-small);
+}
+
 .fields .wide {
   grid-column: 1 / -1;
 }

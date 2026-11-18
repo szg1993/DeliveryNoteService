@@ -7,19 +7,27 @@
         <mat-card-title><h2 id="header-title">Header</h2></mat-card-title>
       </mat-card-header>
       <mat-card-content class="fields">
-        <mat-form-field>
-          <mat-label>Recipient</mat-label>
-          <mat-select [formField]="noteForm.recipientId">
-            @for (recipient of recipients(); track recipient.id) {
-              <mat-option [value]="recipient.id">
-                {{ recipient.code }} – {{ recipient.name }}
-              </mat-option>
+        <div class="recipient-field">
+          <mat-form-field>
+            <mat-label>Recipient</mat-label>
+            <mat-select [formField]="noteForm.recipientId">
+              @for (recipient of recipients(); track recipient.id) {
+                <mat-option [value]="recipient.id">
+                  {{ recipient.code }} – {{ recipient.name }}
+                </mat-option>
+              }
+            </mat-select>
+            @for (error of noteForm.recipientId().errors(); track error.kind) {
+              <mat-error>{{ error.message }}</mat-error>
             }
-          </mat-select>
-          @for (error of noteForm.recipientId().errors(); track error.kind) {
-            <mat-error>{{ error.message }}</mat-error>
+          </mat-form-field>
+          @if (noRecipients()) {
+            <p class="recipient-hint">
+              No recipients yet. Create one on the
+              <a routerLink="/recipients">Recipients page</a>.
+            </p>
           }
-        </mat-form-field>
+        </div>
         <mat-form-field>
           <mat-label>Category</mat-label>
           <input matInput [formField]="noteForm.category" />
@@ -294,7 +302,11 @@
 
   <div class="actions">
     <a mat-button routerLink="/delivery-notes">Cancel</a>
-    <button mat-flat-button type="submit" [disabled]="noteForm().submitting()">
+    <button
+      mat-flat-button
+      type="submit"
+      [disabled]="noteForm().submitting() || recipientsLoadFailed()"
+    >
       Create delivery note
     </button>
   </div>
