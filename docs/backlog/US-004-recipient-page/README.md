@@ -4,7 +4,7 @@
 - Refinement source: conversation: US-004 grilling session, 2026-11-17
 - Lifecycle: active
 - Created: 2026-11-17
-- Updated: 2026-11-17
+- Updated: 2026-11-18
 - Branch: feature/US-004-recipient-page
 
 ## Approach
@@ -34,7 +34,7 @@ exists. CI (T007) was cancelled on 2026-11-17 by the developer's decision.
 | 5 | [T005: Create a recipient](tasks/T005-create-recipient.md) | done | T002 | Extension |
 | 6 | [T006: Show creation errors in the dialog](tasks/T006-show-creation-errors.md) | done | T004, T005 | Edge case |
 | 7 | [T007: Add frontend CI workflow](tasks/T007-add-frontend-ci.md) | cancelled | T001 | Prerequisite |
-| 8 | [T008: Move Angular defaults into repository instructions](tasks/T008-move-angular-defaults.md) | todo | T001 | Prerequisite |
+| 8 | [T008: Move Angular defaults into repository instructions](tasks/T008-move-angular-defaults.md) | done | T001 | Prerequisite |
 
 The task file owns its status and progress. Keep the status above synchronized
 with the task file.
