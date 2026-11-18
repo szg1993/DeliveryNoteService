@@ -38,7 +38,7 @@ so parallel work would conflict.
 | 4 | [T004: Create a delivery note](tasks/T004-create-delivery-note.md) | done | T001 | Extension |
 | 5 | [T005: Check numbers and date order before submitting](tasks/T005-numeric-and-date-checks.md) | done | T004 | Edge case |
 | 6 | [T006: Handle missing or unavailable recipients](tasks/T006-recipient-edge-cases.md) | done | T004 | Edge case |
-| 7 | [T007: Show creation errors in the dialog](tasks/T007-creation-errors.md) | todo | T004 | Edge case |
+| 7 | [T007: Show creation errors in the dialog](tasks/T007-creation-errors.md) | done | T004 | Edge case |
 
 The task file owns its status and progress. Keep the status above synchronized
 with the task file.
@@ -124,3 +124,5 @@ the model. Prefer normal framework binding; record the outcome in T004's progres
 - Reservation: attempt `7c3bc02c-0a5d-43a0-b8fd-23e919f5f67b`, remote `origin`,
   branch `feature/US-006-delivery-note-pages`, marker
   `ecf5276e9b26ba9f888df2cfc08505f171ff7f52`, confirmed 2026-11-18.
+- 2026-11-18: T001–T007 are done and the story is In review. Remaining: the human
+  manual checks listed in the story's test boundary, then story review.

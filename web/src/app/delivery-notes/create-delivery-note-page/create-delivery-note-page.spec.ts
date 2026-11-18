@@ -121,6 +121,25 @@ describe('CreateDeliveryNotePage', () => {
       url: '/api/delivery-notes',
     });
   });
+
+  it('explains invalid note values in the error dialog and keeps the entered values', async () => {
+    await openCreationPage();
+    await answerRecipientsRequest([recipient(7, 'WIEN01', 'Wien Handel')]);
+    await fillValidNote();
+
+    await submitForm();
+    rejectCreateRequest({ errorCode: 'Note.InvalidInput' });
+
+    const dialog = await screen.findByRole('dialog', { name: 'Error' });
+    expect(
+      within(dialog).getByText(
+        'Some delivery note values are invalid. Check quantities, weights, dimensions and date order.',
+      ),
+    ).toBeTruthy();
+    expect(input(section('Header'), 'Category').value).toBe('Parts');
+    expect(input(section('Package'), 'Tare weight').value).toBe('12.5');
+    expect(input(line(1), 'Part code').value).toBe('P-1');
+  });
 });
 
 async function openCreationPage(): Promise<void> {
@@ -151,6 +170,13 @@ function answerCreateRequest(body: NewDeliveryNote, noteNbr: string): void {
   });
   expect(request.request.body).toEqual(body);
   request.flush({ content: createdNote(noteNbr) }, { status: 201, statusText: 'Created' });
+}
+
+/** Expects one POST and answers it with 400 and the backend error body. */
+function rejectCreateRequest(errorBody: { errorCode: string }): void {
+  TestBed.inject(HttpTestingController)
+    .expectOne({ method: 'POST', url: '/api/delivery-notes' })
+    .flush(errorBody, { status: 400, statusText: 'Bad Request' });
 }
 
 const validContact = {
