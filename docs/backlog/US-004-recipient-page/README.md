@@ -98,3 +98,12 @@ change is committed there on its own and is not part of this story branch.
 - Reservation: attempt `b406b863-a795-40e7-8d49-0dff1954fca3`, remote `origin`,
   branch `feature/US-004-recipient-page`, marker
   `6ebc678753b5fbfbebdaa5effdf3bb092411e6de`.
+- Review history: [review 01](review-01.md) (`85d3209`, 2026-11-18) returned FAIL
+  with complete coverage. F001 (blocking, first reported in review 01):
+  `web/angular.json` failed `npm run format:check`, so AC14 was not met. F002
+  (non-blocking) is a test-strength note and was not corrected.
+- Correction 1 (2026-11-18): attempted F001 in `1a5986d`. Prettier reformatted
+  `web/angular.json`, keeping `"analytics": false`; recorded in T001.
+  `npm run format:check`, `npm run lint`, `npm test` (13 tests) and
+  `npm run build` pass. Unsuccessful fixes for F001 so far: none. A follow-up
+  review is next.
