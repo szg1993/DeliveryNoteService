@@ -22,7 +22,7 @@ Both tasks change the same use case and test file, so run them in order.
 
 | Order | Task | Status | Depends on | Increment |
 | --- | --- | --- | --- | --- |
-| 1 | [T001: List saved delivery notes](tasks/T001-list-saved-notes.md) | todo | None | Skeleton |
+| 1 | [T001: List saved delivery notes](tasks/T001-list-saved-notes.md) | done | None | Skeleton |
 | 2 | [T002: Page through notes newest first](tasks/T002-page-notes-newest-first.md) | todo | T001 | Extension |
 
 The task file owns its status and progress. Keep the status above synchronized with

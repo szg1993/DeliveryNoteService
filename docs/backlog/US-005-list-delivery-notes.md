@@ -1,6 +1,6 @@
 # US-005: List delivery notes
 
-- Status: Ready
+- Status: In progress
 - Type: Backend
 - Area: Delivery notes
 - Implementation repository: DeliveryNoteService
@@ -86,4 +86,5 @@ None. The developer confirmed shared understanding on 2026-11-18.
 Drafted on 2026-11-18 as the backend prerequisite for the delivery-note list page.
 Refined on 2026-11-18 through a grilling session; the developer confirmed the agreed
 specification ("Agree."). The [task breakdown](US-005-list-delivery-notes/README.md)
-was created on 2026-11-18 (T001–T002, all todo).
+was created on 2026-11-18 (T001–T002, all todo). Implementation started on
+2026-11-18; T001 is done and T002 remains.

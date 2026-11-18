@@ -11,6 +11,27 @@ public static class DeliveryNoteEndpoints
     public static IEndpointRouteBuilder MapNoteRoutes(this IEndpointRouteBuilder app)
     {
         app.MapGet(
+            "/api/delivery-notes",
+            async (
+                [AsParameters] PageRequestQueryParam pageRequest,
+                [AsParameters] Sorting<DeliveryNotesSortBy> sorting,
+                [FromServices] GetDeliveryNotes getDeliveryNotes,
+                CancellationToken ct
+            ) =>
+            {
+                var pagination = pageRequest.ToUseCaseObject();
+                return await getDeliveryNotes.RunAsync(pagination, sorting, ct);
+            }
+        )
+            .WithTags("Delivery notes")
+            .WithName("GetNotes")
+            .WithSummary("List delivery notes")
+            .WithDescription("Lists saved notes immediately after creation, each with the same complete details as the note detail endpoint, including current recipient details. Defaults to page 1, limit 10, and ID ascending; ID order matches creation and note-number order. SortBy accepts Id; SortDir accepts Asc or Desc. Limit 0 returns all notes with page 1 metadata. Invalid sorting returns 400 in the standard error format, as does invalid paging (non-positive page or negative limit) when notes exist. Authentication is not required.")
+            .AllowAnonymous()
+            .Produces<PagedEnvelope<NoteDetailsDto>>(StatusCodes.Status200OK)
+            .Produces<MedusaErrorResponse>(StatusCodes.Status400BadRequest);
+
+        app.MapGet(
             "/api/delivery-notes/{id}",
             async (
                 [FromRoute] int id,
