@@ -38,6 +38,13 @@ export class RecipientsApi {
     });
   }
 
+  /** Returns every recipient; the backend treats a limit of 0 as no limit. */
+  getAllRecipients(): Observable<RecipientDetails[]> {
+    return this.http
+      .get<PagedResponse<RecipientDetails>>('/api/recipients', { params: { limit: 0 } })
+      .pipe(map((response) => response.content));
+  }
+
   createRecipient(details: NewRecipient): Observable<RecipientDetails> {
     return this.http
       .post<{ content: RecipientDetails }>('/api/recipients', details)

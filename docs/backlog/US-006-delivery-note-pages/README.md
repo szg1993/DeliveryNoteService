@@ -35,7 +35,7 @@ so parallel work would conflict.
 | 1 | [T001: List delivery notes newest first](tasks/T001-list-delivery-notes.md) | done | None | Skeleton |
 | 2 | [T002: Navigate with toolbar links](tasks/T002-toolbar-navigation.md) | done | T001 | Extension |
 | 3 | [T003: Page through notes and recover from load failures](tasks/T003-list-paging-and-errors.md) | done | T001 | Extension |
-| 4 | [T004: Create a delivery note](tasks/T004-create-delivery-note.md) | todo | T001 | Extension |
+| 4 | [T004: Create a delivery note](tasks/T004-create-delivery-note.md) | done | T001 | Extension |
 | 5 | [T005: Check numbers and date order before submitting](tasks/T005-numeric-and-date-checks.md) | todo | T004 | Edge case |
 | 6 | [T006: Handle missing or unavailable recipients](tasks/T006-recipient-edge-cases.md) | todo | T004 | Edge case |
 | 7 | [T007: Show creation errors in the dialog](tasks/T007-creation-errors.md) | todo | T004 | Edge case |

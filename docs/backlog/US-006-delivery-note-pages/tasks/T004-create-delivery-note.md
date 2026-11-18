@@ -1,7 +1,7 @@
 # T004: Create a delivery note
 
 - Parent: [US-006](../README.md)
-- Status: todo
+- Status: done
 - Depends on: T001
 - Increment: Extension
 
@@ -49,16 +49,16 @@ empty number input is represented; prefer normal framework binding.
 
 ## Acceptance criteria
 
-- [ ] The list's "New delivery note" button opens `/delivery-notes/new`, lazy loaded
+- [x] The list's "New delivery note" button opens `/delivery-notes/new`, lazy loaded
       and titled.
-- [ ] The form has the agreed sections, labels, flags, free-text units, and lines
+- [x] The form has the agreed sections, labels, flags, free-text units, and lines
       behavior.
-- [ ] A complete valid form sends one POST with lines in order, `yyyy-MM-dd`
+- [x] A complete valid form sends one POST with lines in order, `yyyy-MM-dd`
       dates, JSON numbers, untrimmed text, and `null` for empty optional text.
-- [ ] Submit is disabled while the request is in progress.
-- [ ] On 201 the snackbar shows the returned note number and the app shows the list.
-- [ ] A required field left empty shows an inline error and sends no request.
-- [ ] Cancel returns to the list without a request or warning.
+- [x] Submit is disabled while the request is in progress.
+- [x] On 201 the snackbar shows the returned note number and the app shows the list.
+- [x] A required field left empty shows an inline error and sends no request.
+- [x] Cancel returns to the list without a request or warning.
 
 ## Verification
 
@@ -76,4 +76,63 @@ lint, test, build, and format check in `web/`.
 
 ## Progress
 
-No implementation started. Record dated work, verification evidence and remaining work here during implementation.
+2026-11-18: Implemented and verified.
+
+- Added `DeliveryNotesApi.createDeliveryNote` (`NewDeliveryNote` typed after
+  `CreateDeliveryNoteDto`; numbers and dates nullable like the DTO) and
+  `RecipientsApi.getAllRecipients` (`limit=0`).
+- Added the lazy `/delivery-notes/new` route titled "New delivery note", the
+  `CreateDeliveryNotePage` (Signal Forms, sections Header, Flags, Contact, Package,
+  Deadlines, Lines as labelled regions; lines as `fieldset`s "Line N"), and the list's
+  "New delivery note" link button.
+- Agreed tests 4 and 5 in `create-delivery-note-page.spec.ts` (RouterTestingHarness +
+  HttpTestingController). Test 4 failed first (missing API and page), then passed.
+  Test 5 was confirmed to fail when the Category rule was temporarily made optional.
+
+Binding outcome (the plan's "To verify during T004"):
+
+- Material datepicker: `MatDatepickerInput` provides `NG_VALUE_ACCESSOR`, so
+  `[formField]` binds it through Signal Forms' CVA interop with no custom code. With
+  `provideNativeDateAdapter()` the model holds `Date | null`; typed text (`11/20/2026`)
+  and calendar picks both set a local-midnight `Date`. The page formats it from
+  local year/month/day as `yyyy-MM-dd`, so no UTC shift.
+- `type="number"` inputs: with a `number | null` model, Signal Forms' native binding
+  stores `valueAsNumber` and an empty input as `null` (cleared input showed
+  "Quantity is required."). Decimals arrive as JSON numbers.
+- Signal Forms tags array items with an identity `Symbol` property, so line requests
+  are copied field by field (`toNewNoteLine`) rather than spread; JSON would drop the
+  symbol anyway, but explicit mapping keeps the request exact.
+
+Manual check (2026-11-18, browser pane, `ng serve --proxy-config` pointing `/api` at a
+local Node stub on port 5299; the real backend was never contacted): the list button
+opens `/delivery-notes/new` with the title; the recipient select lists "CODE – Name";
+add line appends, remove is disabled at one line and removing line 1 keeps line 2's
+values; an empty submit shows inline required errors and sends no POST; an 11-character
+weight unit shows "Weight unit must be at most 10 characters."; with a 3 s stub delay
+the submit button was disabled and a second click sent no second POST (stub logged one
+POST with the expected body); on 201 the snackbar "Delivery note DN-000001 created"
+showed over the list with the new note; Cancel returned to the list without a request
+or warning.
+
+Verification in `web/`: `npm run lint` passed; `npm test` 18/18 passed (5 files);
+`npm run build` succeeded (creation page is its own lazy chunk); `npm run format:check`
+passed after `prettier --write` on the changed files.
+
+Refactoring assessment (clean-code): production code keeps the `CreateRecipientForm`
+pattern (schema, `submission` action, `openErrorDialog`); repeated rule calls became
+small `requiredText`/`optionalText`/`requiredValue` helpers, and request mapping lives
+in plain functions (`toNewDeliveryNote`, `toNewNoteLine`, `emptyAsNull`,
+`calendarDate`). The template's per-field `mat-error` loops stay explicit because
+`mat-error` must be direct content of `mat-form-field`. In tests, agreed test 4 now
+builds on the same `fillValidNote()` arrange helper as test 5 and keeps only its
+distinguishing values visible. Test reuse: inspected `app.spec.ts`,
+`delivery-notes-page.spec.ts`, and `recipients-page.spec.ts`; the "wait for a page's
+list request and answer it empty" mechanic was duplicated in `app.spec.ts` and the new
+spec, so it moved to `web/src/testing/http.ts` (`answerEmptyListRequest`), used by both.
+It is stateless, configured per call, uses each test's own TestBed
+`HttpTestingController`, and owns no lifecycle. The page specs' own answer helpers
+flush non-empty, scenario-specific pages, so they stay local. Form-filling helpers stay
+local to the creation spec; T005 and T007 will extend the same file.
+
+Remaining: none for T004. Until T007, creation errors use the shared generic dialog
+mapping; recipient load failures and the no-recipients hint belong to T006.

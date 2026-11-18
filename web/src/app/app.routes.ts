@@ -11,6 +11,14 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'delivery-notes/new',
+    title: 'New delivery note',
+    loadComponent: () =>
+      import('./delivery-notes/create-delivery-note-page/create-delivery-note-page').then(
+        (m) => m.CreateDeliveryNotePage,
+      ),
+  },
+  {
     path: 'recipients',
     title: 'Recipients',
     loadComponent: () =>

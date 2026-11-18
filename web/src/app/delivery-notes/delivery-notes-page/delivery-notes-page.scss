@@ -4,6 +4,13 @@
   gap: 24px;
 }
 
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
 .page-title {
   margin: 0;
   font: var(--mat-sys-headline-medium);

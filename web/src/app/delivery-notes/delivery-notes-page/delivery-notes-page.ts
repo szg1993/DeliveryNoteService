@@ -7,13 +7,21 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTableModule } from '@angular/material/table';
+import { RouterLink } from '@angular/router';
 import { catchError, Observable, switchMap, throwError } from 'rxjs';
 import { openErrorDialog } from '../../shared/error-dialog/error-dialog';
 import { PagedResponse } from '../../shared/paged-response';
 import { DeliveryNoteDetails, DeliveryNotesApi } from '../delivery-notes-api';
 
 @Component({
-  imports: [MatButtonModule, MatCardModule, MatChipsModule, MatProgressBarModule, MatTableModule],
+  imports: [
+    MatButtonModule,
+    MatCardModule,
+    MatChipsModule,
+    MatProgressBarModule,
+    MatTableModule,
+    RouterLink,
+  ],
   selector: 'app-delivery-notes-page',
   styleUrl: './delivery-notes-page.scss',
   templateUrl: './delivery-notes-page.html',
