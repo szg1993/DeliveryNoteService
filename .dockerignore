@@ -1,0 +1,11 @@
+**/bin/
+**/obj/
+**/.vs/
+**/*.db
+**/*.user
+.git/
+web/
+docs/
+artifacts/
+DbFiles/
+service/test/

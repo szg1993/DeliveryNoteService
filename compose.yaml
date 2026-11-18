@@ -1,0 +1,16 @@
+# Runs the Web API on http://localhost:5211, the same port as the "http" launch profile.
+# The database is kept in the "delivery-note-data" volume, separate from service/src/WebApp/app.db.
+name: delivery-note-service
+
+services:
+  api:
+    build: .
+    ports:
+      - "5211:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development # enables Swagger at /swagger
+    volumes:
+      - delivery-note-data:/data
+
+volumes:
+  delivery-note-data:
