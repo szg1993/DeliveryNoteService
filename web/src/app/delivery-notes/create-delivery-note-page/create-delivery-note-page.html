@@ -185,8 +185,8 @@
           />
           <mat-datepicker-toggle matIconSuffix [for]="takeoverPicker" />
           <mat-datepicker #takeoverPicker />
-          @for (error of noteForm.deadline.takeoverDate().errors(); track error.kind) {
-            <mat-error>{{ error.message }}</mat-error>
+          @for (message of takeoverDateErrors(); track message) {
+            <mat-error>{{ message }}</mat-error>
           }
         </mat-form-field>
         <mat-form-field>
@@ -194,8 +194,8 @@
           <input matInput [matDatepicker]="shipPicker" [formField]="noteForm.deadline.shipDate" />
           <mat-datepicker-toggle matIconSuffix [for]="shipPicker" />
           <mat-datepicker #shipPicker />
-          @for (error of noteForm.deadline.shipDate().errors(); track error.kind) {
-            <mat-error>{{ error.message }}</mat-error>
+          @for (message of shipDateErrors(); track message) {
+            <mat-error>{{ message }}</mat-error>
           }
         </mat-form-field>
         <mat-form-field>
@@ -207,8 +207,8 @@
           />
           <mat-datepicker-toggle matIconSuffix [for]="arrivalPicker" />
           <mat-datepicker #arrivalPicker />
-          @for (error of noteForm.deadline.estimatedArrivalDate().errors(); track error.kind) {
-            <mat-error>{{ error.message }}</mat-error>
+          @for (message of arrivalDateErrors(); track message) {
+            <mat-error>{{ message }}</mat-error>
           }
         </mat-form-field>
       </mat-card-content>

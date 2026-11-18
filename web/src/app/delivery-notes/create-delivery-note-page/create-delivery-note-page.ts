@@ -1,14 +1,18 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, Signal, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import {
   applyEach,
+  FieldTree,
   form,
   FormField,
   FormRoot,
   maxLength,
+  min,
+  minDate,
   required,
   SchemaPath,
+  validate,
 } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -162,30 +166,46 @@ export class CreateDeliveryNotePage {
       requiredText(note.contactInfo.contact, 'Contact person', 200);
       requiredText(note.contactInfo.contactPhone, 'Contact phone', 30);
 
-      requiredValue(note.packageDetail.tareWgt, 'Tare weight');
+      requiredNotNegative(note.packageDetail.tareWgt, 'Tare weight');
       requiredText(note.packageDetail.tareWgtUm, 'Tare weight unit', 10);
-      requiredValue(note.packageDetail.pkgQty, 'Package quantity');
+      requiredPositive(note.packageDetail.pkgQty, 'Package quantity');
       requiredText(note.packageDetail.pkgScale, 'Package scale', 10);
-      requiredValue(note.packageDetail.pkgSizeX, 'Length');
-      requiredValue(note.packageDetail.pkgSizeY, 'Width');
-      requiredValue(note.packageDetail.pkgSizeZ, 'Height');
+      requiredNotNegative(note.packageDetail.pkgSizeX, 'Length');
+      requiredNotNegative(note.packageDetail.pkgSizeY, 'Width');
+      requiredNotNegative(note.packageDetail.pkgSizeZ, 'Height');
       requiredText(note.packageDetail.pkgSizeUm, 'Size unit', 10);
 
       requiredValue(note.deadline.takeoverDate, 'Takeover date');
       requiredValue(note.deadline.shipDate, 'Ship date');
       requiredValue(note.deadline.estimatedArrivalDate, 'Estimated arrival date');
+      notEarlierThan(
+        note.deadline.shipDate,
+        note.deadline.takeoverDate,
+        'Ship date must not be earlier than takeover date.',
+      );
+      notEarlierThan(
+        note.deadline.estimatedArrivalDate,
+        note.deadline.shipDate,
+        'Estimated arrival date must not be earlier than ship date.',
+      );
 
       applyEach(note.noteLines, (line) => {
         requiredText(line.partCode, 'Part code', 100);
         requiredText(line.partDesc, 'Description', 200);
         optionalText(line.partCmt, 'Comment', 200);
-        requiredValue(line.partQty, 'Quantity');
+        requiredPositive(line.partQty, 'Quantity');
         requiredText(line.partQtyUm, 'Quantity unit', 10);
-        requiredValue(line.partWgt, 'Weight');
+        requiredNotNegative(line.partWgt, 'Weight');
         requiredText(line.partWgtUm, 'Weight unit', 10);
       });
     },
     { submission: { action: () => this.createDeliveryNote() } },
+  );
+
+  protected readonly takeoverDateErrors = dateErrorMessages(this.noteForm.deadline.takeoverDate);
+  protected readonly shipDateErrors = dateErrorMessages(this.noteForm.deadline.shipDate);
+  protected readonly arrivalDateErrors = dateErrorMessages(
+    this.noteForm.deadline.estimatedArrivalDate,
   );
 
   protected addLine(): void {
@@ -232,6 +252,45 @@ function optionalText(path: SchemaPath<string>, label: string, limit: number): v
 
 function requiredValue<T>(path: SchemaPath<T>, label: string): void {
   required(path, { message: `${label} is required.` });
+}
+
+function requiredPositive(path: SchemaPath<number | null>, label: string): void {
+  requiredValue(path, label);
+  validate(path, ({ value }) => {
+    const amount = value();
+    return amount !== null && amount <= 0
+      ? { kind: 'positive', message: `${label} must be greater than 0.` }
+      : undefined;
+  });
+}
+
+function requiredNotNegative(path: SchemaPath<number | null>, label: string): void {
+  requiredValue(path, label);
+  min(path, 0, { message: `${label} must be 0 or more.` });
+}
+
+/** Equal dates pass; nothing is checked until both dates are set. */
+function notEarlierThan(
+  later: SchemaPath<Date | null>,
+  earlier: SchemaPath<Date | null>,
+  message: string,
+): void {
+  minDate(later, ({ valueOf }) => valueOf(earlier) ?? undefined, { message });
+}
+
+/**
+ * The datepicker's own validators report errors without a message: its parse error, shown as
+ * "Enter a valid date." instead of the "required" error the emptied model also causes, and its
+ * min error, which repeats the date-order rule and is left out.
+ */
+function dateErrorMessages(date: FieldTree<Date | null>): Signal<string[]> {
+  return computed(() => {
+    const errors = date().errors();
+    if (errors.some((error) => error.kind === 'matDatepickerParse')) {
+      return ['Enter a valid date.'];
+    }
+    return errors.flatMap((error) => (error.message ? [error.message] : []));
+  });
 }
 
 /**

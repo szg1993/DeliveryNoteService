@@ -104,6 +104,23 @@ describe('CreateDeliveryNotePage', () => {
       url: '/api/delivery-notes',
     });
   });
+
+  it('shows the date-order error and sends nothing when shipping precedes takeover', async () => {
+    await openCreationPage();
+    await answerRecipientsRequest([recipient(7, 'WIEN01', 'Wien Handel')]);
+    await fillValidNote();
+    fillFields(section('Deadlines'), { 'Takeover date': '11/22/2026', 'Ship date': '11/21/2026' });
+
+    await submitForm();
+
+    expect(
+      await screen.findByText('Ship date must not be earlier than takeover date.'),
+    ).toBeTruthy();
+    TestBed.inject(HttpTestingController).expectNone({
+      method: 'POST',
+      url: '/api/delivery-notes',
+    });
+  });
 });
 
 async function openCreationPage(): Promise<void> {
