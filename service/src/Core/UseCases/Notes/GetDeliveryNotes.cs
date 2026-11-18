@@ -31,7 +31,8 @@ public class GetDeliveryNotes(
         {
             var effectiveSorting = sorting with { SortBy = sorting.SortBy ?? DeliveryNotesSortBy.Id };
 
-            return await repository.NoTracking()
+            return await repository
+                .NoTracking()
                 .IncludeDetails()
                 .Paged(pageRequest, SortMap.Get(effectiveSorting), ct)
                 .As(NoteDetailsDto.FromModel);

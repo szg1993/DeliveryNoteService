@@ -3,7 +3,7 @@ using DeliveryNoteService.Core.Models;
 
 namespace DeliveryNoteService.Core.UseCases.Notes;
 
-internal static class NoteDetailsIncludes
+internal static class NoteRepositoryExtensions
 {
     public static IReadOnlyRepository<Note> IncludeDetails(this IReadOnlyRepository<Note> repository)
         => repository
