@@ -1,11 +1,10 @@
 # Builds the DeliveryNoteService Web API.
-# Build context: this folder, because WebApp references projects in both src/ and service/src/.
+# Build context: this folder; the Web API and the shared Common.* libraries live in src/.
 
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /source
 COPY src/ src/
-COPY service/src/ service/src/
-RUN dotnet publish service/src/WebApp/WebApp.csproj -c Release -o /app
+RUN dotnet publish src/WebApp/WebApp.csproj -c Release -o /app
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /app

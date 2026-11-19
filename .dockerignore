@@ -8,4 +8,4 @@ web/
 docs/
 artifacts/
 DbFiles/
-service/test/
+test/

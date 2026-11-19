@@ -339,3 +339,25 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+# Rules carried over from the former service/.gitignore
+*.swp
+*.*~
+.DS_Store
+nupkg/
+.vscode
+.idea
+build/
+[Oo]ut/
+msbuild.log
+msbuild.err
+msbuild.wrn
+**/Logs
+TestResults/
+
+# Local configuration files
+appsettings.[Ll]ocal.json
+
+# Local SQLite files
+*.db
+*.db-shm
+*.db-wal

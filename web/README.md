@@ -19,7 +19,7 @@ Run every command from this `web/` directory.
 The application calls the backend through the relative path `/api`. During
 development, `npm start` proxies `/api` requests to `http://localhost:5211`
 (see `proxy.conf.json`). Start the backend with its `http` launch profile first,
-for example from `service/src/WebApp`:
+for example from `src/WebApp`:
 
 ```bash
 dotnet run --launch-profile http

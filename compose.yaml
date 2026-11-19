@@ -1,10 +1,10 @@
 # Runs the Web API on http://localhost:5211, the same port as the "http" launch profile.
-# The database is kept in the "delivery-note-data" volume, separate from service/src/WebApp/app.db.
+# The database is kept in the "delivery-note-data" volume, separate from src/WebApp/app.db.
 name: delivery-note-service
 
 services:
   api:
-    build: .
+    image: delivery-note-service-api:1.2
     ports:
       - "5211:8080"
     environment:
