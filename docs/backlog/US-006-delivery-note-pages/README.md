@@ -2,9 +2,9 @@
 
 - Source: DeliveryNoteService/docs/backlog/US-006-delivery-note-pages.md
 - Refinement source: conversation: US-006 grilling sessions, 2026-11-18
-- Lifecycle: active
+- Lifecycle: complete
 - Created: 2026-11-18
-- Updated: 2026-11-18
+- Updated: 2026-11-19
 - Branch: feature/US-006-delivery-note-pages
 
 ## Approach
@@ -139,3 +139,6 @@ the model. Prefer normal framework binding; record the outcome in T004's progres
   optional. Stopping point: the agent implementation run is finished; the story stays
   In review. Next: the developer performs the manual checks listed in review 02, then
   records human acceptance explicitly.
+- 2026-11-19: The developer approved human review and manual testing. Recorded in
+  [human acceptance 03](review-03.md); story `Done`, plan `complete`. Merge remains a
+  human decision.

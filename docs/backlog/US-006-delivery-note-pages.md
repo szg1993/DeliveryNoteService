@@ -1,6 +1,6 @@
 # US-006: Delivery note pages
 
-- Status: In review
+- Status: Done
 - Type: Frontend
 - Area: Delivery notes
 - Implementation repository: DeliveryNoteService
@@ -176,3 +176,7 @@ grilling session on 2026-11-18 settled the redirect test, field-error names, rec
 edge cases, date input behavior, and the urgent display; the developer confirmed it
 ("Yes"). The [task breakdown](US-006-delivery-note-pages/README.md) was created on
 2026-11-18 (T001–T007, all todo).
+
+Implemented on 2026-11-18 (T001–T007); agent review 02 returned `PASS`. On 2026-11-19
+the developer approved human review and manual testing; see
+[human acceptance 03](US-006-delivery-note-pages/review-03.md). Status `Done`.
