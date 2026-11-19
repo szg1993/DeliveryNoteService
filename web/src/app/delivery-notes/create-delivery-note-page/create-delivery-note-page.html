@@ -1,0 +1,313 @@
+<h1 class="page-title">New delivery note</h1>
+
+<form [formRoot]="noteForm" aria-label="New delivery note">
+  <section aria-labelledby="header-title">
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title><h2 id="header-title">Header</h2></mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="fields">
+        <div class="recipient-field">
+          <mat-form-field>
+            <mat-label>Recipient</mat-label>
+            <mat-select [formField]="noteForm.recipientId">
+              @for (recipient of recipients(); track recipient.id) {
+                <mat-option [value]="recipient.id">
+                  {{ recipient.code }} – {{ recipient.name }}
+                </mat-option>
+              }
+            </mat-select>
+            @for (error of noteForm.recipientId().errors(); track error.kind) {
+              <mat-error>{{ error.message }}</mat-error>
+            }
+          </mat-form-field>
+          @if (noRecipients()) {
+            <p class="recipient-hint">
+              No recipients yet. Create one on the
+              <a routerLink="/recipients">Recipients page</a>.
+            </p>
+          }
+        </div>
+        <mat-form-field>
+          <mat-label>Category</mat-label>
+          <input matInput [formField]="noteForm.category" />
+          @for (error of noteForm.category().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Takeover place</mat-label>
+          <input matInput [formField]="noteForm.takeoverPlace" />
+          @for (error of noteForm.takeoverPlace().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>EKAER number (optional)</mat-label>
+          <input matInput [formField]="noteForm.ekaerNbr" />
+          @for (error of noteForm.ekaerNbr().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field class="wide">
+          <mat-label>Comments (optional)</mat-label>
+          <textarea matInput [formField]="noteForm.comments"></textarea>
+          @for (error of noteForm.comments().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+  </section>
+
+  <section aria-labelledby="flags-title">
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title><h2 id="flags-title">Flags</h2></mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="flags">
+        <mat-checkbox [formField]="noteForm.isUrgent">Urgent</mat-checkbox>
+        <mat-checkbox [formField]="noteForm.isCrackable">Crackable</mat-checkbox>
+        <mat-checkbox [formField]="noteForm.isDangerous">Dangerous</mat-checkbox>
+        <mat-checkbox [formField]="noteForm.isOwnCost">Own cost</mat-checkbox>
+      </mat-card-content>
+    </mat-card>
+  </section>
+
+  <section aria-labelledby="contact-title">
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title><h2 id="contact-title">Contact</h2></mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="fields">
+        <mat-form-field>
+          <mat-label>Assigned to</mat-label>
+          <input matInput [formField]="noteForm.contactInfo.assignTo" />
+          @for (error of noteForm.contactInfo.assignTo().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Assignee phone</mat-label>
+          <input matInput [formField]="noteForm.contactInfo.assignToPhone" />
+          @for (error of noteForm.contactInfo.assignToPhone().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Contact person</mat-label>
+          <input matInput [formField]="noteForm.contactInfo.contact" />
+          @for (error of noteForm.contactInfo.contact().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Contact phone</mat-label>
+          <input matInput [formField]="noteForm.contactInfo.contactPhone" />
+          @for (error of noteForm.contactInfo.contactPhone().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+  </section>
+
+  <section aria-labelledby="package-title">
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title><h2 id="package-title">Package</h2></mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="fields">
+        <mat-form-field>
+          <mat-label>Tare weight</mat-label>
+          <input matInput type="number" [formField]="noteForm.packageDetail.tareWgt" />
+          @for (error of noteForm.packageDetail.tareWgt().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Tare weight unit</mat-label>
+          <input matInput [formField]="noteForm.packageDetail.tareWgtUm" />
+          @for (error of noteForm.packageDetail.tareWgtUm().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Package quantity</mat-label>
+          <input matInput type="number" [formField]="noteForm.packageDetail.pkgQty" />
+          @for (error of noteForm.packageDetail.pkgQty().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Package scale</mat-label>
+          <input matInput [formField]="noteForm.packageDetail.pkgScale" />
+          @for (error of noteForm.packageDetail.pkgScale().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Length (X)</mat-label>
+          <input matInput type="number" [formField]="noteForm.packageDetail.pkgSizeX" />
+          @for (error of noteForm.packageDetail.pkgSizeX().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Width (Y)</mat-label>
+          <input matInput type="number" [formField]="noteForm.packageDetail.pkgSizeY" />
+          @for (error of noteForm.packageDetail.pkgSizeY().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Height (Z)</mat-label>
+          <input matInput type="number" [formField]="noteForm.packageDetail.pkgSizeZ" />
+          @for (error of noteForm.packageDetail.pkgSizeZ().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Size unit</mat-label>
+          <input matInput [formField]="noteForm.packageDetail.pkgSizeUm" />
+          @for (error of noteForm.packageDetail.pkgSizeUm().errors(); track error.kind) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+  </section>
+
+  <section aria-labelledby="deadlines-title">
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title><h2 id="deadlines-title">Deadlines</h2></mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="fields">
+        <mat-form-field>
+          <mat-label>Takeover date</mat-label>
+          <input
+            matInput
+            [matDatepicker]="takeoverPicker"
+            [formField]="noteForm.deadline.takeoverDate"
+          />
+          <mat-datepicker-toggle matIconSuffix [for]="takeoverPicker" />
+          <mat-datepicker #takeoverPicker />
+          @for (message of takeoverDateErrors(); track message) {
+            <mat-error>{{ message }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Ship date</mat-label>
+          <input matInput [matDatepicker]="shipPicker" [formField]="noteForm.deadline.shipDate" />
+          <mat-datepicker-toggle matIconSuffix [for]="shipPicker" />
+          <mat-datepicker #shipPicker />
+          @for (message of shipDateErrors(); track message) {
+            <mat-error>{{ message }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Estimated arrival date</mat-label>
+          <input
+            matInput
+            [matDatepicker]="arrivalPicker"
+            [formField]="noteForm.deadline.estimatedArrivalDate"
+          />
+          <mat-datepicker-toggle matIconSuffix [for]="arrivalPicker" />
+          <mat-datepicker #arrivalPicker />
+          @for (message of arrivalDateErrors(); track message) {
+            <mat-error>{{ message }}</mat-error>
+          }
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+  </section>
+
+  <section aria-labelledby="lines-title">
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title><h2 id="lines-title">Lines</h2></mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        @for (line of noteForm.noteLines; track line; let index = $index) {
+          <fieldset class="line">
+            <legend>Line {{ index + 1 }}</legend>
+            <div class="fields">
+              <mat-form-field>
+                <mat-label>Part code</mat-label>
+                <input matInput [formField]="line.partCode" />
+                @for (error of line.partCode().errors(); track error.kind) {
+                  <mat-error>{{ error.message }}</mat-error>
+                }
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Description</mat-label>
+                <input matInput [formField]="line.partDesc" />
+                @for (error of line.partDesc().errors(); track error.kind) {
+                  <mat-error>{{ error.message }}</mat-error>
+                }
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Comment (optional)</mat-label>
+                <input matInput [formField]="line.partCmt" />
+                @for (error of line.partCmt().errors(); track error.kind) {
+                  <mat-error>{{ error.message }}</mat-error>
+                }
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Quantity</mat-label>
+                <input matInput type="number" [formField]="line.partQty" />
+                @for (error of line.partQty().errors(); track error.kind) {
+                  <mat-error>{{ error.message }}</mat-error>
+                }
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Quantity unit</mat-label>
+                <input matInput [formField]="line.partQtyUm" />
+                @for (error of line.partQtyUm().errors(); track error.kind) {
+                  <mat-error>{{ error.message }}</mat-error>
+                }
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Weight</mat-label>
+                <input matInput type="number" [formField]="line.partWgt" />
+                @for (error of line.partWgt().errors(); track error.kind) {
+                  <mat-error>{{ error.message }}</mat-error>
+                }
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Weight unit</mat-label>
+                <input matInput [formField]="line.partWgtUm" />
+                @for (error of line.partWgtUm().errors(); track error.kind) {
+                  <mat-error>{{ error.message }}</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="actions">
+              <button
+                mat-button
+                type="button"
+                [disabled]="noteForm.noteLines.length === 1"
+                (click)="removeLine(index)"
+              >
+                Remove line
+              </button>
+            </div>
+          </fieldset>
+        }
+        <button mat-stroked-button type="button" (click)="addLine()">Add line</button>
+      </mat-card-content>
+    </mat-card>
+  </section>
+
+  <div class="actions">
+    <a mat-button routerLink="/delivery-notes">Cancel</a>
+    <button
+      mat-flat-button
+      type="submit"
+      [disabled]="noteForm().submitting() || recipientsLoadFailed()"
+    >
+      Create delivery note
+    </button>
+  </div>
+</form>

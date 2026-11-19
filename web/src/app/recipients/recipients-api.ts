@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { map, Observable } from 'rxjs';
+import { PagedResponse } from '../shared/paged-response';
 
 export interface RecipientDetails {
   id: number;
@@ -24,18 +25,6 @@ export interface NewRecipient {
   address: string;
 }
 
-export interface Paging {
-  page: number;
-  limit: number;
-  totalCount: number;
-  totalPages: number;
-}
-
-export interface PagedResponse<T> {
-  content: T[];
-  paging: Paging;
-}
-
 const pageSize = 10;
 
 @Service()
@@ -47,6 +36,13 @@ export class RecipientsApi {
     return this.http.get<PagedResponse<RecipientDetails>>('/api/recipients', {
       params: { page, limit: pageSize, sortBy: 'Id', sortDir: 'Desc' },
     });
+  }
+
+  /** Returns every recipient; the backend treats a limit of 0 as no limit. */
+  getAllRecipients(): Observable<RecipientDetails[]> {
+    return this.http
+      .get<PagedResponse<RecipientDetails>>('/api/recipients', { params: { limit: 0 } })
+      .pipe(map((response) => response.content));
   }
 
   createRecipient(details: NewRecipient): Observable<RecipientDetails> {

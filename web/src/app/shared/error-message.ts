@@ -31,6 +31,12 @@ export function readableErrorMessage(error: HttpErrorResponse, recipientCode?: s
       return invalidFieldMessage('Code');
     case 'Recipient.InvalidCountry':
       return 'Unknown country code.';
+    case 'Recipient.NotFound':
+      return 'The selected recipient no longer exists.';
+    case 'Note.InvalidInput':
+      return 'Some delivery note values are invalid. Check quantities, weights, dimensions and date order.';
+    case 'Note.NumberExhausted':
+      return 'No more delivery note numbers are available.';
     default:
       return fallbackMessage;
   }

@@ -3,6 +3,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { ApplicationRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/angular';
+import { tableRowTexts } from '../../../testing/table';
 import { NewRecipient, RecipientDetails } from '../recipients-api';
 import { RecipientsPage } from './recipients-page';
 
@@ -292,14 +293,4 @@ function listedCodes(): string[] {
 
 function pagingButton(name: 'Previous page' | 'Next page'): HTMLButtonElement {
   return screen.getByRole<HTMLButtonElement>('button', { name });
-}
-
-function tableRowTexts(): string[][] {
-  return screen
-    .queryAllByRole('row')
-    .map((row) =>
-      [...within(row).queryAllByRole('columnheader'), ...within(row).queryAllByRole('cell')].map(
-        (cell) => cell.textContent?.trim() ?? '',
-      ),
-    );
 }

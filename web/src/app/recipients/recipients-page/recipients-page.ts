@@ -9,7 +9,8 @@ import { MatTableModule } from '@angular/material/table';
 import { catchError, Observable, switchMap, throwError } from 'rxjs';
 import { openErrorDialog } from '../../shared/error-dialog/error-dialog';
 import { CreateRecipientForm } from '../create-recipient-form/create-recipient-form';
-import { PagedResponse, RecipientDetails, RecipientsApi } from '../recipients-api';
+import { PagedResponse } from '../../shared/paged-response';
+import { RecipientDetails, RecipientsApi } from '../recipients-api';
 
 @Component({
   imports: [

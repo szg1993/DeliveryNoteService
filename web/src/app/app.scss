@@ -1,6 +1,29 @@
 .app-toolbar {
+  gap: 32px;
   background-color: var(--mat-sys-primary);
   color: var(--mat-sys-on-primary);
+}
+
+.app-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.app-nav a {
+  padding: 4px 12px;
+  border-radius: 16px;
+  color: inherit;
+  font: var(--mat-sys-label-large);
+  text-decoration: none;
+}
+
+.app-nav a:hover {
+  text-decoration: underline;
+}
+
+.app-nav a.active-link {
+  background-color: var(--mat-sys-on-primary);
+  color: var(--mat-sys-primary);
 }
 
 .app-content {

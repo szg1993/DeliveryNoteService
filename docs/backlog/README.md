@@ -26,7 +26,7 @@ backend and frontend work are separate stories.
 | [Recipient management](epics/recipient-management.md) | [US-003: Update recipients](US-003-update-recipients.md) | Done | Accepted 2026-11-11 ([human acceptance 04](US-003-update-recipients/review-04.md)). |
 | [Recipient management](epics/recipient-management.md) | [US-004: Recipient page](US-004-recipient-page.md) | Done | Accepted 2026-11-18 ([human acceptance 05](US-004-recipient-page/review-05.md)). |
 | Delivery notes | [US-005: List delivery notes](US-005-list-delivery-notes.md) | Done | Accepted 2026-11-18 ([human acceptance 03](US-005-list-delivery-notes/review-03.md)). |
-| Delivery notes | [US-006: Delivery note pages](US-006-delivery-note-pages.md) | Ready | Refined 2026-11-18; request task breakdown. List page needs US-005 for a real backend. |
+| Delivery notes | [US-006: Delivery note pages](US-006-delivery-note-pages.md) | Ready | [Task breakdown](US-006-delivery-note-pages/README.md) created 2026-11-18 (T001–T007); implement T001. |
 
 Recipient management is the first migration area; delivery-note creation is the
 selected next story, with refinement complete. The remaining backend capabilities still need

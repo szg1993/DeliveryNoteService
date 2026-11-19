@@ -1,4 +1,14 @@
-<mat-toolbar class="app-toolbar">Delivery Note Service</mat-toolbar>
+<mat-toolbar class="app-toolbar">
+  <span class="app-title">Delivery Note Service</span>
+  <nav class="app-nav">
+    <a routerLink="/delivery-notes" routerLinkActive="active-link" ariaCurrentWhenActive="page">
+      Delivery notes
+    </a>
+    <a routerLink="/recipients" routerLinkActive="active-link" ariaCurrentWhenActive="page">
+      Recipients
+    </a>
+  </nav>
+</mat-toolbar>
 
 <main class="app-content">
   <router-outlet />

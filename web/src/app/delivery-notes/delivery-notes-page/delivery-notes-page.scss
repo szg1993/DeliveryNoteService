@@ -1,0 +1,42 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.page-title {
+  margin: 0;
+  font: var(--mat-sys-headline-medium);
+}
+
+.message {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0;
+  padding: 16px 0;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.message p {
+  margin: 0;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.paging {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 8px;
+}
