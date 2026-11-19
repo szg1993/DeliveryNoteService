@@ -25,15 +25,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence", "src\Persiste
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{7151F78B-1439-4A33-A9F3-6C8D950933D4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Core", "..\src\Common.Core\Common.Core.csproj", "{C78EC95C-B9D2-4AB6-AB1F-16672B873AB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Core", "src\Common.Core\Common.Core.csproj", "{C78EC95C-B9D2-4AB6-AB1F-16672B873AB7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Infrastructure", "..\src\Common.Infrastructure\Common.Infrastructure.csproj", "{2DFA0829-7ACA-4983-A695-1BF4462E4EBD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Infrastructure", "src\Common.Infrastructure\Common.Infrastructure.csproj", "{2DFA0829-7ACA-4983-A695-1BF4462E4EBD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.AspNetCore", "..\src\Common.AspNetCore\Common.AspNetCore.csproj", "{50171C64-AD18-4130-AD20-AE300D40403F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.AspNetCore", "src\Common.AspNetCore\Common.AspNetCore.csproj", "{50171C64-AD18-4130-AD20-AE300D40403F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{5E1BEE81-45CF-4C94-8439-070307BBDE61}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Testing", "..\src\Common.Testing\Common.Testing.csproj", "{D9D0874D-F54C-4570-821C-08D264E2B2E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Testing", "src\Common.Testing\Common.Testing.csproj", "{D9D0874D-F54C-4570-821C-08D264E2B2E0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "test\UnitTests\UnitTests.csproj", "{BD3B0464-EF9D-460C-99C4-DA59A9A7ABE0}"
 EndProject

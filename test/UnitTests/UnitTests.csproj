@@ -20,9 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Common.AspNetCore\Common.AspNetCore.csproj" />
-    <ProjectReference Include="..\..\..\src\Common.Core\Common.Core.csproj" />
-    <ProjectReference Include="..\..\..\src\Common.Testing\Common.Testing.csproj" />
+    <ProjectReference Include="..\..\src\Common.AspNetCore\Common.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\src\Common.Core\Common.Core.csproj" />
+    <ProjectReference Include="..\..\src\Common.Testing\Common.Testing.csproj" />
     <ProjectReference Include="..\..\src\Persistence\Persistence.csproj" />
     <ProjectReference Include="..\ApiTests\ApiTests.csproj" />
   </ItemGroup>

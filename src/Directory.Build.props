@@ -1,7 +1,14 @@
-﻿<Project>
+<Project>
 	<PropertyGroup>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+	</PropertyGroup>
+	<!-- Shared Common.* libraries keep their original assembly names and namespaces. -->
+	<PropertyGroup Condition="$(MSBuildProjectName.StartsWith('Common.'))">
 		<AssemblyName>Medusa.Enap.$(MSBuildProjectName)</AssemblyName>
 		<RootNamespace>$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+	</PropertyGroup>
+	<PropertyGroup Condition="!$(MSBuildProjectName.StartsWith('Common.'))">
+		<AssemblyName>DeliveryNoteService.$(MSBuildProjectName)</AssemblyName>
+		<RootNamespace>DeliveryNoteService.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
 	</PropertyGroup>
 </Project>
