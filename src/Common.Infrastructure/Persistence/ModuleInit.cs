@@ -34,6 +34,8 @@ public static class ModuleInit
             {
                 throw new NotSupportedException($"Given connection string {connectionString} is not supported");
             }
+
+            opt.IgnorePendingModelChanges();
         });
 
         return services
